@@ -15,7 +15,7 @@ Imports:
     Rcpp,
     colourvalues (>= 0.2.0),
     jsonify (>= 0.1.1),
-    geojsonsf (>= 1.2.1)
+    geojsonsf (>= 1.2.2)
 LinkingTo: 
     Rcpp,
     colourvalues,

@@ -11,6 +11,7 @@
 
 #include "spatialwidget/colour/colour.hpp"
 #include "spatialwidget/data_construction/data_construction.hpp"
+//#include "spatialwidget/geojson/geometrycollection.hpp"
 #include "spatialwidget/geojson/geojson.hpp"
 #include "spatialwidget/legend/legend.hpp"
 #include "spatialwidget/palette/palette.hpp"
@@ -53,7 +54,7 @@ namespace api {
 
     // Rcpp::Rcout << "js_data-ing" << std::endl;
 
-    Rcpp::StringVector js_data = to_geojson_atomise( df );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df );
     //Rcpp::Rcout << "js_data: " << js_data << std::endl;
 
     return Rcpp::List::create(
@@ -87,7 +88,7 @@ namespace api {
     SEXP legend = lst[ "legend" ];
     Rcpp::StringVector js_legend = jsonify::vectors::to_json( legend );
 
-    Rcpp::StringVector js_data = to_geojson_atomise( df, lon, lat );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, lon, lat );
 
     return Rcpp::List::create(
       Rcpp::_["data"] = js_data,
