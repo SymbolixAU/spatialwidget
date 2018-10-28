@@ -10,6 +10,19 @@
 namespace spatialwidget {
 namespace parameters {
 
+  inline Rcpp::StringVector extract_map(std::map<std::string, std::string> const& input_map, int n) {
+    Rcpp::StringVector vals( n );
+    int i = 0;
+    for (auto const& element : input_map) {
+      //retval.push_back(element.first);
+      vals[i] = element.first;
+      i++;
+      vals[i] = element.second;
+      i++;
+    }
+    return vals;
+  }
+
   /*
    * paramters to data
    */
@@ -17,7 +30,7 @@ namespace parameters {
   		Rcpp::DataFrame& data,                // user-supplied data
   		Rcpp::List& params,                   // list of parameters from calling function
   		Rcpp::List& lst_defaults,
-  		Rcpp::StringVector& layer_columns,
+  		//Rcpp::StringVector& layer_columns,
   		//Rcpp::StringVector& colour_columns,
   		std::map< std::string, std::string > colour_columns,
   		Rcpp::StringVector& legend_types,
@@ -39,7 +52,7 @@ namespace parameters {
   	Rcpp::List lst_legend = construct_legend_list( lst_params, params, param_names, legend_types );
 
   	Rcpp::StringVector legend_names = lst_legend.names();
-  	Rcpp::Rcout << "legend_names: " <<  legend_names << std::endl;
+  	// Rcpp::Rcout << "legend_names: " <<  legend_names << std::endl;
 
   	std::map< std::string, std::string>::iterator it;
 
@@ -73,18 +86,34 @@ namespace parameters {
   	//)
 
   	// need to remove any paramters which won't be used in the data being plotted
-  	Rcpp::StringVector legend_params = Rcpp::StringVector::create("legend","legend_options","jsfunction","geoconversion");
+  	Rcpp::StringVector legend_params = Rcpp::StringVector::create("legend","legend_options"); // TODO( hard-coded?)
   	spatialwidget::utils::remove_parameters( params, param_names, legend_params );
-  	Rcpp::StringVector colours_remove = Rcpp::StringVector::create("stroke_from","stroke_to","stroke_colour","fill_colour","stroke_from_opacity","stroke_to_opacity","stroke_opacity","fill_opacity","palette");
-  	spatialwidget::utils::remove_parameters( params, param_names, colours_remove ); // TODO
+
+  	//int remove_size = ( colour_columns.size() * 2 ) + legend_types.size();
+  	//Rcpp::Rcout << "remove_size: " << remove_size << std::endl;
+  	//Rcpp::StringVector colours_remove( legend_types.size() );
+
+    //Rcpp::StringVector test = extract_map( colour_columns, remove_size - legend_types.size() );
+    //Rcpp::Rcout << "test: " << test << std::endl;
+
+    Rcpp::StringVector colours_remove = extract_map( colour_columns, colour_columns.size() * 2 );
+
+
+  	// Rcpp::StringVector colours_remove = Rcpp::StringVector::create(
+  	//   "stroke_from","stroke_to","stroke_colour","fill_colour","stroke_from_opacity",
+  	//   "stroke_to_opacity","stroke_opacity","fill_opacity","palette"
+  	//   );
+
+  	spatialwidget::utils::remove_parameters( params, param_names, colours_remove );
+  	spatialwidget::utils::remove_parameters( params, param_names, legend_types );
 
   	lst_params = spatialwidget::utils::construct_params( data, params );
 
-  	Rcpp::Rcout << "constructing data " << std::endl;
+  	// Rcpp::Rcout << "constructing data " << std::endl;
 
   	Rcpp::DataFrame df = spatialwidget::construction::construct_data(
   		param_names,
-  		layer_columns,
+  		//layer_columns,
   		params,
   		data_names,
   		lst_defaults,
@@ -99,6 +128,7 @@ namespace parameters {
   		Rcpp::_["legend"] = lst_legend
   	);
 
+  	// Rcpp::Rcout << "returning list" << std::endl;
   	return result;
   }
 } // namespace parameters

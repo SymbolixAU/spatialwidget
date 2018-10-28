@@ -160,23 +160,33 @@ void make_gc_type(Writer& writer, Rcpp::List& sfg,
 */
 Rcpp::StringVector to_geojson_atomise( Rcpp::DataFrame& sf ) {
 
+  // Rcpp::Rcout << "to_geojson_atomise() " << std::endl;
 	std::string geom_column = sf.attr("sf_column");
+  // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
 
 	size_t n_cols = sf.ncol();
 	size_t n_properties = n_cols - 1;
 	size_t n_rows = sf.nrows();
 	size_t i, j;
 	Rcpp::StringVector column_names = sf.names();
-	Rcpp::StringVector property_names(sf.size() - 1);
+	Rcpp::StringVector property_names( n_properties );
+
+	// Rcpp::Rcout << "n_properties: " << n_properties << std::endl;
+	// Rcpp::Rcout << "column_names: " << column_names << std::endl;
 
 	int property_counter = 0;
+	// Rcpp::Rcout << "sf.length: " << sf.length() << std::endl;
+
 	for (int i = 0; i < sf.length(); i++) {
 		if (column_names[i] != geom_column) {
+		  // Rcpp::Rcout << "property counter: " << property_counter << std::endl;
 			property_names[property_counter] = column_names[i];
 			property_counter++;
+			// Rcpp::Rcout << "property counter: " << property_counter << std::endl;
 		}
 	}
 
+	// Rcpp::Rcout << "starting sb " << std::endl;
 	rapidjson::StringBuffer sb;
 	rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
 	writer.StartArray();

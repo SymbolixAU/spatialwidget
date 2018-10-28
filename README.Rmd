@@ -1,38 +1,47 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "# ",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 # spatialwidget
 
 works in two stages
 
-  - sorts out the legend
-  - converts remaining data and parameters into GeoJSON
+- sorts out the legend
+- converts remaining data and parameters into GeoJSON
+
+
 
 # SF objects
 
-An `sf` object is retured as a JSON array of GeoJSON features, one array
-element for each row of the `sf`
+An `sf` object is retured as a JSON array of GeoJSON features, one array element for each row of the `sf`
 
 ## How do I use it in my package?
 
-You need to implement a `.cpp` file and a `.R` file.
+You need to implement a `.cpp` file and a `.R` file. 
 
 The `.cpp` file must include
 
-  - `std::map< std::string, std::string > colours` - a mapping between
-    colours and opacities
-  - `Rcpp::StringVector legend` - vector containing the possible legends
-  - `Rcpp::List defaults` - A list of vectors, with at least one vector
-    per colour option
+- `std::map< std::string, std::string > colours` - a mapping between colours and opacities
+- `Rcpp::StringVector legend` - vector containing the possible legends
+- `Rcpp::List defaults` - A list of vectors, with at least one vector per colour option
 
-(the names of these objects, `columns`, `colours`, etc are optional).
+(the names of these objects, `columns`, `colours`, etc are optional). 
 
-You then call `spatialwidget::api::create_geojson()` with these
-arguments.
+You then call `spatialwidget::api::create_geojson()` with these arguments. 
 
-**line\_example.cpp**
+**line_example.cpp**
 
-``` cpp
+```c++
 #include <Rcpp.h>
 #include "spatialwidget/spatialwidget.hpp"
 
@@ -75,17 +84,16 @@ Rcpp::List line_example_geojson( Rcpp::DataFrame data, Rcpp::List params ) {
     data_rows
   );
 }
+
 ```
 
-In R you create a list of paramters, for example specifying which
-columns of your data will be used the colours.
+In R you create a list of paramters, for example specifying which columns of your data will be used the colours. 
 
-If a parameter specifies a column of the data object, that column will
-be used and returned. If the parameter is a single value
+If a parameter specifies a column of the data object, that column will be used and returned. If the parameter is a single value
 
-**line\_example.R**
+**line_example.R**
 
-``` r
+```r
 
 library(sf)      ## for printing sf options
 library(mapdeck) ## for roads data
@@ -101,4 +109,6 @@ str(js_data)
 # List of 2
 # $ data  : 'geojson' chr "[{\"type\":\"Feature\",\"properties\":{\"stroke_colour\":\"#46317EFF\"},\"geometry\":{\"type\":\"LineString\",\"| __truncated__
 # $ legend: 'json' chr "{\"stroke_colour\":[false]}"
+
 ```
+

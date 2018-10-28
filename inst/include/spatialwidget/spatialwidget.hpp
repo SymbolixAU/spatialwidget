@@ -27,27 +27,34 @@ namespace api {
       Rcpp::DataFrame& data,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
-      Rcpp::StringVector& layer_columns,
+      //Rcpp::StringVector& layer_columns,
       std::map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows
   ) {
 
-    Rcpp::Rcout << "create_geojson" << std::endl;
+    std::string geom_column = data.attr("sf_column");
+    // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
+    // Rcpp::Rcout << "create_geojson" << std::endl;
 
-    Rcpp::Rcout << "parameters to data " << std::endl;
+    // Rcpp::Rcout << "parameters to data " << std::endl;
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-      data, params, lst_defaults, layer_columns, layer_colours, layer_legend, data_rows
+      data, params, lst_defaults,
+      // layer_columns,
+      layer_colours, layer_legend, data_rows
     );
 
+    // Rcpp::Rcout << "getting data from list " << std::endl;
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     SEXP legend = lst[ "legend" ];
     Rcpp::StringVector js_legend = jsonify::vectors::to_json( legend );
 
-    //df.attr("sf_column") = "polyline";
-    //std::string geom_column = df.attr("sf_column");
+    df.attr("sf_column") = geom_column;
+
+    // Rcpp::Rcout << "js_data-ing" << std::endl;
 
     Rcpp::StringVector js_data = to_geojson_atomise( df );
+    //Rcpp::Rcout << "js_data: " << js_data << std::endl;
 
     return Rcpp::List::create(
       Rcpp::_["data"] = js_data,
@@ -62,7 +69,7 @@ namespace api {
       Rcpp::DataFrame& data,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
-      Rcpp::StringVector& layer_columns,
+      //Rcpp::StringVector& layer_columns,
       std::map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
@@ -71,7 +78,9 @@ namespace api {
   ) {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-      data, params, lst_defaults, layer_columns, layer_colours, layer_legend, data_rows
+      data, params, lst_defaults,
+      //layer_columns,
+      layer_colours, layer_legend, data_rows
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -93,14 +102,16 @@ namespace api {
       Rcpp::DataFrame& data,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
-      Rcpp::StringVector& layer_columns,
+      //Rcpp::StringVector& layer_columns,
       std::map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows
   ) {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-      data, params, lst_defaults, layer_columns, layer_colours, layer_legend, data_rows
+      data, params, lst_defaults,
+      //layer_columns,
+      layer_colours, layer_legend, data_rows
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
