@@ -3,6 +3,7 @@
 
 #include <Rcpp.h>
 #include "spatialwidget/spatialwidget.hpp"
+#include "spatialwidget/utils/utils.hpp"
 
 //#include <Rcpp/Benchmark/Timer.h>
 

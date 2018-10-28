@@ -49,7 +49,7 @@ namespace parameters {
   	// lst_legend[ "fill_colour" ] = true;
   	// lst_legend[ "stroke_colour" ] = false;
 
-  	Rcpp::List lst_legend = construct_legend_list( lst_params, params, param_names, legend_types );
+  	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list( lst_params, params, param_names, legend_types );
 
   	Rcpp::StringVector legend_names = lst_legend.names();
   	// Rcpp::Rcout << "legend_names: " <<  legend_names << std::endl;
@@ -65,7 +65,7 @@ namespace parameters {
 		  colour_column = it->first;
 		  opacity_column = it->second;
 		  include_legend = spatialwidget::utils::find_character_index_in_vector(legend_names, colour_column.c_str()) >= 0 ? true : false;
-	    resolve_colour( lst_params, params, data, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
+	    spatialwidget::colour::resolve_colour( lst_params, params, data, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
 		}
 
 
