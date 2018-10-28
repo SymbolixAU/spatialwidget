@@ -81,7 +81,8 @@ In R you create a list of paramters, for example specifying which
 columns of your data will be used the colours.
 
 If a parameter specifies a column of the data object, that column will
-be used and returned. If the parameter is a single value
+be used and returned. If the parameter is a single value, that value
+will be used for every row.
 
 **line\_example.R**
 
@@ -101,4 +102,38 @@ str(js_data)
 # List of 2
 # $ data  : 'geojson' chr "[{\"type\":\"Feature\",\"properties\":{\"stroke_colour\":\"#46317EFF\"},\"geometry\":{\"type\":\"LineString\",\"| __truncated__
 # $ legend: 'json' chr "{\"stroke_colour\":[false]}"
+```
+
+There is a working example in [mapdeck
+here](https://github.com/SymbolixAU/mapdeck/blob/geojson/src/path.cpp)
+
+``` cpp
+#include <Rcpp.h>
+
+#include "mapdeck_defaults.hpp"
+#include "layers/path.hpp"
+#include "spatialwidget/spatialwidget.hpp"
+
+Rcpp::List path_defaults(int n) {
+    return Rcpp::List::create(
+        _["polyline"] = mapdeck::defaults::default_polyline(n),
+        _["stroke_colour"] = mapdeck::defaults::default_stroke_colour(n),
+        _["stroke_width"] = mapdeck::defaults::default_stroke_width(n)
+    );
+}
+
+// [[Rcpp::export]]
+Rcpp::List rcpp_path_geojson( Rcpp::DataFrame data, Rcpp::List params ) {
+
+    int data_rows = data.nrows();
+    Rcpp::List lst_defaults = path_defaults( data_rows );  // initialise with defaults
+    std::map< std::string, std::string > path_colours = mapdeck::path::path_colours;
+    Rcpp::StringVector path_legend = mapdeck::path::path_legend;
+
+    return spatialwidget::api::create_geojson(
+        data, params, lst_defaults,
+        path_colours, path_legend,
+        data_rows
+    );
+}
 ```

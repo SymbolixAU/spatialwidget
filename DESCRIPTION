@@ -1,26 +1,27 @@
 Package: spatialwidget
 Type: Package
-Title: Converts Spatial Data Into GeoJSON for use in Htmlwidgets
+Title: Converts Spatial Data for use in Htmlwidgets
 Version: 0.1
 Date: 2018-10-18
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
-Description: todo
-License: What license is it under?
+Description: Many packages use 'htmlwidgets' for interactive plotting of spatial data.
+    This package provides functions for converting R objects, such as simple features, 
+    into structures suitable for use in 'htmlwidgets'. 
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    googlePolylines (>= 0.7.1004),
-    Rcpp,
     colourvalues (>= 0.2.0),
+    geojsonsf (>= 1.2.2),
     jsonify (>= 0.1.1),
-    geojsonsf (>= 1.2.2)
+    Rcpp
 LinkingTo: 
-    Rcpp,
+    BH,
     colourvalues,
+    geojsonsf,
     jsonify,
     rapidjsonr,
-    geojsonsf,
-    BH
+    Rcpp
 RoxygenNote: 6.1.0
