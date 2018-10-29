@@ -1,6 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![Travis build
+status](https://travis-ci.org/SymbolixAU/spatialwidget.svg?branch=master)](https://travis-ci.org/SymbolixAU/spatialwidget)
+[![Coverage
+status](https://codecov.io/gh/SymbolixAU/spatialwidget/branch/master/graph/badge.svg)](https://codecov.io/github/SymbolixAU/spatialwidget?branch=master)
+
 # spatialwidget
 
 works in two stages
@@ -19,8 +24,8 @@ You need to implement a `.cpp` file and a `.R` file.
 
 The `.cpp` file must include
 
-  - `std::map< std::string, std::string > colours` - a mapping between
-    colours and opacities
+  - `std::unordered_map< std::string, std::string > colours` - a mapping
+    between colours and opacities
   - `Rcpp::StringVector legend` - vector containing the possible legends
   - `Rcpp::List defaults` - A list of vectors, with at least one vector
     per colour option
@@ -37,7 +42,7 @@ arguments.
 #include "spatialwidget/spatialwidget.hpp"
 
 // map between colour and opacity values
-std::map< std::string, std::string > line_colours = {
+std::unordered_map< std::string, std::string > line_colours = {
   { "stroke_colour", "stroke_opacity" }
 };
 
@@ -109,7 +114,7 @@ l[["myPathGeometry"]] <- "geometry"       ## a geometry column
 js_data <- spatialwidget:::line_example_geojson( sf_line, l, c("myPathGeometry") )
 str(js_data)
 #  List of 2
-#   $ data  : 'json' chr "[{\"type\":\"Feature\",\"properties\":{\"stroke_colour\":\"#46317EFF\"},\"geometry\":{\"myPathGeometry\":{\"typ"| __truncated__
+#   $ data  : 'json' chr "[{\"type\":\"Feature\",\"properties\":{\"stroke_colour\":\"#46317EFF\",\"stroke_width\":1.0},\"geometry\":{\"my"| __truncated__
 #   $ legend: 'json' chr "{\"stroke_colour\":[false]}"
 ```
 
@@ -128,7 +133,7 @@ GeoJSON.
 
 js_data <- spatialwidget:::line_example_geojson( sf_line[1, ], l, c("myPathGeometry") )
 cat( js_data$data )
-#  [{"type":"Feature","properties":{"stroke_colour":"#440154FF"},"geometry":{"myPathGeometry":{"type":"LineString","coordinates":[[145.014291,-37.830458],[145.014345,-37.830574],[145.01449,-37.830703],[145.01599,-37.831484],[145.016479,-37.831699],[145.016813,-37.83175],[145.01712,-37.831742],[145.0175,-37.831667],[145.017843,-37.831559],[145.018349,-37.83138],[145.018603,-37.83133],[145.018901,-37.831301],[145.019136,-37.831301],[145.01943,-37.831333],[145.019733,-37.831377],[145.020195,-37.831462],[145.020546,-37.831544],[145.020641,-37.83159],[145.020748,-37.83159],[145.020993,-37.831664]]}}}]
+#  [{"type":"Feature","properties":{"stroke_colour":"#440154FF","stroke_width":1.0},"geometry":{"myPathGeometry":{"type":"LineString","coordinates":[[145.014291,-37.830458],[145.014345,-37.830574],[145.01449,-37.830703],[145.01599,-37.831484],[145.016479,-37.831699],[145.016813,-37.83175],[145.01712,-37.831742],[145.0175,-37.831667],[145.017843,-37.831559],[145.018349,-37.83138],[145.018603,-37.83133],[145.018901,-37.831301],[145.019136,-37.831301],[145.01943,-37.831333],[145.019733,-37.831377],[145.020195,-37.831462],[145.020546,-37.831544],[145.020641,-37.83159],[145.020748,-37.83159],[145.020993,-37.831664]]}}}]
 ```
 
 There is a working example in [mapdeck
@@ -154,7 +159,7 @@ Rcpp::List rcpp_path_geojson( Rcpp::DataFrame data, Rcpp::List params ) {
 
     int data_rows = data.nrows();
     Rcpp::List lst_defaults = path_defaults( data_rows );  // initialise with defaults
-    std::map< std::string, std::string > path_colours = mapdeck::path::path_colours;
+    std::unordered_map< std::string, std::string > path_colours = mapdeck::path::path_colours;
     Rcpp::StringVector path_legend = mapdeck::path::path_legend;
 
     return spatialwidget::api::create_geojson(

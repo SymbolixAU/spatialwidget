@@ -156,7 +156,7 @@ Rcpp::List create_data(
     Rcpp::DataFrame& data,
     Rcpp::List& params, Rcpp::List& lst_defaults,
     Rcpp::StringVector& layer_columns,
-    std::map< std::string, std::string >& layer_colours,
+    std::unordered_map< std::string, std::string >& layer_colours,
     Rcpp::StringVector& layer_legend,
     int& data_rows);
 

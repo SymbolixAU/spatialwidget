@@ -2,7 +2,7 @@
 #include "spatialwidget/spatialwidget.hpp"
 
 // map between colour and opacity values
-std::map< std::string, std::string > line_colours = {
+std::unordered_map< std::string, std::string > line_colours = {
   { "stroke_colour", "stroke_opacity" }
 };
 
@@ -29,7 +29,10 @@ Rcpp::List line_defaults( int n ) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List line_example_geojson( Rcpp::DataFrame data, Rcpp::List params, Rcpp::StringVector geometry_columns ) {
+Rcpp::List line_example_geojson(
+    Rcpp::DataFrame data,
+    Rcpp::List params,
+    Rcpp::StringVector geometry_columns ) {
 
   int data_rows = data.nrows();
   Rcpp::List defaults = line_defaults( data_rows );

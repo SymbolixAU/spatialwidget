@@ -10,7 +10,7 @@
 namespace spatialwidget {
 namespace parameters {
 
-  inline Rcpp::StringVector extract_map(std::map<std::string, std::string> const& input_map, int n) {
+  inline Rcpp::StringVector extract_map(std::unordered_map<std::string, std::string> const& input_map, int n) {
     Rcpp::StringVector vals( n );
     int i = 0;
     for (auto const& element : input_map) {
@@ -32,7 +32,7 @@ namespace parameters {
   		Rcpp::List& lst_defaults,
   		//Rcpp::StringVector& layer_columns,
   		//Rcpp::StringVector& colour_columns,
-  		std::map< std::string, std::string > colour_columns,
+  		std::unordered_map< std::string, std::string > colour_columns,
   		Rcpp::StringVector& legend_types,
   		int& data_rows) {
 
@@ -56,7 +56,7 @@ namespace parameters {
   	Rcpp::StringVector legend_names = lst_legend.names();
   	// Rcpp::Rcout << "legend_names: " <<  legend_names << std::endl;
 
-  	std::map< std::string, std::string>::iterator it;
+  	std::unordered_map< std::string, std::string>::iterator it;
 
 		bool include_legend;
 

@@ -5,3 +5,7 @@ line_example_geojson <- function(data, params, geometry_columns) {
     .Call(`_spatialwidget_line_example_geojson`, data, params, geometry_columns)
 }
 
+spatialwidget_geojson <- function(data, params, defaults, colours, legend, geometry) {
+    .Call(`_spatialwidget_spatialwidget_geojson`, data, params, defaults, colours, legend, geometry)
+}
+

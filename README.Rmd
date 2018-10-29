@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
+
+[![Travis build status](https://travis-ci.org/SymbolixAU/spatialwidget.svg?branch=master)](https://travis-ci.org/SymbolixAU/spatialwidget)
+[![Coverage status](https://codecov.io/gh/SymbolixAU/spatialwidget/branch/master/graph/badge.svg)](https://codecov.io/github/SymbolixAU/spatialwidget?branch=master)
+
 # spatialwidget
 
 works in two stages
@@ -31,7 +35,7 @@ You need to implement a `.cpp` file and a `.R` file.
 
 The `.cpp` file must include
 
-- `std::map< std::string, std::string > colours` - a mapping between colours and opacities
+- `std::unordered_map< std::string, std::string > colours` - a mapping between colours and opacities
 - `Rcpp::StringVector legend` - vector containing the possible legends
 - `Rcpp::List defaults` - A list of vectors, with at least one vector per colour option
 
@@ -46,7 +50,7 @@ You then call `spatialwidget::api::create_geojson()` with these arguments.
 #include "spatialwidget/spatialwidget.hpp"
 
 // map between colour and opacity values
-std::map< std::string, std::string > line_colours = {
+std::unordered_map< std::string, std::string > line_colours = {
   { "stroke_colour", "stroke_opacity" }
 };
 
@@ -153,7 +157,7 @@ Rcpp::List rcpp_path_geojson( Rcpp::DataFrame data, Rcpp::List params ) {
 
 	int data_rows = data.nrows();
 	Rcpp::List lst_defaults = path_defaults( data_rows );  // initialise with defaults
-	std::map< std::string, std::string > path_colours = mapdeck::path::path_colours;
+	std::unordered_map< std::string, std::string > path_colours = mapdeck::path::path_colours;
 	Rcpp::StringVector path_legend = mapdeck::path::path_legend;
 
 	return spatialwidget::api::create_geojson(
