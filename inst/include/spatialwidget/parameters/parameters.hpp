@@ -39,6 +39,8 @@ namespace parameters {
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
 
+  	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
+
   	Rcpp::List lst_params = spatialwidget::utils::construct_params( data, params);
 
   	spatialwidget::palette::resolve_palette( lst_params, params );
@@ -111,6 +113,9 @@ namespace parameters {
 
   	// Rcpp::Rcout << "constructing data " << std::endl;
 
+  	// data_names = data.names();
+  	// Rcpp::Rcout << "data_names2: " << data_names << std::endl;
+
   	Rcpp::DataFrame df = spatialwidget::construction::construct_data(
   		param_names,
   		//layer_columns,
@@ -122,6 +127,8 @@ namespace parameters {
   	);
 
   	// Rcpp::Rcout << "data has been constructed" << std::endl;
+  	// data_names = df.names();
+  	// Rcpp::Rcout << "df_names: " << data_names << std::endl;
 
   	Rcpp::List result = Rcpp::List::create(
   		Rcpp::_["data"] = df,

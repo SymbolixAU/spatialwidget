@@ -73,27 +73,41 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
   /*
   * a variation on the atomise function to return an array of atomised features
   */
-  inline Rcpp::StringVector to_geojson_atomise( Rcpp::DataFrame& sf ) {
+  inline Rcpp::StringVector to_geojson_atomise( Rcpp::DataFrame& sf, Rcpp::StringVector geometries ) {
 
     // Rcpp::Rcout << "to_geojson_atomise() " << std::endl;
-    std::string geom_column = sf.attr("sf_column");
+    // TODO( receive the geometry columns as a StringVector, then iterate over those,
+    //       creating an Array of GeoJSONs )
+
+    int n_geometries = geometries.size();
+    int geom;
+
+    //std::string geom_column = sf.attr("sf_column");
     // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
 
     size_t n_cols = sf.ncol();
-    size_t n_properties = n_cols - 1;
+    size_t n_properties = n_cols - n_geometries;
     size_t n_rows = sf.nrows();
     size_t i, j;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names( n_properties );
 
+    // Rcpp::Rcout << "n_cols: " << n_cols << std::endl;
     // Rcpp::Rcout << "n_properties: " << n_properties << std::endl;
+    // Rcpp::Rcout << "n_geometries: " << n_geometries << std::endl;
     // Rcpp::Rcout << "column_names: " << column_names << std::endl;
+    // Rcpp::Rcout << "property names: " << property_names << std::endl;
 
     int property_counter = 0;
     // Rcpp::Rcout << "sf.length: " << sf.length() << std::endl;
 
     for (int i = 0; i < sf.length(); i++) {
-      if (column_names[i] != geom_column) {
+      const char* this_column = column_names[i];
+      int idx = spatialwidget::utils::find_character_index_in_vector( geometries, this_column );
+      // Rcpp::Rcout << "this_column: " << this_column << std::endl;
+
+      //if (column_names[i] != geom_column) {
+      if ( idx == -1 ) {  // i.e., it's not in the vector of geometries
         // Rcpp::Rcout << "property counter: " << property_counter << std::endl;
         property_names[property_counter] = column_names[i];
         property_counter++;
@@ -133,8 +147,21 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
         writer.String("geometry");
       }
 
-      Rcpp::List sfc = sf[ geom_column ];
-      write_geometry( writer, sfc, i );
+      //writer.StartArray();
+      writer.StartObject();
+      for ( geom = 0; geom < n_geometries; geom++ ) {
+        const char* geom_column = geometries[ geom ];
+        // writer.StartObject();
+        writer.String( geom_column );
+        Rcpp::List sfc = sf[ geom_column ];
+        write_geometry( writer, sfc, i );
+        // writer.EndObject();
+      }
+      writer.EndObject();
+      //writer.EndArray();
+
+      // Rcpp::List sfc = sf[ geom_column ];
+      // write_geometry( writer, sfc, i );
 
       if( n_properties > 0 ) {
         writer.EndObject();
@@ -143,7 +170,7 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
     writer.EndArray();
 
     Rcpp::StringVector geojson = sb.GetString();
-    geojson.attr("class") = Rcpp::CharacterVector::create("geojson","json");
+    geojson.attr("class") = Rcpp::CharacterVector::create("json");
     return geojson;
   }
 
@@ -204,7 +231,7 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
     writer.EndObject();
 
     Rcpp::StringVector geojson = sb.GetString();
-    geojson.attr("class") = Rcpp::CharacterVector::create("geojson","json");
+    geojson.attr("class") = Rcpp::CharacterVector::create("json");
     return geojson;
   }
 
@@ -274,7 +301,7 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
     writer.EndArray();
 
     Rcpp::StringVector geojson = sb.GetString();
-    geojson.attr("class") = Rcpp::CharacterVector::create("geojson","json");
+    geojson.attr("class") = Rcpp::CharacterVector::create("json");
     return geojson;
   }
 

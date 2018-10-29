@@ -17,13 +17,13 @@ knitr::opts_chunk$set(
 works in two stages
 
 - sorts out the legend
-- converts remaining data and parameters into GeoJSON
+- converts remaining data and parameters into pseudo-GeoJSON
 
 
 
 # SF objects
 
-An `sf` object is retured as a JSON array of GeoJSON features, one array element for each row of the `sf`
+An `sf` object is retured as a JSON array of pseudo-GeoJSON features, one array element for each row of the `sf`
 
 ## How do I use it in my package?
 
@@ -91,26 +91,45 @@ In R you create a list of paramters, for example specifying which columns of you
 
 If a parameter specifies a column of the data object, that column will be used and returned. If the parameter is a single value, that value will be used for every row. 
 
+You also need to specify the 'geometry' columns of the `sf` object you want to include. 
+
+
+
 **line_example.R**
 
-```r
+```{r}
 
-library(sf)      ## for printing sf options
+library(sf)
 library(mapdeck) ## for roads data
+
 sf_line <- mapdeck::roads
 
 l <- list()
 l[["stroke_colour"]] <- "RIGHT_LOC"
-l[["geometry"]] <- "geometry"       ## the geometry column
 
-js_data <- spatialwidget:::line_example_geojson( sf_line, l )
+
+## the list of parameters should include the geometry columns,
+l[["myPathGeometry"]] <- "geometry"       ## a geometry column
+
+## and you need topass in those parameter names which inlcude the geometry columns
+
+js_data <- spatialwidget:::line_example_geojson( sf_line, l, c("myPathGeometry") )
 str(js_data)
 
-# List of 2
-# $ data  : 'geojson' chr "[{\"type\":\"Feature\",\"properties\":{\"stroke_colour\":\"#46317EFF\"},\"geometry\":{\"type\":\"LineString\",\"| __truncated__
-# $ legend: 'json' chr "{\"stroke_colour\":[false]}"
-
 ```
+
+### What do you mean by 'pseudo-GeoJSON'?
+
+Because you can supply multiple geometry columns, all of them need to be converted into GeoJSON. But, each of these GeoJSONs will have the same properties (because they come from the same row of an `sf` object). So rather than duplicating the properties for each geometry, I've decided to include each geometry inside the `geometry : {}` object. 
+
+Therefore this invalidates the GeoJSON standard, so it's technically not GeoJSON.
+
+```{r}
+
+js_data <- spatialwidget:::line_example_geojson( sf_line[1, ], l, c("myPathGeometry") )
+cat( js_data$data )
+```
+
 
 There is a working example in [mapdeck here](https://github.com/SymbolixAU/mapdeck/blob/geojson/src/path.cpp)
 

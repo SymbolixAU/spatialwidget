@@ -78,6 +78,8 @@ namespace construction {
   	// Rcpp::Rcout << "constructing df: " << std::endl;
   	spatialwidget::utils::construct_df( lst_defaults, data_rows );
   	// Rcpp::Rcout << "constructed" << std::endl;
+  	// Rcpp::StringVector default_names = lst_defaults.names();
+  	// Rcpp::Rcout << "default_names: " << default_names << std::endl;
   	return lst_defaults;
   }
 

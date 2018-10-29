@@ -31,10 +31,16 @@ namespace api {
       //Rcpp::StringVector& layer_columns,
       std::map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows
+      int& data_rows,
+      Rcpp::StringVector geometry_columns
   ) {
 
-    std::string geom_column = data.attr("sf_column");
+    // Rcpp::StringVector data_names = data.names();
+    // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
+
+    // TODO receive the geometry columns from user input
+
+    //std::string geom_column = data.attr("sf_column");
     // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
     // Rcpp::Rcout << "create_geojson" << std::endl;
 
@@ -47,14 +53,18 @@ namespace api {
 
     // Rcpp::Rcout << "getting data from list " << std::endl;
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // Rcpp::StringVector nmes = df.names();
+    // Rcpp::Rcout << "nmes2: " << nmes << std::endl;
+
     SEXP legend = lst[ "legend" ];
     Rcpp::StringVector js_legend = jsonify::vectors::to_json( legend );
 
-    df.attr("sf_column") = geom_column;
+    // df.attr("sf_column") = geom_column;
 
     // Rcpp::Rcout << "js_data-ing" << std::endl;
 
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
     //Rcpp::Rcout << "js_data: " << js_data << std::endl;
 
     return Rcpp::List::create(
