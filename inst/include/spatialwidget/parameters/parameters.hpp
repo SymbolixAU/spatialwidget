@@ -112,7 +112,7 @@ namespace parameters {
 //
   	lst_params = spatialwidget::utils::construct_params( data, params );
 
-  	Rcpp::Rcout << "constructing data " << std::endl;
+  	// Rcpp::Rcout << "constructing data " << std::endl;
 
   	// data_names = data.names();
   	// Rcpp::Rcout << "data_names2: " << data_names << std::endl;

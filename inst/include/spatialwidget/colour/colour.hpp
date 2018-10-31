@@ -27,11 +27,11 @@ namespace colour {
     SEXP pal = spatialwidget::palette::resolve_palette( lst_params, params );
 
     // TODO( can I get the legend data type from here? - if so, we can specify a 'foramt_type" for the legend formatting)
-    Rcpp::Rcout << "palette type: " << TYPEOF( palette_type ) << std::endl;
-    Rcpp::StringVector data_type_names = data_types.names();
-    Rcpp::Rcout << "data_types: " << data_type_names << std::endl;
-    Rcpp::StringVector data_names = data.names();
-    Rcpp::Rcout << "colour_name: " << colour_name << std::endl;
+    // Rcpp::Rcout << "palette type: " << TYPEOF( palette_type ) << std::endl;
+    // Rcpp::StringVector data_type_names = data_types.names();
+    // Rcpp::Rcout << "data_types: " << data_type_names << std::endl;
+    // Rcpp::StringVector data_names = data.names();
+    // Rcpp::Rcout << "colour_name: " << colour_name << std::endl;
 
     // Rcpp::Rcout << "data_column_index: " << data_column_index << std::endl;
     // Rcpp::StringVector this_name = data_names[ data_column_index ];
@@ -42,7 +42,7 @@ namespace colour {
     SEXP r_type = data_types[ this_c_name ];
 
     Rcpp::StringVector sv_r_type = Rcpp::as< Rcpp::StringVector >( r_type );
-    Rcpp::Rcout << "r_type: " << sv_r_type << std::endl;
+    // Rcpp::Rcout << "r_type: " << sv_r_type << std::endl;
     Rcpp::String rs_format_type = sv_r_type[0];
     std::string format_type = rs_format_type;
 

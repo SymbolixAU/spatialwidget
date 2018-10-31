@@ -70,12 +70,12 @@ namespace palette {
 			std::string format_type = "numeric") {
 
 		//int n_summaries = 5;
-		int x = fill_colour_vec.size();
-		int n_summaries = x < 5 ? x : 5;
+	  // TODO( supply 'format' arguments to colour_value_hex)
+	  // need the R obj type
+		//int x = fill_colour_vec.size();
+		int n_summaries = 5;
 	  bool format = true;
 	  int digits = 2;
-	  // TODO( supply 'format' argument to colour_value_hex)
-	  // need the R obj type
 
 		switch ( TYPEOF( palette ) ) {
 		case 1: { // SYMSXP
@@ -83,16 +83,16 @@ namespace palette {
 		break;
 	}
 		case 14: { // REALSXP (i.e, matrix)
-			Rcpp::Rcout << "caes 14" << std::endl;
+			// Rcpp::Rcout << "caes 14" << std::endl;
 			Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
 			return colourvalues::colours_hex::colour_value_hex( fill_colour_vec, thispal, na_colour, include_alpha, n_summaries, format, format_type, digits );
-			Rcpp::Rcout << "caes 14 done " << std::endl;
+			// Rcpp::Rcout << "caes 14 done " << std::endl;
 			break;
 		}
 		case 16: {
-		  Rcpp::Rcout << "caes 16" << std::endl;
+		  // Rcpp::Rcout << "caes 16" << std::endl;
 			std::string thispal = Rcpp::as< std::string>( palette );
-			Rcpp::Rcout << "thispal: " << thispal.c_str() << std::endl;
+			// Rcpp::Rcout << "thispal: " << thispal.c_str() << std::endl;
 			return colourvalues::colours_hex::colour_value_hex( fill_colour_vec, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, digits );
 			break;
 		}

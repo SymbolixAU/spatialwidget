@@ -43,7 +43,8 @@ Rcpp::List line_example_geojson(
     data_types,
     params,
     defaults,
-    line_colours, line_legend,
+    line_colours,
+    line_legend,
     data_rows,
     geometry_columns
   );

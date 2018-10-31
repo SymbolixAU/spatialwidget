@@ -26,7 +26,7 @@ namespace api {
    */
   inline Rcpp::List create_geojson(
       Rcpp::DataFrame& data,
-      Rcpp::List data_types, // named list, names == data.names(), values == data.class[[1]] ?
+      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       //Rcpp::StringVector& layer_columns,
