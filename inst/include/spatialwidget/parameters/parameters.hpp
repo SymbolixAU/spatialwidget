@@ -28,6 +28,7 @@ namespace parameters {
    */
   inline Rcpp::List parameters_to_data(
   		Rcpp::DataFrame& data,                // user-supplied data
+  		Rcpp::List& data_types,               // column data types of 'data'
   		Rcpp::List& params,                   // list of parameters from calling function
   		Rcpp::List& lst_defaults,
   		//Rcpp::StringVector& layer_columns,
@@ -67,7 +68,7 @@ namespace parameters {
 		  colour_column = it->first;
 		  opacity_column = it->second;
 		  include_legend = spatialwidget::utils::find_character_index_in_vector(legend_names, colour_column.c_str()) >= 0 ? true : false;
-	    spatialwidget::colour::resolve_colour( lst_params, params, data, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
+	    spatialwidget::colour::resolve_colour( lst_params, params, data, data_types, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
 		}
 
 
@@ -108,10 +109,10 @@ namespace parameters {
 
   	spatialwidget::utils::remove_parameters( params, param_names, colours_remove );
   	spatialwidget::utils::remove_parameters( params, param_names, legend_types );
-
+//
   	lst_params = spatialwidget::utils::construct_params( data, params );
 
-  	// Rcpp::Rcout << "constructing data " << std::endl;
+  	Rcpp::Rcout << "constructing data " << std::endl;
 
   	// data_names = data.names();
   	// Rcpp::Rcout << "data_names2: " << data_names << std::endl;

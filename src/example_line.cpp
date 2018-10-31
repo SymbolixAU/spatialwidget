@@ -31,6 +31,7 @@ Rcpp::List line_defaults( int n ) {
 // [[Rcpp::export]]
 Rcpp::List line_example_geojson(
     Rcpp::DataFrame data,
+    Rcpp::List data_types,
     Rcpp::List params,
     Rcpp::StringVector geometry_columns ) {
 
@@ -38,7 +39,9 @@ Rcpp::List line_example_geojson(
   Rcpp::List defaults = line_defaults( data_rows );
 
   return spatialwidget::api::create_geojson(
-    data, params,
+    data,
+    data_types,
+    params,
     defaults,
     line_colours, line_legend,
     data_rows,

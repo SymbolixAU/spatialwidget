@@ -26,6 +26,7 @@ namespace api {
    */
   inline Rcpp::List create_geojson(
       Rcpp::DataFrame& data,
+      Rcpp::List data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       //Rcpp::StringVector& layer_columns,
@@ -46,7 +47,9 @@ namespace api {
 
     // Rcpp::Rcout << "parameters to data " << std::endl;
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-      data, params, lst_defaults,
+      data,
+      data_types,
+      params, lst_defaults,
       // layer_columns,
       layer_colours, layer_legend, data_rows
     );
@@ -78,6 +81,7 @@ namespace api {
    */
   inline Rcpp::List create_geojson(
       Rcpp::DataFrame& data,
+      Rcpp::List& data_types,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       //Rcpp::StringVector& layer_columns,
@@ -89,7 +93,8 @@ namespace api {
   ) {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-      data, params, lst_defaults,
+      data, data_types,
+      params, lst_defaults,
       //layer_columns,
       layer_colours, layer_legend, data_rows
     );
@@ -111,6 +116,7 @@ namespace api {
    */
   inline Rcpp::List create_polyline(
       Rcpp::DataFrame& data,
+      Rcpp::List& data_types,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       //Rcpp::StringVector& layer_columns,
@@ -120,7 +126,9 @@ namespace api {
   ) {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-      data, params, lst_defaults,
+      data,
+      data_types,
+      params, lst_defaults,
       //layer_columns,
       layer_colours, layer_legend, data_rows
     );

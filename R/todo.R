@@ -4,22 +4,29 @@
 
 # sf inputs, geojson outputs
 
-# library(sf)
-# library(mapdeck) ## for roads data
-#
-# sf_line <- mapdeck::roads
-#
-# l <- list()
-# l[["stroke_colour"]] <- "RIGHT_LOC"
-#
-#
-# ## the list of parameters should include the geometry columns,
-# l[["myPathGeometry"]] <- "geometry"       ## a geometry column
-#
-# ## and you need topass in those parameter names which inlcude the geometry columns
-#
-# js_data <- spatialwidget:::line_example_geojson( sf_line[1, ], l, c("myPathGeometry") )
-# str(js_data)
+library(sf)
+library(mapdeck) ## for roads data
+
+sf_line <- mapdeck::roads
+sf_line$dte <- as.Date("2018-01-01")
+sf_line$psx <- as.POSIXct("2018-01-01 00:00:00")
+
+l <- list()
+l[["stroke_colour"]] <- "psx"
+
+
+## the list of parameters should include the geometry columns,
+l[["myPathGeometry"]] <- "geometry"       ## a geometry column
+l[["legend"]] <- TRUE
+## and you need topass in those parameter names which inlcude the geometry columns
+
+data_types <- vapply( sf_line, function(x) class(x)[[1]], "")
+
+js_data <- spatialwidget:::line_example_geojson( sf_line[1, ], data_types, l, c("myPathGeometry") )
+str(js_data)
+
+## need to grab the R data type(s) used for colouring, so we can then specify the 'format' argument.
+## so, in R, use vapply(data, class, "")
 
 # if you have multiple geometry columns, you need to pass in all of them (for example, if plotting a 'from' & 'to' arc)
 #
