@@ -42,7 +42,7 @@ namespace parameters {
 
   	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
 
-  	Rcpp::List lst_params = spatialwidget::utils::construct_params( data, params);
+  	Rcpp::List lst_params = spatialwidget::utils::construct_params( data, params );
 
   	spatialwidget::palette::resolve_palette( lst_params, params );
 

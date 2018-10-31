@@ -49,9 +49,12 @@ namespace api {
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       data_types,
-      params, lst_defaults,
+      params,
+      lst_defaults,
       // layer_columns,
-      layer_colours, layer_legend, data_rows
+      layer_colours,
+      layer_legend,
+      data_rows
     );
 
     // Rcpp::Rcout << "getting data from list " << std::endl;
@@ -65,7 +68,7 @@ namespace api {
 
     // df.attr("sf_column") = geom_column;
 
-    // Rcpp::Rcout << "js_data-ing" << std::endl;
+    //Rcpp::Rcout << "js_data-ing" << std::endl;
 
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
     //Rcpp::Rcout << "js_data: " << js_data << std::endl;

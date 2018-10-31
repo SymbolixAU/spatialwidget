@@ -37,7 +37,8 @@ Rcpp::List spatialwidget_geojson(
     data_types,
     params,
     defaults,
-    layer_colours, legend,
+    layer_colours,
+    legend,
     data_rows,
     geometry
   );

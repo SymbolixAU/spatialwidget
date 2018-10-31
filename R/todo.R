@@ -16,13 +16,13 @@
 #
 #
 # ## the list of parameters should include the geometry columns,
-# l[["myPathGeometry"]] <- "geometry"       ## a geometry column
+# l[["thisWillBeTheJSON"]] <- "geometry"       ## a geometry column
 # l[["legend"]] <- TRUE
 # ## and you need topass in those parameter names which inlcude the geometry columns
 #
 # data_types <- vapply( sf_line, function(x) class(x)[[1]], "")
 #
-# js_data <- spatialwidget:::line_example_geojson( sf_line[1:10, ], data_types, l, c("myPathGeometry") )
+# js_data <- spatialwidget:::line_example_geojson( sf_line[1, ], data_types, l, c("thisWillBeTheJSON") )
 # str(js_data)
 
 ## need to grab the R data type(s) used for colouring, so we can then specify the 'format' argument.
