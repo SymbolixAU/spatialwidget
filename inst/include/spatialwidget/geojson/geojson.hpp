@@ -96,7 +96,6 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
     // Rcpp::Rcout << "n_properties: " << n_properties << std::endl;
     // Rcpp::Rcout << "n_geometries: " << n_geometries << std::endl;
     // Rcpp::Rcout << "column_names: " << column_names << std::endl;
-    // Rcpp::Rcout << "property names: " << property_names << std::endl;
 
     int property_counter = 0;
     // Rcpp::Rcout << "sf.length: " << sf.length() << std::endl;
@@ -105,15 +104,18 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
       const char* this_column = column_names[i];
       int idx = spatialwidget::utils::find_character_index_in_vector( geometries, this_column );
       // Rcpp::Rcout << "this_column: " << this_column << std::endl;
+      // Rcpp::Rcout << "idx: " << idx << std::endl;
 
       //if (column_names[i] != geom_column) {
       if ( idx == -1 ) {  // i.e., it's not in the vector of geometries
         // Rcpp::Rcout << "property counter: " << property_counter << std::endl;
-        property_names[property_counter] = column_names[i];
+        property_names[ property_counter ] = column_names[i];
         property_counter++;
         // Rcpp::Rcout << "property counter: " << property_counter << std::endl;
       }
     }
+
+    // Rcpp::Rcout << "property names: " << property_names << std::endl;
 
     // Rcpp::Rcout << "starting sb " << std::endl;
     rapidjson::StringBuffer sb;

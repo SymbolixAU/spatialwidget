@@ -13,6 +13,7 @@ namespace colour {
       Rcpp::List& lst_params,
       Rcpp::List& params,
       Rcpp::DataFrame& data,
+      Rcpp::List& data_types,
       Rcpp::List& lst_defaults,
       Rcpp::IntegerVector& data_column_index,
       SEXP& palette_type,                // string or matrix
@@ -24,6 +25,26 @@ namespace colour {
     bool include_alpha = true;            // always true - deck.gl supports alpha
 
     SEXP pal = spatialwidget::palette::resolve_palette( lst_params, params );
+
+    // TODO( can I get the legend data type from here? - if so, we can specify a 'foramt_type" for the legend formatting)
+    // Rcpp::Rcout << "palette type: " << TYPEOF( palette_type ) << std::endl;
+    // Rcpp::StringVector data_type_names = data_types.names();
+    // Rcpp::Rcout << "data_types: " << data_type_names << std::endl;
+    // Rcpp::StringVector data_names = data.names();
+    // Rcpp::Rcout << "colour_name: " << colour_name << std::endl;
+
+    // Rcpp::Rcout << "data_column_index: " << data_column_index << std::endl;
+    // Rcpp::StringVector this_name = data_names[ data_column_index ];
+
+    Rcpp::String this_c_name = params[ colour_name ];
+
+    // Rcpp::String this_c_name = this_name[0];
+    SEXP r_type = data_types[ this_c_name ];
+
+    Rcpp::StringVector sv_r_type = Rcpp::as< Rcpp::StringVector >( r_type );
+    // Rcpp::Rcout << "r_type: " << sv_r_type << std::endl;
+    Rcpp::String rs_format_type = sv_r_type[0];
+    std::string format_type = rs_format_type;
 
     switch ( TYPEOF( palette_type ) ) {
     case 16: {
@@ -39,11 +60,14 @@ namespace colour {
     default: {
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
       // Rcpp::Rcout << "colour_vec: " << colour_vec << std::endl;
-      Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha );
-      // Rcpp::StringVector colours = legend["colours"];
-      // Rcpp::Rcout << "colours: " << colours << std::endl;
-      // Rcpp::NumericVector summary = legend["summary_values"];
+      Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, format_type );
+      //Rcpp::StringVector colours = legend["colours"];
+      //Rcpp::Rcout << "colours: " << colours << std::endl;
+
+      // TODO( the summary values will be dependant on the type of formatting! )
+      // Rcpp::StringVector summary = legend["summary_values"];
       // Rcpp::Rcout << "summary" << summary << std::endl;
+
       if ( include_legend ) {
         legend[ "colour_type" ] = colour_name;
         legend[ "type" ] = "gradient";
@@ -58,6 +82,7 @@ namespace colour {
       Rcpp::List& lst_params,
       Rcpp::List& params,
       Rcpp::DataFrame& data,
+      Rcpp::List& data_types,      // the R data types (class) of `data`
       Rcpp::List& lst_defaults,
       const char* colour_name,
       const char* opacity_name,
@@ -103,7 +128,7 @@ namespace colour {
     }
 
     Rcpp::List legend = make_colours(
-      lst_params, params, data, lst_defaults, data_column_index, //hex_strings,
+      lst_params, params, data, data_types, lst_defaults, data_column_index, //hex_strings,
       this_colour, alpha, colour_name, include_legend
     );
 

@@ -5,6 +5,7 @@
 // [[Rcpp::export]]
 Rcpp::List spatialwidget_geojson(
     Rcpp::DataFrame data,
+    Rcpp::List data_types,
     Rcpp::List params,
     Rcpp::List defaults,
     Rcpp::StringMatrix colours,
@@ -14,6 +15,8 @@ Rcpp::List spatialwidget_geojson(
   if ( colours.ncol() != 2 ) {
     Rcpp::stop("incorrect colour dimensions");
   }
+
+  int x; // force recompile
 
   int r = colours.nrow();
   int i;
@@ -32,9 +35,12 @@ Rcpp::List spatialwidget_geojson(
   }
 
   return spatialwidget::api::create_geojson(
-    data, params,
+    data,
+    data_types,
+    params,
     defaults,
-    layer_colours, legend,
+    layer_colours,
+    legend,
     data_rows,
     geometry
   );
