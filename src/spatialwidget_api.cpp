@@ -16,6 +16,8 @@ Rcpp::List spatialwidget_geojson(
     Rcpp::stop("incorrect colour dimensions");
   }
 
+  int x; // force recompile
+
   int r = colours.nrow();
   int i;
   int data_rows = data.nrows();
