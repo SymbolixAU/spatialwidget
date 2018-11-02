@@ -103,6 +103,7 @@ inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
     for (int i = 0; i < sf.length(); i++) {
       const char* this_column = column_names[i];
       int idx = spatialwidget::utils::find_character_index_in_vector( geometries, this_column );
+
       // Rcpp::Rcout << "this_column: " << this_column << std::endl;
       // Rcpp::Rcout << "idx: " << idx << std::endl;
 

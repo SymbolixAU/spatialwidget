@@ -36,15 +36,16 @@ namespace colour {
     // Rcpp::Rcout << "data_column_index: " << data_column_index << std::endl;
     // Rcpp::StringVector this_name = data_names[ data_column_index ];
 
-    Rcpp::String this_c_name = params[ colour_name ];
+    Rcpp::String this_colour = params[ colour_name ];
 
     // Rcpp::String this_c_name = this_name[0];
-    SEXP r_type = data_types[ this_c_name ];
+    Rcpp::StringVector sv_r_type = data_types[ this_colour ];
 
-    Rcpp::StringVector sv_r_type = Rcpp::as< Rcpp::StringVector >( r_type );
+    //Rcpp::StringVector sv_r_type = Rcpp::as< Rcpp::StringVector >( r_type );
     // Rcpp::Rcout << "r_type: " << sv_r_type << std::endl;
     Rcpp::String rs_format_type = sv_r_type[0];
     std::string format_type = rs_format_type;
+    // TODO( if the format-type is unsupported )
 
     switch ( TYPEOF( palette_type ) ) {
     case 16: {

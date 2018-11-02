@@ -9,3 +9,11 @@ spatialwidget_geojson <- function(data, data_types, params, defaults, colours, l
     .Call(`_spatialwidget_spatialwidget_geojson`, data, data_types, params, defaults, colours, legend, geometry)
 }
 
+rcpp_fill_single_vector <- function(lst_defaults, param_name, value, n_rows) {
+    .Call(`_spatialwidget_rcpp_fill_single_vector`, lst_defaults, param_name, value, n_rows)
+}
+
+rcpp_find_character_index_in_vector <- function(sv, to_find) {
+    .Call(`_spatialwidget_rcpp_find_character_index_in_vector`, sv, to_find)
+}
+

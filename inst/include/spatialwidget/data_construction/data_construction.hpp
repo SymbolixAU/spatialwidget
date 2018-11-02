@@ -54,7 +54,8 @@ namespace construction {
   				// Rcpp::Rcout << "param value: " << param_value << std::endl;
 
   				// returns -1 if length != 1
-  				colIndex = spatialwidget::utils::data_column_index( param_value, data_names );
+  				// colIndex = spatialwidget::utils::data_column_index( param_value, data_names );
+  				colIndex = spatialwidget::utils::find_character_index_in_vector( param_value, data_names );
   				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
 
   				if ( colIndex >= 0 ) {
@@ -71,7 +72,7 @@ namespace construction {
   			} else {
   				// paramter is not a string, so it can't be a column name
   				SEXP value = params[i];
-  				spatialwidget::utils::fill_single_vector( lst_defaults, this_param, value, data_rows );
+  			  spatialwidget::utils::fill_single_vector( lst_defaults, this_param, value, data_rows );
   			}
   		} // TODO( is there an 'else' condition? )
 
