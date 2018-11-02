@@ -10,21 +10,7 @@ namespace utils {
    * find_parameter_index_in_vector
    * Finds the location (index) of a string in the list of parameters (as given by the R function call)
    */
-  // inline int find_character_index_in_vector( Rcpp::StringVector& sv, const char* to_find ) {
-  // 	//Rcpp::StringVector parameter_names = lst_params[ "parameter" ];
-  // 	int pos = std::distance(
-  // 		sv.begin(),
-  // 		std::find( sv.begin(), sv.end(), to_find )
-  // 	);
-  // 	if ( pos >= sv.size() ) {
-  // 		return -1;
-  // 	}
-  // 	//Rcpp::Rcout << "pos: " << pos << std::endl;
-  // 	return pos;
-  // }
-
   inline int find_character_index_in_vector( Rcpp::StringVector& sv, const char* to_find ) {
-    //Rcpp::StringVector parameter_names = lst_params[ "parameter" ];
     int n = sv.size();
     int i;
     for( i = 0; i < n; i++ ) {
@@ -35,33 +21,13 @@ namespace utils {
     return -1;
   }
 
-
-	/*
-	 * indexColumnName
-	 * Finds the index of the names of the input data which match the function argument values
-	 */
-	//inline int data_column_index(Rcpp::StringVector& param_value, Rcpp::StringVector& data_names) {
 	inline int find_character_index_in_vector(Rcpp::StringVector& param_value, Rcpp::StringVector& data_names) {
 
 	  if ( param_value.length() != 1 ) {
 	    return -1;
 	  }
-
 	  const char* to_find = param_value[0];
 	  return find_character_index_in_vector( data_names, to_find );
-	// 	int n = data_names.size();
-	//   int i;
-	// 	for (i = 0; i < n; i++ ) {
-	//
-	// 		if ( param_value.length() != 1 ) {
-	// 			return -1;
-	// 		}
-	//
-	// 		if (param_value[0] == data_names[i] ) {
-	// 			return i;
-	// 		}
-	// 	}
-	// 	return -1;
 	}
 
   inline void construct_df(Rcpp::List& df, int& nrows) {

@@ -25,6 +25,25 @@ test_that("data_column_index returns correct column index", {
 })
 
 
+library(microbenchmark)
+txt <- function(n = 5000) {
+  a <- do.call(paste0, replicate(5, sample(LETTERS, n, TRUE), FALSE))
+  paste0(a, sprintf("%04d", sample(9999, n, TRUE)), sample(LETTERS, n, TRUE))
+}
+sv <- txt(1e6)
+this <- sv[1e6]
+
+microbenchmark(
+  fciiv = {
+    spatialwidget:::rcpp_find_character_index_in_vector(sv, this)
+  },
+  base = {
+    which(this == sv)
+  },
+  times = 5
+)
+
+
 # library(microbenchmark)
 #
 # txt <- function(n = 5000) {
