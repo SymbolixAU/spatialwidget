@@ -10,6 +10,8 @@
 namespace spatialwidget {
 namespace colour {
 
+  const std::string default_na_colour = "#808080FF";
+
   inline Rcpp::List make_colours(
       Rcpp::List& lst_params,
       Rcpp::List& params,
@@ -22,7 +24,10 @@ namespace colour {
       const char* colour_name,
       bool include_legend) {
 
-    std::string na_colour = params.containsElementNamed("na_colour") ? params["na_colour" ] : spatialwidget::palette::default_na_colour;
+    std::string na_colour = params.containsElementNamed("na_colour") ?
+    params["na_colour" ] :
+    default_na_colour;
+
     bool include_alpha = true;            // always true - deck.gl supports alpha
 
     SEXP pal = spatialwidget::palette::resolve_palette( lst_params, params );

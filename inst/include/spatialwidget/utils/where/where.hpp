@@ -12,9 +12,8 @@ namespace where {
    * Finds the location (index) of a string in the list of parameters (as given by the R function call)
    */
   inline int where_is(
-      const char* to_find,
+      Rcpp::String to_find,
       Rcpp::StringVector& sv ) {
-
     int n = sv.size();
     int i;
     for( i = 0; i < n; i++ ) {
@@ -33,7 +32,7 @@ namespace where {
     int i;
     Rcpp::IntegerVector res( n );
     for ( i = 0; i < n; i++ ) {
-      const char* to_find = param_value[i];
+      Rcpp::String to_find = param_value[i];
       res[i] = where_is( to_find, data_names );
     }
     return res;

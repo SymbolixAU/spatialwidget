@@ -5,6 +5,10 @@ line_example_geojson <- function(data, data_types, params, geometry_columns) {
     .Call(`_spatialwidget_line_example_geojson`, data, data_types, params, geometry_columns)
 }
 
+rcpp_resolve_palette <- function(lst_params, params) {
+    .Call(`_spatialwidget_rcpp_resolve_palette`, lst_params, params)
+}
+
 spatialwidget_geojson <- function(data, data_types, params, defaults, colours, legend, geometry) {
     .Call(`_spatialwidget_spatialwidget_geojson`, data, data_types, params, defaults, colours, legend, geometry)
 }

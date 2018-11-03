@@ -1,4 +1,4 @@
-context("utils")
+context("utils.hpp")
 
 test_that("fill_vector returns new list element", {
   lst <- list()
@@ -20,7 +20,6 @@ test_that("where_is returns correct index", {
 })
 
 test_that("list elements are removed", {
-
   lst <- list(let = letters, vals = 1:5)
   new_lst <- spatialwidget:::rcpp_remove_list_elements(lst, "vals")
   expect_true( all(names(new_lst) == "let") )

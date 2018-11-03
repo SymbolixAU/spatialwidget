@@ -7,6 +7,17 @@
 namespace spatialwidget {
 namespace construction {
 
+  inline void construct_df(Rcpp::List& df, int& nrows) {
+
+    if (nrows < 1) {
+      Rcpp::stop("Error creating data layer");
+    }
+
+    Rcpp::IntegerVector nv = Rcpp::seq(1, nrows);
+    df.attr("class") = "data.frame";
+    df.attr("row.names") = nv;
+  }
+
   /*
    * Assess each variable passed in to the R function as an argument, determines
    * if it's a column of data, or a single value to use as the whole column.
@@ -43,7 +54,7 @@ namespace construction {
   			// to get into this if statement the parameter passed into the R function is
   			// to be used as a column of data
 
-  			if( spatialwidget::utils::param_is_string( params[i] ) ) {
+  			if( TYPEOF( params[i] ) == STRSXP ) {
   				// it's a string
   				// is it also a column name
 
@@ -75,7 +86,7 @@ namespace construction {
   		} // TODO( is there an 'else' condition? )
 
   	// Rcpp::Rcout << "constructing df: " << std::endl;
-  	spatialwidget::utils::construct_df( lst_defaults, data_rows );
+  	construct_df( lst_defaults, data_rows );
   	// Rcpp::Rcout << "constructed" << std::endl;
   	// Rcpp::StringVector default_names = lst_defaults.names();
   	// Rcpp::Rcout << "default_names: " << default_names << std::endl;

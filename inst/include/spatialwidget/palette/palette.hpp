@@ -2,7 +2,8 @@
 #define R_SPATIALWIDGET_PALETTE_H
 
 #include <Rcpp.h>
-#include "spatialwidget/spatialwidget.hpp"
+//#include "spatialwidget/spatialwidget.hpp"
+#include "colourvalues/colours/colours_hex.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
 //#include <Rcpp/Benchmark/Timer.h>
@@ -10,25 +11,27 @@
 namespace spatialwidget {
 namespace palette {
 
-  const Rcpp::StringVector default_palette = "viridis";
-  const std::string default_na_colour = "#808080FF";
+  //const Rcpp::StringVector default_palette = "viridis";
 
   /*
    * resolve_palette
+   *
    * determines if the user supplied a palette, or should use default
    */
   inline SEXP resolve_palette( Rcpp::List& lst_params, Rcpp::List& params ) {
 
-  	SEXP pal = default_palette;
+  	//SEXP pal = default_palette;
   	Rcpp::StringVector sv = lst_params[ "parameter" ];
-  	int idx =  spatialwidget::utils::where::where_is( "palette", sv );
-  	//pal = idx >= 0 ? params[ idx ] : pal;
+  	int idx =  spatialwidget::utils::where::where_is( "palette" , sv );
 
   	if (idx >= 0 ) {
   		// if function, evaluate it? (or do this in R before entering Rcpp?)
-  		pal = params[ idx ];
+  		return params[ idx ];
+  	} else {
+  	  Rcpp::StringVector pal = "viridis";
+  	  return pal;
   	}
-  	return pal;
+  	return R_NilValue;
   }
 
   inline Rcpp::List colour_with_palette(

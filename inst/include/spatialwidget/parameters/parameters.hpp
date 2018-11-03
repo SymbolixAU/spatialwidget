@@ -24,6 +24,49 @@ namespace parameters {
   }
 
   /*
+   * construct params
+   *
+   * @param data   data.frame supplied
+   * @param params list of paramters
+   *
+   * the \code{params} argument will be a named list (from R), where the names are
+   * the parameters of a function, and the values are the values supplied by the user to the function.
+   *
+   * Creates a list
+   * ["parameter"] - StringVector of the names of parameters
+   * ["parameter_type"] - IntegerVector of the SEXP TYPE of parameter
+   * ["data_column_index"] - IntegerVector of the column index in the data
+   */
+  inline Rcpp::List construct_params(
+      Rcpp::DataFrame& data,
+      Rcpp::List& params) {
+
+    int n_params = params.size();
+    Rcpp::StringVector param_names = params.names();
+    Rcpp::IntegerVector parameter_r_types( n_params );
+    Rcpp::IntegerVector data_column_index( n_params, -1 );
+    Rcpp::StringVector data_names = data.names();
+
+    int i = 0;
+    int parameter_type;
+
+    for (i = 0; i < n_params; i++) {
+      parameter_type = TYPEOF( params[i] );
+      parameter_r_types[i] = parameter_type;
+
+      if ( parameter_type == STRSXP ) { // STRSXP (string vector)
+        Rcpp::String param_value = params[i];
+        data_column_index[i] = spatialwidget::utils::where::where_is( param_value.get_cstring(), data_names );
+      }
+    }
+    return Rcpp::List::create(
+      Rcpp::_["parameter"] = param_names,
+      Rcpp::_["parameter_type"] = parameter_r_types,
+      Rcpp::_["data_column_index"] = data_column_index
+    );
+  }
+
+  /*
    * paramters to data
    */
   inline Rcpp::List parameters_to_data(
@@ -42,9 +85,7 @@ namespace parameters {
 
   	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
 
-  	Rcpp::List lst_params = spatialwidget::utils::construct_params( data, params );
-
-  	spatialwidget::palette::resolve_palette( lst_params, params );
+  	Rcpp::List lst_params = construct_params( data, params );
 
   	// determine if a legend is required
   	// if legend == T, for each of the possible legend types for htis plot (scatter, polygon)
@@ -110,7 +151,7 @@ namespace parameters {
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, colours_remove );
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_types );
 //
-  	lst_params = spatialwidget::utils::construct_params( data, params );
+  	lst_params = construct_params( data, params );
 
   	// Rcpp::Rcout << "constructing data " << std::endl;
 

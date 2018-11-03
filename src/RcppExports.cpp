@@ -19,6 +19,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_resolve_palette
+Rcpp::StringVector rcpp_resolve_palette(Rcpp::List lst_params, Rcpp::List params);
+RcppExport SEXP _spatialwidget_rcpp_resolve_palette(SEXP lst_paramsSEXP, SEXP paramsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type lst_params(lst_paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type params(paramsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_resolve_palette(lst_params, params));
+    return rcpp_result_gen;
+END_RCPP
+}
 // spatialwidget_geojson
 Rcpp::List spatialwidget_geojson(Rcpp::DataFrame data, Rcpp::List data_types, Rcpp::List params, Rcpp::List defaults, Rcpp::StringMatrix colours, Rcpp::StringVector legend, Rcpp::StringVector geometry);
 RcppExport SEXP _spatialwidget_spatialwidget_geojson(SEXP dataSEXP, SEXP data_typesSEXP, SEXP paramsSEXP, SEXP defaultsSEXP, SEXP coloursSEXP, SEXP legendSEXP, SEXP geometrySEXP) {
@@ -77,6 +89,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_line_example_geojson", (DL_FUNC) &_spatialwidget_line_example_geojson, 4},
+    {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_spatialwidget_geojson", (DL_FUNC) &_spatialwidget_spatialwidget_geojson, 7},
     {"_spatialwidget_rcpp_fill_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_vector, 4},
     {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
