@@ -50,15 +50,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpp_find_character_index_in_vector
-int rcpp_find_character_index_in_vector(Rcpp::StringVector sv, const char* to_find);
-RcppExport SEXP _spatialwidget_rcpp_find_character_index_in_vector(SEXP svSEXP, SEXP to_findSEXP) {
+// rcpp_where_is
+int rcpp_where_is(const char* to_find, Rcpp::StringVector sv);
+RcppExport SEXP _spatialwidget_rcpp_where_is(SEXP to_findSEXP, SEXP svSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::StringVector >::type sv(svSEXP);
     Rcpp::traits::input_parameter< const char* >::type to_find(to_findSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_find_character_index_in_vector(sv, to_find));
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type sv(svSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_where_is(to_find, sv));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -67,7 +67,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_line_example_geojson", (DL_FUNC) &_spatialwidget_line_example_geojson, 4},
     {"_spatialwidget_spatialwidget_geojson", (DL_FUNC) &_spatialwidget_spatialwidget_geojson, 7},
     {"_spatialwidget_rcpp_fill_single_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_single_vector, 4},
-    {"_spatialwidget_rcpp_find_character_index_in_vector", (DL_FUNC) &_spatialwidget_rcpp_find_character_index_in_vector, 2},
+    {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
     {NULL, NULL, 0}
 };
 

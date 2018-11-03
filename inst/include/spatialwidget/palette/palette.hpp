@@ -21,7 +21,7 @@ namespace palette {
 
   	SEXP pal = default_palette;
   	Rcpp::StringVector sv = lst_params[ "parameter" ];
-  	int idx =  spatialwidget::utils::find_character_index_in_vector( sv, "palette" );
+  	int idx =  spatialwidget::utils::where_is( "palette", sv );
   	//pal = idx >= 0 ? params[ idx ] : pal;
 
   	if (idx >= 0 ) {

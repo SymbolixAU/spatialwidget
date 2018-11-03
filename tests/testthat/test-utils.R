@@ -1,21 +1,20 @@
 context("utils")
 
-test_that("fill_single_vector returns new list element", {
-
+test_that("fill_vector returns new list element", {
   lst <- list()
   param <- "my_param"
   val <- 1
   n <- 20
-  new_val <- spatialwidget:::rcpp_fill_single_vector( lst, param, val, n)
+  new_lst <- spatialwidget:::rcpp_fill_single_vector( lst, param, val, n)
   expect_true( "my_param" %in% names(new_lst))
   expect_true( all( new_lst[["my_param"]] == rep(1, n) ) )
 })
 
 
-test_that("find_character_index_in_vector returns correct index", {
-  expect_equal(spatialwidget:::rcpp_find_character_index_in_vector(letters, "a"), 0)
-  expect_equal(spatialwidget:::rcpp_find_character_index_in_vector(letters, "b"), 1)
-  expect_equal(spatialwidget:::rcpp_find_character_index_in_vector(letters, "z"), 25)
+test_that("where_is returns correct index", {
+  expect_equal(spatialwidget:::rcpp_where_is("a", letters), 0)
+  expect_equal(spatialwidget:::rcpp_where_is("b", letters), 1)
+  expect_equal(spatialwidget:::rcpp_where_is("z", letters), 25)
 })
 
 test_that("data_column_index returns correct column index", {
@@ -25,23 +24,28 @@ test_that("data_column_index returns correct column index", {
 })
 
 
-library(microbenchmark)
-txt <- function(n = 5000) {
-  a <- do.call(paste0, replicate(5, sample(LETTERS, n, TRUE), FALSE))
-  paste0(a, sprintf("%04d", sample(9999, n, TRUE)), sample(LETTERS, n, TRUE))
-}
-sv <- txt(1e6)
-this <- sv[1e6]
-
-microbenchmark(
-  fciiv = {
-    spatialwidget:::rcpp_find_character_index_in_vector(sv, this)
-  },
-  base = {
-    which(this == sv)
-  },
-  times = 5
-)
+# library(microbenchmark)
+# txt <- function(n = 5000) {
+#   a <- do.call(paste0, replicate(5, sample(LETTERS, n, TRUE), FALSE))
+#   paste0(a, sprintf("%04d", sample(9999, n, TRUE)), sample(LETTERS, n, TRUE))
+# }
+# sv <- txt(1e6)
+# this <- sv[1e6]
+#
+# microbenchmark(
+#   fciiv = {
+#     spatialwidget:::rcpp_where_is( this, sv )
+#   },
+#   base = {
+#     which(this == sv)
+#   },
+#   times = 5
+# )
+#
+# # Unit: milliseconds
+# #  expr      min       lq     mean   median       uq      max neval
+# # fciiv 16.85030 20.95012 23.25741 21.88659 23.57455 33.02549     5
+# #  base 30.42226 30.84569 35.30781 31.86136 32.41005 50.99966     5
 
 
 # library(microbenchmark)

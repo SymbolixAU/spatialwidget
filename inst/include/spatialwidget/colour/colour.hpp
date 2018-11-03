@@ -100,8 +100,8 @@ namespace colour {
 
     SEXP this_colour = lst_defaults[ colour_name ];
 
-    int colour_location = spatialwidget::utils::find_character_index_in_vector( param_names, colour_name );
-    int opacity_location = spatialwidget::utils::find_character_index_in_vector( param_names, opacity_name );
+    int colour_location = spatialwidget::utils::where_is( colour_name, param_names );
+    int opacity_location = spatialwidget::utils::where_is( opacity_name, param_names );
 
     int colourColIndex = colour_location >= 0 ? data_column_index[ colour_location ] : -1;
     int alphaColIndex = opacity_location >= 0 ? data_column_index[ opacity_location ] : -1;
@@ -121,7 +121,7 @@ namespace colour {
       alpha = data[ alphaColIndex ];
     } else {
 
-      int find_opacity = spatialwidget::utils::find_character_index_in_vector( param_names, opacity_name );
+      int find_opacity = spatialwidget::utils::where_is( opacity_name, param_names );
       if (find_opacity >= 0 ) {
         int a = params[ find_opacity ]; // will throw an error if not correct type
         alpha.fill( a );

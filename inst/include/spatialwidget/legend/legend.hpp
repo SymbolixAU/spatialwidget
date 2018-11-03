@@ -38,7 +38,7 @@ namespace legend {
 
 
     // find the 'legend' argument
-    int legend_location = spatialwidget::utils::find_character_index_in_vector( param_names, "legend" );
+    int legend_location = spatialwidget::utils::where_is( "legend", param_names );
 
     if ( legend_location > -1 ) {
 

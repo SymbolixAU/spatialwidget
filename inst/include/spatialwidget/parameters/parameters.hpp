@@ -67,7 +67,7 @@ namespace parameters {
 
 		  colour_column = it->first;
 		  opacity_column = it->second;
-		  include_legend = spatialwidget::utils::find_character_index_in_vector(legend_names, colour_column.c_str()) >= 0 ? true : false;
+		  include_legend = spatialwidget::utils::where_is( colour_column.c_str(), legend_names ) >= 0 ? true : false;
 	    spatialwidget::colour::resolve_colour( lst_params, params, data, data_types, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
 		}
 

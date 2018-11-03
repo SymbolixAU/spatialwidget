@@ -1,6 +1,7 @@
 #include <Rcpp.h>
-#include "spatialwidget/utils/utils.hpp"
 
+#include "spatialwidget/utils/utils.hpp"
+#include "spatialwidget/utils/fill/fill.hpp"
 
 /*
  * fill_single_vector
@@ -15,7 +16,7 @@ Rcpp::List rcpp_fill_single_vector(
   SEXP value,
   int n_rows) {
 
-  spatialwidget::utils::fill_single_vector( lst_defaults, param_name, value, n_rows );
+  spatialwidget::utils::fill::fill_vector( lst_defaults, param_name, value, n_rows );
   return lst_defaults;
 }
 
@@ -28,6 +29,6 @@ Rcpp::List rcpp_fill_single_vector(
  * @return index of to_find in sv
  */
 // [[Rcpp::export]]
-int rcpp_find_character_index_in_vector( Rcpp::StringVector sv, const char* to_find ) {
-  return spatialwidget::utils::find_character_index_in_vector( sv, to_find );
+int rcpp_where_is( const char* to_find, Rcpp::StringVector sv ) {
+  return spatialwidget::utils::where_is( to_find, sv );
 }

@@ -4,6 +4,8 @@
 #include <Rcpp.h>
 #include "spatialwidget/utils/utils.hpp"
 
+#include "spatialwidget/utils/fill/fill.hpp"
+
 namespace spatialwidget {
 namespace construction {
 
@@ -38,7 +40,7 @@ namespace construction {
   		Rcpp::String this_param = param_names[i];
   		// Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
 
-  		//int idx = spatialwidget::find_character_index_in_vector( required_columns, this_param.get_cstring() );
+  		//int idx = spatialwidget::where_is( this_param.get_cstring(), required_columns );
   		//Rcpp::Rcout << "index of this param: " << idx << std::endl;
 
   		// If we use R to construct the parameter list, we don't need to do this check
@@ -50,12 +52,13 @@ namespace construction {
   				// it's a string
   				// is it also a column name
 
-  				Rcpp::StringVector param_value = params[i];
+  				Rcpp::String param_value = params[i];
+
   				// Rcpp::Rcout << "param value: " << param_value << std::endl;
 
   				// returns -1 if length != 1
   				// colIndex = spatialwidget::utils::data_column_index( param_value, data_names );
-  				colIndex = spatialwidget::utils::find_character_index_in_vector( param_value, data_names );
+  				colIndex = spatialwidget::utils::where_is( param_value.get_cstring(), data_names );
   				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
 
   				if ( colIndex >= 0 ) {
@@ -65,14 +68,14 @@ namespace construction {
   				} else {
   					// IT's not a column name, but it is still a string
   					// and needs to be applied to all rows
-  					SEXP value = param_value[0];
-  					spatialwidget::utils::fill_single_vector( lst_defaults, this_param, value, data_rows );
+  					//SEXP value = param_value;
+  					lst_defaults[ this_param ] = spatialwidget::utils::fill::fill_vector( param_value, data_rows );
 
   				}
   			} else {
   				// paramter is not a string, so it can't be a column name
   				SEXP value = params[i];
-  			  spatialwidget::utils::fill_single_vector( lst_defaults, this_param, value, data_rows );
+  			  spatialwidget::utils::fill::fill_vector( lst_defaults, this_param, value, data_rows );
   			}
   		} // TODO( is there an 'else' condition? )
 

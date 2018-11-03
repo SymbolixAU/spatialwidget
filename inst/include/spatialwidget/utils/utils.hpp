@@ -10,24 +10,32 @@ namespace utils {
    * find_parameter_index_in_vector
    * Finds the location (index) of a string in the list of parameters (as given by the R function call)
    */
-  inline int find_character_index_in_vector( Rcpp::StringVector& sv, const char* to_find ) {
+  inline int where_is(
+      const char* to_find,
+      Rcpp::StringVector& sv ) {
+
     int n = sv.size();
     int i;
     for( i = 0; i < n; i++ ) {
-      if (to_find == sv[i] ) {
+      if ( to_find == sv[i] ) {
         return i;
       }
     }
     return -1;
   }
 
-	inline int find_character_index_in_vector(Rcpp::StringVector& param_value, Rcpp::StringVector& data_names) {
+	inline Rcpp::IntegerVector where_is(
+	    Rcpp::StringVector& param_value,
+	    Rcpp::StringVector& data_names) {
 
-	  if ( param_value.length() != 1 ) {
-	    return -1;
+	  int n = param_value.size();
+	  int i;
+	  Rcpp::IntegerVector res( n );
+	  for ( i = 0; i < n; i++ ) {
+  	  const char* to_find = param_value[0];
+  	  res[i] = where_is( to_find, data_names );
 	  }
-	  const char* to_find = param_value[0];
-	  return find_character_index_in_vector( data_names, to_find );
+	  return res;
 	}
 
   inline void construct_df(Rcpp::List& df, int& nrows) {
@@ -61,39 +69,7 @@ namespace utils {
 		return TYPEOF( param );
 	}
 
-	inline void fill_single_vector(
-			Rcpp::List& lst_defaults,
-			Rcpp::String& param_name,
-			SEXP& value,
-			int n_rows ) {
 
-		switch( TYPEOF( value ) ) {
-		case 10: { // LGLSXP
-		Rcpp::LogicalVector l = Rcpp::as< Rcpp::LogicalVector >( value );
-		Rcpp::LogicalVector lv(n_rows, l[0]);
-		lst_defaults[ param_name ] = lv;
-		return;
-	}
-		case 13: { // INTSXP
-			Rcpp::IntegerVector i = Rcpp::as< Rcpp::IntegerVector >( value );
-			Rcpp::IntegerVector iv(n_rows, i[0]);
-			lst_defaults[ param_name ] = iv;
-			return;
-		}
-		case 14: { // REALSXP
-			Rcpp::NumericVector n = Rcpp::as< Rcpp::NumericVector >( value );
-			Rcpp::NumericVector nv(n_rows, n[0]);
-			lst_defaults[ param_name ] = nv;
-			return;
-		}
-		default: {
-			Rcpp::StringVector s = Rcpp::as< Rcpp::StringVector >( value );
-			Rcpp::StringVector sv(n_rows, s[0]);
-			lst_defaults[ param_name ] = sv;
-			return;
-		}
-		}
-	}
 
   /*
    * construct params
@@ -105,8 +81,7 @@ namespace utils {
    */
 	inline Rcpp::List construct_params(
 			Rcpp::DataFrame& data,
-			Rcpp::List& params
-	) {
+			Rcpp::List& params) {
 
 		int n_params = params.size();
 		Rcpp::StringVector param_names = params.names();
@@ -123,9 +98,9 @@ namespace utils {
 
 			if ( parameter_type == STRSXP ) { // STRSXP (string vector)
 
-				Rcpp::StringVector param_value = params[i];
+				Rcpp::String param_value = params[i];
 				// data_column_index[i] = spatialwidget::utils::data_column_index( param_value, data_names );
-				data_column_index[i] = spatialwidget::utils::find_character_index_in_vector( param_value, data_names );
+				data_column_index[i] = spatialwidget::utils::where_is( param_value.get_cstring(), data_names );
 			}
 		}
 		return Rcpp::List::create(
