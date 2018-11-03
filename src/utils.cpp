@@ -1,7 +1,6 @@
 #include <Rcpp.h>
 
 #include "spatialwidget/utils/utils.hpp"
-#include "spatialwidget/utils/fill/fill.hpp"
 
 /*
  * fill_single_vector
@@ -10,7 +9,7 @@
  * @param n_rows int - number of values to fill
  */
 // [[Rcpp::export]]
-Rcpp::List rcpp_fill_single_vector(
+Rcpp::List rcpp_fill_vector(
     Rcpp::List lst_defaults,
     Rcpp::String param_name,
   SEXP value,
@@ -29,6 +28,21 @@ Rcpp::List rcpp_fill_single_vector(
  * @return index of to_find in sv
  */
 // [[Rcpp::export]]
-int rcpp_where_is( const char* to_find, Rcpp::StringVector sv ) {
-  return spatialwidget::utils::where_is( to_find, sv );
+Rcpp::IntegerVector rcpp_where_is( Rcpp::StringVector to_find, Rcpp::StringVector sv ) {
+  return spatialwidget::utils::where::where_is( to_find, sv );
 }
+
+/*
+ * remove_list_elements
+ *
+ * @param list
+ * @param elements
+ * @param to_remove
+ */
+// [[Rcpp::export]]
+Rcpp::List rcpp_remove_list_elements( Rcpp::List lst, Rcpp::StringVector to_remove) {
+  spatialwidget::utils::remove::remove_list_elements( lst, to_remove );
+  return lst;
+}
+
+

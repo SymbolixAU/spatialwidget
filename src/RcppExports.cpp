@@ -36,9 +36,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpp_fill_single_vector
-Rcpp::List rcpp_fill_single_vector(Rcpp::List lst_defaults, Rcpp::String param_name, SEXP value, int n_rows);
-RcppExport SEXP _spatialwidget_rcpp_fill_single_vector(SEXP lst_defaultsSEXP, SEXP param_nameSEXP, SEXP valueSEXP, SEXP n_rowsSEXP) {
+// rcpp_fill_vector
+Rcpp::List rcpp_fill_vector(Rcpp::List lst_defaults, Rcpp::String param_name, SEXP value, int n_rows);
+RcppExport SEXP _spatialwidget_rcpp_fill_vector(SEXP lst_defaultsSEXP, SEXP param_nameSEXP, SEXP valueSEXP, SEXP n_rowsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,19 +46,31 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::String >::type param_name(param_nameSEXP);
     Rcpp::traits::input_parameter< SEXP >::type value(valueSEXP);
     Rcpp::traits::input_parameter< int >::type n_rows(n_rowsSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_fill_single_vector(lst_defaults, param_name, value, n_rows));
+    rcpp_result_gen = Rcpp::wrap(rcpp_fill_vector(lst_defaults, param_name, value, n_rows));
     return rcpp_result_gen;
 END_RCPP
 }
 // rcpp_where_is
-int rcpp_where_is(const char* to_find, Rcpp::StringVector sv);
+Rcpp::IntegerVector rcpp_where_is(Rcpp::StringVector to_find, Rcpp::StringVector sv);
 RcppExport SEXP _spatialwidget_rcpp_where_is(SEXP to_findSEXP, SEXP svSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const char* >::type to_find(to_findSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type to_find(to_findSEXP);
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type sv(svSEXP);
     rcpp_result_gen = Rcpp::wrap(rcpp_where_is(to_find, sv));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_remove_list_elements
+Rcpp::List rcpp_remove_list_elements(Rcpp::List lst, Rcpp::StringVector to_remove);
+RcppExport SEXP _spatialwidget_rcpp_remove_list_elements(SEXP lstSEXP, SEXP to_removeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type lst(lstSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type to_remove(to_removeSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_remove_list_elements(lst, to_remove));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -66,8 +78,9 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_line_example_geojson", (DL_FUNC) &_spatialwidget_line_example_geojson, 4},
     {"_spatialwidget_spatialwidget_geojson", (DL_FUNC) &_spatialwidget_spatialwidget_geojson, 7},
-    {"_spatialwidget_rcpp_fill_single_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_single_vector, 4},
+    {"_spatialwidget_rcpp_fill_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_vector, 4},
     {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
+    {"_spatialwidget_rcpp_remove_list_elements", (DL_FUNC) &_spatialwidget_rcpp_remove_list_elements, 2},
     {NULL, NULL, 0}
 };
 

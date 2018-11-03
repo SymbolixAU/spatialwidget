@@ -4,8 +4,6 @@
 #include <Rcpp.h>
 #include "spatialwidget/utils/utils.hpp"
 
-#include "spatialwidget/utils/fill/fill.hpp"
-
 namespace spatialwidget {
 namespace construction {
 
@@ -40,9 +38,6 @@ namespace construction {
   		Rcpp::String this_param = param_names[i];
   		// Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
 
-  		//int idx = spatialwidget::where_is( this_param.get_cstring(), required_columns );
-  		//Rcpp::Rcout << "index of this param: " << idx << std::endl;
-
   		// If we use R to construct the parameter list, we don't need to do this check
   		//if ( idx >= 0 ) {
   			// to get into this if statement the parameter passed into the R function is
@@ -58,7 +53,7 @@ namespace construction {
 
   				// returns -1 if length != 1
   				// colIndex = spatialwidget::utils::data_column_index( param_value, data_names );
-  				colIndex = spatialwidget::utils::where_is( param_value.get_cstring(), data_names );
+  				colIndex = spatialwidget::utils::where::where_is( param_value.get_cstring(), data_names );
   				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
 
   				if ( colIndex >= 0 ) {

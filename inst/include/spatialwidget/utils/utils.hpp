@@ -2,41 +2,13 @@
 #define R_SPATIALWIDGET_UTILS_H
 
 #include <Rcpp.h>
+#include "spatialwidget/utils/fill/fill.hpp"
+#include "spatialwidget/utils/where/where.hpp"
+#include "spatialwidget/utils/remove/remove.hpp"
 
 namespace spatialwidget {
 namespace utils {
 
-  /*
-   * find_parameter_index_in_vector
-   * Finds the location (index) of a string in the list of parameters (as given by the R function call)
-   */
-  inline int where_is(
-      const char* to_find,
-      Rcpp::StringVector& sv ) {
-
-    int n = sv.size();
-    int i;
-    for( i = 0; i < n; i++ ) {
-      if ( to_find == sv[i] ) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-	inline Rcpp::IntegerVector where_is(
-	    Rcpp::StringVector& param_value,
-	    Rcpp::StringVector& data_names) {
-
-	  int n = param_value.size();
-	  int i;
-	  Rcpp::IntegerVector res( n );
-	  for ( i = 0; i < n; i++ ) {
-  	  const char* to_find = param_value[0];
-  	  res[i] = where_is( to_find, data_names );
-	  }
-	  return res;
-	}
 
   inline void construct_df(Rcpp::List& df, int& nrows) {
 
@@ -48,15 +20,6 @@ namespace utils {
   	df.attr("class") = "data.frame";
   	df.attr("row.names") = nv;
   }
-
-	inline void remove_parameters(
-			Rcpp::List& params,
-			Rcpp::StringVector& param_names,
-			Rcpp::StringVector& to_remove ) {
-
-		param_names = Rcpp::setdiff( param_names,  to_remove );
-		params = params[ param_names ];
-	}
 
   inline bool param_is_string( SEXP param ) {
   	return TYPEOF( param ) == STRSXP;  // string vectors
@@ -100,7 +63,7 @@ namespace utils {
 
 				Rcpp::String param_value = params[i];
 				// data_column_index[i] = spatialwidget::utils::data_column_index( param_value, data_names );
-				data_column_index[i] = spatialwidget::utils::where_is( param_value.get_cstring(), data_names );
+				data_column_index[i] = spatialwidget::utils::where::where_is( param_value.get_cstring(), data_names );
 			}
 		}
 		return Rcpp::List::create(

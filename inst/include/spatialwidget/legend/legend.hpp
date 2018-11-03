@@ -38,7 +38,7 @@ namespace legend {
 
 
     // find the 'legend' argument
-    int legend_location = spatialwidget::utils::where_is( "legend", param_names );
+    int legend_location = spatialwidget::utils::where::where_is( "legend", param_names );
 
     if ( legend_location > -1 ) {
 

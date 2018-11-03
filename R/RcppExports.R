@@ -9,11 +9,15 @@ spatialwidget_geojson <- function(data, data_types, params, defaults, colours, l
     .Call(`_spatialwidget_spatialwidget_geojson`, data, data_types, params, defaults, colours, legend, geometry)
 }
 
-rcpp_fill_single_vector <- function(lst_defaults, param_name, value, n_rows) {
-    .Call(`_spatialwidget_rcpp_fill_single_vector`, lst_defaults, param_name, value, n_rows)
+rcpp_fill_vector <- function(lst_defaults, param_name, value, n_rows) {
+    .Call(`_spatialwidget_rcpp_fill_vector`, lst_defaults, param_name, value, n_rows)
 }
 
 rcpp_where_is <- function(to_find, sv) {
     .Call(`_spatialwidget_rcpp_where_is`, to_find, sv)
+}
+
+rcpp_remove_list_elements <- function(lst, to_remove) {
+    .Call(`_spatialwidget_rcpp_remove_list_elements`, lst, to_remove)
 }
 

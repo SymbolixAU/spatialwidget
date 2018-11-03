@@ -21,7 +21,7 @@ namespace palette {
 
   	SEXP pal = default_palette;
   	Rcpp::StringVector sv = lst_params[ "parameter" ];
-  	int idx =  spatialwidget::utils::where_is( "palette", sv );
+  	int idx =  spatialwidget::utils::where::where_is( "palette", sv );
   	//pal = idx >= 0 ? params[ idx ] : pal;
 
   	if (idx >= 0 ) {

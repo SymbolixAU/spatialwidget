@@ -4,6 +4,7 @@
 #include <Rcpp.h>
 #include "spatialwidget/palette/palette.hpp"
 #include "spatialwidget/utils/utils.hpp"
+#include "spatialwidget/utils/where/where.hpp"
 #include "spatialwidget/legend/legend.hpp"
 
 namespace spatialwidget {
@@ -100,8 +101,8 @@ namespace colour {
 
     SEXP this_colour = lst_defaults[ colour_name ];
 
-    int colour_location = spatialwidget::utils::where_is( colour_name, param_names );
-    int opacity_location = spatialwidget::utils::where_is( opacity_name, param_names );
+    int colour_location = spatialwidget::utils::where::where_is( colour_name, param_names );
+    int opacity_location = spatialwidget::utils::where::where_is( opacity_name, param_names );
 
     int colourColIndex = colour_location >= 0 ? data_column_index[ colour_location ] : -1;
     int alphaColIndex = opacity_location >= 0 ? data_column_index[ opacity_location ] : -1;
@@ -121,7 +122,7 @@ namespace colour {
       alpha = data[ alphaColIndex ];
     } else {
 
-      int find_opacity = spatialwidget::utils::where_is( opacity_name, param_names );
+      int find_opacity = spatialwidget::utils::where::where_is( opacity_name, param_names );
       if (find_opacity >= 0 ) {
         int a = params[ find_opacity ]; // will throw an error if not correct type
         alpha.fill( a );

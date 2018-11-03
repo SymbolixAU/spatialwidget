@@ -67,7 +67,7 @@ namespace parameters {
 
 		  colour_column = it->first;
 		  opacity_column = it->second;
-		  include_legend = spatialwidget::utils::where_is( colour_column.c_str(), legend_names ) >= 0 ? true : false;
+		  include_legend = spatialwidget::utils::where::where_is( colour_column.c_str(), legend_names ) >= 0 ? true : false;
 	    spatialwidget::colour::resolve_colour( lst_params, params, data, data_types, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
 		}
 
@@ -90,7 +90,7 @@ namespace parameters {
 
   	// need to remove any paramters which won't be used in the data being plotted
   	Rcpp::StringVector legend_params = Rcpp::StringVector::create("legend","legend_options"); // TODO( hard-coded?)
-  	spatialwidget::utils::remove_parameters( params, param_names, legend_params );
+  	spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_params );
 
   	//int remove_size = ( colour_columns.size() * 2 ) + legend_types.size();
   	//Rcpp::Rcout << "remove_size: " << remove_size << std::endl;
@@ -107,8 +107,8 @@ namespace parameters {
   	//   "stroke_to_opacity","stroke_opacity","fill_opacity","palette"
   	//   );
 
-  	spatialwidget::utils::remove_parameters( params, param_names, colours_remove );
-  	spatialwidget::utils::remove_parameters( params, param_names, legend_types );
+  	spatialwidget::utils::remove::remove_list_elements( params, param_names, colours_remove );
+  	spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_types );
 //
   	lst_params = spatialwidget::utils::construct_params( data, params );
 
