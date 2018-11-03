@@ -21,6 +21,10 @@
 namespace spatialwidget {
 namespace api {
 
+  inline void test_api( ) {
+    Rcpp::Rcout << "test" << std::endl;
+  }
+
   /*
    * expects `data` to be an sf object
    */
@@ -29,15 +33,13 @@ namespace api {
       Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
-      //Rcpp::StringVector& layer_columns,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
-      Rcpp::StringVector geometry_columns
-  ) {
+      Rcpp::StringVector geometry_columns ) {
 
-    // Rcpp::StringVector data_names = data.names();
-    // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
+    Rcpp::StringVector data_names = data.names();
+    Rcpp::Rcout << "data_names start: " << data_names << std::endl;
 
     // TODO receive the geometry columns from user input
 
@@ -45,26 +47,25 @@ namespace api {
     // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
     // Rcpp::Rcout << "create_geojson" << std::endl;
 
-    // Rcpp::Rcout << "parameters to data " << std::endl;
+    Rcpp::Rcout << "parameters to data " << std::endl;
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       data_types,
       params,
       lst_defaults,
-      // layer_columns,
       layer_colours,
       layer_legend,
       data_rows
     );
 
-    // Rcpp::Rcout << "getting data from list " << std::endl;
+    Rcpp::Rcout << "getting data from list " << std::endl;
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
 
     // Rcpp::StringVector nmes = df.names();
     // Rcpp::Rcout << "nmes2: " << nmes << std::endl;
 
     SEXP legend = lst[ "legend" ];
-    Rcpp::StringVector js_legend = jsonify::vectors::to_json( legend );
+    legend = jsonify::vectors::to_json( legend );
 
     // df.attr("sf_column") = geom_column;
 
@@ -75,7 +76,7 @@ namespace api {
 
     return Rcpp::List::create(
       Rcpp::_["data"] = js_data,
-      Rcpp::_["legend"] = js_legend
+      Rcpp::_["legend"] = legend
     );
   }
 
@@ -87,7 +88,6 @@ namespace api {
       Rcpp::List& data_types,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
-      //Rcpp::StringVector& layer_columns,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
@@ -95,22 +95,24 @@ namespace api {
       const char* lat
   ) {
 
+    Rcpp::StringVector data_names = data.names();
+    Rcpp::Rcout << "data_names start: " << data_names << std::endl;
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data, data_types,
       params, lst_defaults,
-      //layer_columns,
       layer_colours, layer_legend, data_rows
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     SEXP legend = lst[ "legend" ];
-    Rcpp::StringVector js_legend = jsonify::vectors::to_json( legend );
+    legend = jsonify::vectors::to_json( legend );
 
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, lon, lat );
 
     return Rcpp::List::create(
       Rcpp::_["data"] = js_data,
-      Rcpp::_["legend"] = js_legend
+      Rcpp::_["legend"] = legend
     );
   }
 
@@ -122,7 +124,6 @@ namespace api {
       Rcpp::List& data_types,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
-      //Rcpp::StringVector& layer_columns,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows
@@ -131,20 +132,20 @@ namespace api {
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       data_types,
-      params, lst_defaults,
-      //layer_columns,
+      params,
+      lst_defaults,
       layer_colours, layer_legend, data_rows
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     SEXP legend = lst[ "legend" ];
-    Rcpp::StringVector js_legend = jsonify::vectors::to_json( legend );
+    legend = jsonify::vectors::to_json( legend );
 
     Rcpp::StringVector js_data = jsonify::dataframe::to_json( df );
 
     return Rcpp::List::create(
       Rcpp::_["data"] = js_data,
-      Rcpp::_["legend"] = js_legend
+      Rcpp::_["legend"] = legend
     );
   }
 

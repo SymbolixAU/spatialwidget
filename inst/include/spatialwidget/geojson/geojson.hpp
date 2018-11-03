@@ -15,59 +15,59 @@
 namespace spatialwidget {
 namespace geojson {
 
-template< typename Writer >
-inline void write_geometry(Writer& writer, SEXP sfg, Rcpp::CharacterVector& cls ) {
+  template< typename Writer >
+  inline void write_geometry(Writer& writer, SEXP sfg, Rcpp::CharacterVector& cls ) {
 
-  std::string geom_type;
-  geom_type = cls[1];
+    std::string geom_type;
+    geom_type = cls[1];
 
-  int sfglength = geojsonsf::utils::get_sexp_length( sfg );
+    int sfglength = geojsonsf::utils::get_sexp_length( sfg );
 
-  if (sfglength == 0) {
-    writer.Null();
-  } else {
-
-    bool isnull = geojsonsf::utils::is_null_geometry( sfg, geom_type );
-    if ( isnull ) {
+    if (sfglength == 0) {
       writer.Null();
     } else {
-      geojsonsf::writers::begin_geojson_geometry(writer, geom_type);
-      write_geojson(writer, sfg, geom_type, cls );
-      geojsonsf::writers::end_geojson_geometry( writer, geom_type );
+
+      bool isnull = geojsonsf::utils::is_null_geometry( sfg, geom_type );
+      if ( isnull ) {
+        writer.Null();
+      } else {
+        geojsonsf::writers::begin_geojson_geometry(writer, geom_type);
+        write_geojson(writer, sfg, geom_type, cls );
+        geojsonsf::writers::end_geojson_geometry( writer, geom_type );
+      }
     }
   }
-}
 
-template< typename Writer >
-inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
+  template< typename Writer >
+  inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i) {
 
-  SEXP sfg = sfc[ i ];
+    SEXP sfg = sfc[ i ];
 
-  std::string geom_type;
-  Rcpp::CharacterVector cls = geojsonsf::getSfClass(sfg);
-  geom_type = cls[1];
+    std::string geom_type;
+    Rcpp::CharacterVector cls = geojsonsf::getSfClass(sfg);
+    geom_type = cls[1];
 
-  // need to keep track of GEOMETRYCOLLECTIONs so we can correctly close them
-  bool isGeometryCollection = (geom_type == "GEOMETRYCOLLECTION") ? true : false;
+    // need to keep track of GEOMETRYCOLLECTIONs so we can correctly close them
+    bool isGeometryCollection = (geom_type == "GEOMETRYCOLLECTION") ? true : false;
 
-  int sfglength = geojsonsf::utils::get_sexp_length( sfg );
+    int sfglength = geojsonsf::utils::get_sexp_length( sfg );
 
-  if (sfglength == 0) {
-    writer.Null();
-  } else {
-
-    bool isnull = geojsonsf::utils::is_null_geometry( sfg, geom_type );
-    if ( isnull ) {
+    if (sfglength == 0) {
       writer.Null();
     } else {
-      geojsonsf::writers::begin_geojson_geometry(writer, geom_type);
-      write_geojson(writer, sfg, geom_type, cls );
 
-      geom_type = (isGeometryCollection) ? "GEOMETRYCOLLECTION" : geom_type;
-      geojsonsf::writers::end_geojson_geometry( writer, geom_type );
+      bool isnull = geojsonsf::utils::is_null_geometry( sfg, geom_type );
+      if ( isnull ) {
+        writer.Null();
+      } else {
+        geojsonsf::writers::begin_geojson_geometry(writer, geom_type);
+        write_geojson(writer, sfg, geom_type, cls );
+
+        geom_type = (isGeometryCollection) ? "GEOMETRYCOLLECTION" : geom_type;
+        geojsonsf::writers::end_geojson_geometry( writer, geom_type );
+      }
     }
   }
-}
 
 
   /*

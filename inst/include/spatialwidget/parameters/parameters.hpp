@@ -83,7 +83,7 @@ namespace parameters {
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
 
-  	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
+  	Rcpp::Rcout << "data_names: " << data_names << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
 
@@ -96,7 +96,7 @@ namespace parameters {
   	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list( lst_params, params, param_names, legend_types );
 
   	Rcpp::StringVector legend_names = lst_legend.names();
-  	// Rcpp::Rcout << "legend_names: " <<  legend_names << std::endl;
+  	Rcpp::Rcout << "legend_names: " <<  legend_names << std::endl;
 
   	std::unordered_map< std::string, std::string>::iterator it;
 
@@ -104,14 +104,20 @@ namespace parameters {
 
 		std::string colour_column;
 		std::string opacity_column;
+
 		for ( it = colour_columns.begin(); it != colour_columns.end(); ++it ) {
 
 		  colour_column = it->first;
 		  opacity_column = it->second;
+
+		  Rcpp::Rcout << "colour_column: " << colour_column << std::endl;
+		  Rcpp::Rcout << "opacity_column: " << opacity_column << std::endl;
+
 		  include_legend = spatialwidget::utils::where::where_is( colour_column.c_str(), legend_names ) >= 0 ? true : false;
 	    spatialwidget::colour::resolve_colour( lst_params, params, data, data_types, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
 		}
 
+		Rcpp::Rcout << "colours resolved" << std::endl;
 
   	// legend optinos
   	// IT's a list
@@ -155,8 +161,8 @@ namespace parameters {
 
   	// Rcpp::Rcout << "constructing data " << std::endl;
 
-  	// data_names = data.names();
-  	// Rcpp::Rcout << "data_names2: " << data_names << std::endl;
+  	data_names = data.names();
+  	Rcpp::Rcout << "data_names2: " << data_names << std::endl;
 
   	Rcpp::DataFrame df = spatialwidget::construction::construct_data(
   		param_names,
@@ -168,7 +174,7 @@ namespace parameters {
   		data_rows
   	);
 
-  	// Rcpp::Rcout << "data has been constructed" << std::endl;
+  	/// Rcpp::Rcout << "data has been constructed" << std::endl;
   	// data_names = df.names();
   	// Rcpp::Rcout << "df_names: " << data_names << std::endl;
 

@@ -18,7 +18,8 @@ namespace colour {
       Rcpp::DataFrame& data,
       Rcpp::List& data_types,
       Rcpp::List& lst_defaults,
-      Rcpp::IntegerVector& data_column_index,
+      int col_index,
+      //Rcpp::IntegerVector& data_column_index,
       SEXP& palette_type,                // string or matrix
       Rcpp::NumericVector& alpha,
       const char* colour_name,
@@ -32,26 +33,25 @@ namespace colour {
 
     SEXP pal = spatialwidget::palette::resolve_palette( lst_params, params );
 
-    // TODO( can I get the legend data type from here? - if so, we can specify a 'foramt_type" for the legend formatting)
-    // Rcpp::Rcout << "palette type: " << TYPEOF( palette_type ) << std::endl;
-    // Rcpp::StringVector data_type_names = data_types.names();
-    // Rcpp::Rcout << "data_types: " << data_type_names << std::endl;
-    // Rcpp::StringVector data_names = data.names();
-    // Rcpp::Rcout << "colour_name: " << colour_name << std::endl;
+    //Rcpp::Rcout << "data_column_index: " << data_column_index << std::endl;
+    //Rcpp::StringVector this_name = data_names[ data_column_index ];
 
-    // Rcpp::Rcout << "data_column_index: " << data_column_index << std::endl;
-    // Rcpp::StringVector this_name = data_names[ data_column_index ];
+    // TODO( if the colour_name wasn't passed in as a paramter (e.g. stroke_colour),
+    // need to use the default)
+    Rcpp::StringVector sv_r_type;
+    Rcpp::String rs_format_type;
+    std::string format_type;
 
-    Rcpp::String this_colour = params[ colour_name ];
+    if ( col_index == -1 ) {
+      Rcpp::stop( "I still need to work out how to use the default colour");
+    } else {
+      Rcpp::String this_colour = params[ colour_name ];
+      Rcpp::Rcout << "this_colour: " << this_colour.get_cstring() << std::endl;
 
-    // Rcpp::String this_c_name = this_name[0];
-    Rcpp::StringVector sv_r_type = data_types[ this_colour ];
-
-    //Rcpp::StringVector sv_r_type = Rcpp::as< Rcpp::StringVector >( r_type );
-    // Rcpp::Rcout << "r_type: " << sv_r_type << std::endl;
-    Rcpp::String rs_format_type = sv_r_type[0];
-    std::string format_type = rs_format_type;
-    // TODO( if the format-type is unsupported )
+      sv_r_type = data_types[ this_colour ];
+      rs_format_type = sv_r_type[0];
+      format_type = rs_format_type;
+    }
 
     switch ( TYPEOF( palette_type ) ) {
     case 16: {
@@ -65,15 +65,10 @@ namespace colour {
       break;
     }
     default: {
+
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
       // Rcpp::Rcout << "colour_vec: " << colour_vec << std::endl;
       Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, format_type );
-      //Rcpp::StringVector colours = legend["colours"];
-      //Rcpp::Rcout << "colours: " << colours << std::endl;
-
-      // TODO( the summary values will be dependant on the type of formatting! )
-      // Rcpp::StringVector summary = legend["summary_values"];
-      // Rcpp::Rcout << "summary" << summary << std::endl;
 
       if ( include_legend ) {
         legend[ "colour_type" ] = colour_name;
@@ -112,6 +107,9 @@ namespace colour {
     int colourColIndex = colour_location >= 0 ? data_column_index[ colour_location ] : -1;
     int alphaColIndex = opacity_location >= 0 ? data_column_index[ opacity_location ] : -1;
 
+    Rcpp::Rcout << "colourColIndex: " << colourColIndex << std::endl;
+    Rcpp::Rcout << "alphaColIndex: " << alphaColIndex << std::endl;
+
     if ( colourColIndex >= 0 ) {
       this_colour = data[ colourColIndex ];
     } else {
@@ -134,14 +132,20 @@ namespace colour {
       }
     }
 
+    Rcpp::Rcout << "going to make the legend " << std::endl;
+
     Rcpp::List legend = make_colours(
-      lst_params, params, data, data_types, lst_defaults, data_column_index, //hex_strings,
+      lst_params, params, data, data_types, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
       this_colour, alpha, colour_name, include_legend
     );
+
+    Rcpp::Rcout << "made the legend " << std::endl;
 
     // TODO( can this be replaced with 'include_legend') ?
     // NO!
     bool make_legend;
+    Rcpp::Rcout << "make_legend: " << make_legend << std::endl;
+
     if ( lst_legend.containsElementNamed( colour_name ) ) {
       make_legend = lst_legend[ colour_name ];
     }
