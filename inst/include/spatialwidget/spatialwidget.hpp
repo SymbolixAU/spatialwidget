@@ -21,10 +21,6 @@
 namespace spatialwidget {
 namespace api {
 
-  inline void test_api( ) {
-    Rcpp::Rcout << "test" << std::endl;
-  }
-
   /*
    * expects `data` to be an sf object
    */
@@ -39,7 +35,7 @@ namespace api {
       Rcpp::StringVector geometry_columns ) {
 
     Rcpp::StringVector data_names = data.names();
-    Rcpp::Rcout << "data_names start: " << data_names << std::endl;
+    // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
 
     // TODO receive the geometry columns from user input
 
@@ -47,7 +43,7 @@ namespace api {
     // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
     // Rcpp::Rcout << "create_geojson" << std::endl;
 
-    Rcpp::Rcout << "parameters to data " << std::endl;
+    // Rcpp::Rcout << "parameters to data " << std::endl;
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       data_types,
@@ -58,7 +54,7 @@ namespace api {
       data_rows
     );
 
-    Rcpp::Rcout << "getting data from list " << std::endl;
+    // Rcpp::Rcout << "getting data from list " << std::endl;
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
 
     // Rcpp::StringVector nmes = df.names();
@@ -96,7 +92,7 @@ namespace api {
   ) {
 
     Rcpp::StringVector data_names = data.names();
-    Rcpp::Rcout << "data_names start: " << data_names << std::endl;
+    // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data, data_types,

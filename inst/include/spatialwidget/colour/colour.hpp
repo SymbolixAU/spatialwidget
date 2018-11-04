@@ -20,7 +20,7 @@ namespace colour {
       Rcpp::List& lst_defaults,
       int col_index,
       //Rcpp::IntegerVector& data_column_index,
-      SEXP& palette_type,                // string or matrix
+      SEXP& palette_type,
       Rcpp::NumericVector& alpha,
       const char* colour_name,
       bool include_legend) {
@@ -38,15 +38,21 @@ namespace colour {
 
     // TODO( if the colour_name wasn't passed in as a paramter (e.g. stroke_colour),
     // need to use the default)
-    Rcpp::StringVector sv_r_type;
-    Rcpp::String rs_format_type;
+
     std::string format_type;
 
     if ( col_index == -1 ) {
-      Rcpp::stop( "I still need to work out how to use the default colour");
+      //Rcpp::stop( "I still need to work out how to use the default colour");
+
+      palette_type = lst_defaults[ colour_name ];
+      format_type = "numeric";
+
     } else {
       Rcpp::String this_colour = params[ colour_name ];
-      Rcpp::Rcout << "this_colour: " << this_colour.get_cstring() << std::endl;
+      // Rcpp::Rcout << "this_colour: " << this_colour.get_cstring() << std::endl;
+
+      Rcpp::StringVector sv_r_type;
+      Rcpp::String rs_format_type;
 
       sv_r_type = data_types[ this_colour ];
       rs_format_type = sv_r_type[0];
@@ -107,8 +113,8 @@ namespace colour {
     int colourColIndex = colour_location >= 0 ? data_column_index[ colour_location ] : -1;
     int alphaColIndex = opacity_location >= 0 ? data_column_index[ opacity_location ] : -1;
 
-    Rcpp::Rcout << "colourColIndex: " << colourColIndex << std::endl;
-    Rcpp::Rcout << "alphaColIndex: " << alphaColIndex << std::endl;
+    // Rcpp::Rcout << "colourColIndex: " << colourColIndex << std::endl;
+    // Rcpp::Rcout << "alphaColIndex: " << alphaColIndex << std::endl;
 
     if ( colourColIndex >= 0 ) {
       this_colour = data[ colourColIndex ];
@@ -132,19 +138,19 @@ namespace colour {
       }
     }
 
-    Rcpp::Rcout << "going to make the legend " << std::endl;
+    // Rcpp::Rcout << "going to make the legend " << std::endl;
 
     Rcpp::List legend = make_colours(
       lst_params, params, data, data_types, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
       this_colour, alpha, colour_name, include_legend
     );
 
-    Rcpp::Rcout << "made the legend " << std::endl;
+    // Rcpp::Rcout << "made the legend " << std::endl;
 
     // TODO( can this be replaced with 'include_legend') ?
     // NO!
     bool make_legend;
-    Rcpp::Rcout << "make_legend: " << make_legend << std::endl;
+    // Rcpp::Rcout << "make_legend: " << make_legend << std::endl;
 
     if ( lst_legend.containsElementNamed( colour_name ) ) {
       make_legend = lst_legend[ colour_name ];
