@@ -5,10 +5,6 @@ rcpp_construct_data <- function(param_names, params, data_names, lst_defaults, d
     .Call(`_spatialwidget_rcpp_construct_data`, param_names, params, data_names, lst_defaults, data, data_rows)
 }
 
-line_example_geojson <- function(data, data_types, params, geometry_columns) {
-    .Call(`_spatialwidget_line_example_geojson`, data, data_types, params, geometry_columns)
-}
-
 rcpp_resolve_palette <- function(lst_params, params) {
     .Call(`_spatialwidget_rcpp_resolve_palette`, lst_params, params)
 }
@@ -35,5 +31,13 @@ rcpp_where_is <- function(to_find, sv) {
 
 rcpp_remove_list_elements <- function(lst, to_remove) {
     .Call(`_spatialwidget_rcpp_remove_list_elements`, lst, to_remove)
+}
+
+rcpp_widget_line <- function(data, data_types, params, geometry_columns) {
+    .Call(`_spatialwidget_rcpp_widget_line`, data, data_types, params, geometry_columns)
+}
+
+rcpp_widget_polygon <- function(data, data_types, params, geometry_columns) {
+    .Call(`_spatialwidget_rcpp_widget_polygon`, data, data_types, params, geometry_columns)
 }
 

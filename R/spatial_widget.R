@@ -1,4 +1,4 @@
-#' Spatial line
+#' Widget Line
 #'
 #' @param sf \code{sf} object
 #' @param stroke_colour string specifying column of \code{sf} to use for the stroke colour,
@@ -9,17 +9,87 @@
 #' or a single value to apply to all rows of data
 #' @param legend logical indicating if legend data will be returned
 #'
+#' @examples
+#'
+#' ## use default stroke options
+#' l <- widget_line( roads, legend = F )
+#'
 #' @export
-spatial_line <- function( sf, stroke_colour, stroke_opacity, stroke_width, legend = TRUE) {
-  l <- list()
-  l[["stroke_colour"]] <- stroke_colour
-  l[["stroke_opacity"]] <- stroke_opacity
-  l[["stroke_width"]] <- stroke_width
-  l[["legend"]] <- legend
-  l[["geometry"]] <- attr( sf, "sf_column" )
+widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, legend = TRUE) {
+  l <- as.list( match.call( expand.dots = F) )
+  l[[1]] <- NULL
+  l[["data"]] <- NULL
 
-  data_types <- vapply( sf_line, function(x) class(x)[[1]], "")
+  l <- resolve_legend( l, legend )
+  l <- resolve_data( data, l, "LINESTRING")
 
-  js_data <- spatialwidget:::line_example_geojson( sf, data_types, l, c("geometry") )
+  if( !is.null( l[["data"]] ) ) {
+    data <- l[["data"]]
+    l[["data"]] <- NULL
+  }
+
+  data_types <- vapply( data, function(x) class(x)[[1]], "")
+
+  js_data <- rcpp_widget_line( data, data_types, l, c("geometry") )
   return( js_data )
+}
+
+
+## TODO( allow MULTI* objects)
+sfrow <- function( data , sfc_type ) {
+  geom_column <- attr(data, "sf_column")
+  return( which(vapply(data[[geom_column]], function(x) attr(x, "class")[[2]], "") == sfc_type ) )
+}
+
+
+#' Widget Polygon
+#'
+#' @inheritParams widget_line
+#' @param fill_colour
+#' @param fill_opacity
+#'
+#' @examples
+#'
+#' l <- widget_polygon( melbourne, legend = F)
+#' l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = F)
+#'
+#' @export
+widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
+                            fill_colour, fill_opacity, legend = TRUE ) {
+  l <- as.list( match.call( expand.dots = F ) )
+  l[[1]] <- NULL
+  l[["data"]] <- NULL
+
+  l <- resolve_legend( l, legend )
+  l <- resolve_data( data, l, "POLYGON" )
+
+  if( !is.null( l[["data"]] ) ) {
+    data <- l[["data"]]
+    l[["data"]] <- NULL
+  }
+
+  data_types <- vapply( data, function(x) class(x)[[1]], "")
+
+  js_data <- rcpp_widget_polygon( data, data_types, l, c("geometry") )
+  return( js_data )
+}
+
+
+resolve_legend <- function( l, legend ) {
+  l[['legend']] <- legend
+  return( l )
+}
+
+
+resolve_data <- function( data, l, sf_geom ) UseMethod("resolve_data")
+
+#' @export
+resolve_data.sf <- function( data, l, sf_geom ) {
+  sfc_col <- attr( data, "sf_column" )
+  l[["geometry"]] <- sfc_col
+
+  if ( paste0("sfc_", sfc_col) != toupper(sf_geom) ) {
+    l[["data"]] <- data[ sfrow(data, sf_geom) , ]
+  }
+  return( l )
 }

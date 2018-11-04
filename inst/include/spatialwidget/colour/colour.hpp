@@ -25,6 +25,8 @@ namespace colour {
       const char* colour_name,
       bool include_legend) {
 
+    // Rcpp::Rcout << "include_legend: " << include_legend << std::endl;
+
     std::string na_colour = params.containsElementNamed("na_colour") ?
     params["na_colour" ] :
     default_na_colour;
@@ -43,6 +45,8 @@ namespace colour {
 
     if ( col_index == -1 ) {
       //Rcpp::stop( "I still need to work out how to use the default colour");
+
+      // Rcpp::Rcout << "using default colours: " << colour_name << std::endl;
 
       palette_type = lst_defaults[ colour_name ];
       format_type = "numeric";
@@ -73,7 +77,7 @@ namespace colour {
     default: {
 
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
-      // Rcpp::Rcout << "colour_vec: " << colour_vec << std::endl;
+      //Rcpp::Rcout << "colour_vec: " << colour_vec << std::endl;
       Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, format_type );
 
       if ( include_legend ) {
