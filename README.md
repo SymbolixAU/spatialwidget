@@ -8,164 +8,276 @@ status](https://codecov.io/gh/SymbolixAU/spatialwidget/branch/master/graph/badge
 
 # spatialwidget
 
-works in two stages
+### What’s a ‘spatialwidget’
 
-  - sorts out the legend
-  - converts remaining data and parameters into pseudo-GeoJSON
+Well, what do these packages have in common?
 
-# SF objects
+  - leaflet
+  - googleway
+  - mapdeck
+  - mapview
+  - tmap
 
-An `sf` object is retured as a JSON array of pseudo-GeoJSON features,
-one array element for each row of the `sf`
+<!-- end list -->
 
-## How do I use it in my package?
+1.  They are all [htmlwidgets](http://www.htmlwidgets.org/)
+2.  They all plot interactive maps
+3.  They all take data from R and display it on the maps.
 
-You need to implement a `.cpp` file and a `.R` file.
+And on 22nd August 2017 on the [r-spatial github
+page](https://github.com/r-spatial/discuss/issues/15#issue-251762127) it
+was requested if there could be a common package which could be shared
+by all the interactive web-plotting libraries
 
-The `.cpp` file must include
+> Currently there is code in the leaflet package that extracts data from
+> sp and sf objects and converts it into a dataframe that is then passed
+> to the Javascript side (by converting it into a JSON). This code is
+> fairly generic and not really dependent on anything leaflet specific.
+> It makes a lot of sense to take out this code and make it a package of
+> its own. That way we can build other web plotting R packages to wrap
+> say d3.geo or mapboxGL or cesium and reuse a major chunk of the code
+> that takes data from spatial objects and passes it to Javascript.
 
-  - `std::unordered_map< std::string, std::string > colours` - a mapping
-    between colours and opacities
-  - `Rcpp::StringVector legend` - vector containing the possible legends
-  - `Rcpp::List defaults` - A list of vectors, with at least one vector
-    per colour option
+so **spatialwidget** is my attempt at this library.
 
-(the names of these objects, `columns`, `colours`, etc are optional).
+### What does it do?
 
-You then call `spatialwidget::api::create_geojson()` with these
-arguments.
+It takes a simple feature object (`sf`), plus some user-supplied
+arguments, and converts the data into JSON, ready for plotting/ parsing
+in whatever javascript library you chose.
 
-**line\_example.cpp**
+### Can you show me?
 
-``` cpp
-#include <Rcpp.h>
-#include "spatialwidget/spatialwidget.hpp"
-
-// map between colour and opacity values
-std::unordered_map< std::string, std::string > line_colours = {
-  { "stroke_colour", "stroke_opacity" }
-};
-
-// vector of possible legend components
-Rcpp::StringVector line_legend = Rcpp::StringVector::create(
-  "stroke_colour"
-);
-
-Rcpp::NumericVector default_stroke_colour( int n ) {
-  Rcpp::NumericVector nv( n, 1.0 );
-  return nv;
-}
-
-Rcpp::NumericVector default_stroke_width( int n ) {
-  Rcpp::NumericVector nv( n, 1.0 );
-  return nv;
-}
-
-Rcpp::List line_defaults( int n ) {
-  return Rcpp::List::create(
-   Rcpp::_["stroke_colour"] = default_stroke_colour( n ),
-   Rcpp::_["stroke_width"] = default_stroke_width( n )
-  );
-}
-
-// [[Rcpp::export]]
-Rcpp::List line_example_geojson( Rcpp::DataFrame data, Rcpp::List params ) {
-
-  int data_rows = data.nrows();
-  Rcpp::List defaults = line_defaults( data_rows );
-
-  return spatialwidget::api::create_geojson(
-    data, params, defaults,
-    line_colours, line_legend,
-    data_rows
-  );
-}
-```
-
-In R you create a list of paramters, for example specifying which
-columns of your data will be used the colours.
-
-If a parameter specifies a column of the data object, that column will
-be used and returned. If the parameter is a single value, that value
-will be used for every row.
-
-You also need to specify the ‘geometry’ columns of the `sf` object you
-want to include.
-
-**line\_example.R**
+Sure. In this example I’m using the `capitals` data, which is an `sf`
+object of all the capital cities.
 
 ``` r
-
+library(spatialwidget)
 library(sf)
 #  Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
-library(mapdeck) ## for roads data
-
-sf_line <- mapdeck::roads
-
-l <- list()
-l[["stroke_colour"]] <- "RIGHT_LOC"
-
-
-## the list of parameters should include the geometry columns,
-l[["myPathGeometry"]] <- "geometry"       ## a geometry column
-
-## and you need topass in those parameter names which inlcude the geometry columns
-
-js_data <- spatialwidget:::line_example_geojson( sf_line, l, c("myPathGeometry") )
-str(js_data)
-#  List of 2
-#   $ data  : 'json' chr "[{\"type\":\"Feature\",\"properties\":{\"stroke_colour\":\"#46317EFF\",\"stroke_width\":1.0},\"geometry\":{\"my"| __truncated__
-#   $ legend: 'json' chr "{\"stroke_colour\":[false]}"
+sf <- spatialwidget::capitals
+sf
+#  Simple feature collection with 200 features and 2 fields
+#  geometry type:  POINT
+#  dimension:      XY
+#  bbox:           xmin: -174 ymin: -53 xmax: 179.13 ymax: 64.1
+#  epsg (SRID):    NA
+#  proj4string:    NA
+#  First 10 features:
+#                 country          capital               geometry
+#  1          Afghanistan            Kabul    POINT (69.11 34.28)
+#  2              Albania           Tirane    POINT (19.49 41.18)
+#  3              Algeria          Algiers     POINT (3.08 36.42)
+#  4       American Samoa        Pago Pago POINT (-170.43 -14.16)
+#  5              Andorra Andorra la Vella     POINT (1.32 42.31)
+#  6               Angola           Luanda     POINT (13.15 -8.5)
+#  7  Antigua and Barbuda      West Indies    POINT (-61.48 17.2)
+#  8            Argentina     Buenos Aires      POINT (-60 -36.3)
+#  9              Armenia          Yerevan     POINT (44.31 40.1)
+#  10               Aruba       Oranjestad   POINT (-70.02 12.32)
 ```
 
-### What do you mean by ‘pseudo-GeoJSON’?
+As each capital is a POINT, you can use `widget_point()` to conver it to
+JSON.
 
-Because you can supply multiple geometry columns, all of them need to be
-converted into GeoJSON. But, each of these GeoJSONs will have the same
-properties (because they come from the same row of an `sf` object). So
-rather than duplicating the properties for each geometry, I’ve decided
-to include each geometry inside the `geometry : {}` object.
+``` r
+l <- widget_point( data = sf[1:2, ], fill_colour = "country" , legend = F)
+```
 
-Therefore this invalidates the GeoJSON standard, so it’s technically not
-GeoJSON.
+Each row of `capitals` has been converted into a JSON object. And all
+these objects are within an array.
+
+Look, here are the first two rows of `capitals` as JSON
+
+``` r
+sf[1:2, ]
+#  Simple feature collection with 2 features and 2 fields
+#  geometry type:  POINT
+#  dimension:      XY
+#  bbox:           xmin: 19.49 ymin: 34.28 xmax: 69.11 ymax: 41.18
+#  epsg (SRID):    NA
+#  proj4string:    NA
+#        country capital            geometry
+#  1 Afghanistan   Kabul POINT (69.11 34.28)
+#  2     Albania  Tirane POINT (19.49 41.18)
+jsonlite::prettify( l$data )
+#  [
+#      {
+#          "type": "Feature",
+#          "properties": {
+#              "fill_colour": "#440154FF"
+#          },
+#          "geometry": {
+#              "geometry": {
+#                  "type": "Point",
+#                  "coordinates": [
+#                      69.11,
+#                      34.28
+#                  ]
+#              }
+#          }
+#      },
+#      {
+#          "type": "Feature",
+#          "properties": {
+#              "fill_colour": "#FDE725FF"
+#          },
+#          "geometry": {
+#              "geometry": {
+#                  "type": "Point",
+#                  "coordinates": [
+#                      19.49,
+#                      41.18
+#                  ]
+#              }
+#          }
+#      }
+#  ]
+#  
+```
+
+You can see that the coordinates are inside a `geometry` object, and the
+user-defined `fill_colour` is within the `properties` object.
+
+### That looks a lot like GeoJSON
+
+Well spotted. But it’s not quite GeoJSON for a very good reason.
+
+Some plotting libraries can use more than one geometry, such as
+[mapdeck::add\_arc()](https://github.com/SymbolixAU/mapdeck#basic-use),
+which uses an origin and destination. So spatialwidget needs to handle
+multiple geometries.
+
+Typical GeoJSON will take the
+form
+
+``` js
+[{"type":"Feature", "properties":{"stroke_colour":"#440154FF"},"geometry":{"type":"Point","coordinates":[0,0]}}]
+```
+
+Whereas I’ve nested the geometries one-level deeper, so the
+pseudo-GeoJSON i’m using takes the
+form
+
+``` js
+[{"type":"Feature", "properties":{"stroke_colour":"#440154FF"},"geometry":{"myGeometry":{"type":"Point","coordinates":[0,0]}}}]
+```
+
+Where the `myGeometry` object is defined on a per-application bases. You
+are free to call this whatever you want inside your
+library.
+
+### That sort of makes sense, but can you show me an example with multiple geometries?
+
+Yep.
+
+Say we want to generate an arc-map showing an arc between Sydney and all
+the other capitals cities. After a bit of manipulation we can make a
+`sf` object with two geometry columns
+
+``` r
+sf_sydney <- capitals[ capitals$country == "Australia", ]
+sf_world <- capitals[ capitals$country != "Australia", ]
+
+sf <- cbind( sf_world, sf_sydney[rep(1, nrow(sf_world)), ])
+sf
+#  Simple feature collection with 199 features and 4 fields
+#  Active geometry column: geometry
+#  geometry type:  POINT
+#  dimension:      XY
+#  bbox:           xmin: -174 ymin: -53 xmax: 179.13 ymax: 64.1
+#  epsg (SRID):    NA
+#  proj4string:    NA
+#  First 10 features:
+#                 country          capital country.1 capital.1
+#  1          Afghanistan            Kabul Australia  Canberra
+#  2              Albania           Tirane Australia  Canberra
+#  3              Algeria          Algiers Australia  Canberra
+#  4       American Samoa        Pago Pago Australia  Canberra
+#  5              Andorra Andorra la Vella Australia  Canberra
+#  6               Angola           Luanda Australia  Canberra
+#  7  Antigua and Barbuda      West Indies Australia  Canberra
+#  8            Argentina     Buenos Aires Australia  Canberra
+#  9              Armenia          Yerevan Australia  Canberra
+#  10               Aruba       Oranjestad Australia  Canberra
+#                   geometry            geometry.1
+#  1     POINT (69.11 34.28) POINT (149.08 -35.15)
+#  2     POINT (19.49 41.18) POINT (149.08 -35.15)
+#  3      POINT (3.08 36.42) POINT (149.08 -35.15)
+#  4  POINT (-170.43 -14.16) POINT (149.08 -35.15)
+#  5      POINT (1.32 42.31) POINT (149.08 -35.15)
+#  6      POINT (13.15 -8.5) POINT (149.08 -35.15)
+#  7     POINT (-61.48 17.2) POINT (149.08 -35.15)
+#  8       POINT (-60 -36.3) POINT (149.08 -35.15)
+#  9      POINT (44.31 40.1) POINT (149.08 -35.15)
+#  10   POINT (-70.02 12.32) POINT (149.08 -35.15)
+```
+
+NOTE: I’m still writing the R function to handle OD, but here’s how you
+call the `rcpp` function
 
 ``` r
 
-js_data <- spatialwidget:::line_example_geojson( sf_line[1, ], l, c("myPathGeometry") )
-cat( js_data$data )
-#  [{"type":"Feature","properties":{"stroke_colour":"#440154FF","stroke_width":1.0},"geometry":{"myPathGeometry":{"type":"LineString","coordinates":[[145.014291,-37.830458],[145.014345,-37.830574],[145.01449,-37.830703],[145.01599,-37.831484],[145.016479,-37.831699],[145.016813,-37.83175],[145.01712,-37.831742],[145.0175,-37.831667],[145.017843,-37.831559],[145.018349,-37.83138],[145.018603,-37.83133],[145.018901,-37.831301],[145.019136,-37.831301],[145.01943,-37.831333],[145.019733,-37.831377],[145.020195,-37.831462],[145.020546,-37.831544],[145.020641,-37.83159],[145.020748,-37.83159],[145.020993,-37.831664]]}}}]
+data_types <- vapply( sf, function(x) class(x)[[1]], "")
+l <- list()
+l[["origin"]] <- "geometry"
+l[["destination"]] <- "geometry.1"
+l[["fill_colour"]] <- "country"
+js <- spatialwidget:::rcpp_widget_point( sf[1:2, ], data_types, l, c("origin","destination") )
+
+jsonlite::prettify( js$data )
+#  [
+#      {
+#          "type": "Feature",
+#          "properties": {
+#              "fill_colour": "#440154FF"
+#          },
+#          "geometry": {
+#              "origin": {
+#                  "type": "Point",
+#                  "coordinates": [
+#                      69.11,
+#                      34.28
+#                  ]
+#              },
+#              "destination": {
+#                  "type": "Point",
+#                  "coordinates": [
+#                      149.08,
+#                      -35.15
+#                  ]
+#              }
+#          }
+#      },
+#      {
+#          "type": "Feature",
+#          "properties": {
+#              "fill_colour": "#FDE725FF"
+#          },
+#          "geometry": {
+#              "origin": {
+#                  "type": "Point",
+#                  "coordinates": [
+#                      19.49,
+#                      41.18
+#                  ]
+#              },
+#              "destination": {
+#                  "type": "Point",
+#                  "coordinates": [
+#                      149.08,
+#                      -35.15
+#                  ]
+#              }
+#          }
+#      }
+#  ]
+#  
 ```
 
-There is a working example in [mapdeck
-here](https://github.com/SymbolixAU/mapdeck/blob/geojson/src/path.cpp)
+Notice now the `geometry` object has within it an `origin` and a
+`destination`
 
-``` cpp
-#include <Rcpp.h>
+### How do I use it in my package?
 
-#include "mapdeck_defaults.hpp"
-#include "layers/path.hpp"
-#include "spatialwidget/spatialwidget.hpp"
-
-Rcpp::List path_defaults(int n) {
-    return Rcpp::List::create(
-        _["polyline"] = mapdeck::defaults::default_polyline(n),
-        _["stroke_colour"] = mapdeck::defaults::default_stroke_colour(n),
-        _["stroke_width"] = mapdeck::defaults::default_stroke_width(n)
-    );
-}
-
-// [[Rcpp::export]]
-Rcpp::List rcpp_path_geojson( Rcpp::DataFrame data, Rcpp::List params ) {
-
-    int data_rows = data.nrows();
-    Rcpp::List lst_defaults = path_defaults( data_rows );  // initialise with defaults
-    std::unordered_map< std::string, std::string > path_colours = mapdeck::path::path_colours;
-    Rcpp::StringVector path_legend = mapdeck::path::path_legend;
-
-    return spatialwidget::api::create_geojson(
-        data, params, lst_defaults,
-        path_colours, path_legend,
-        data_rows
-    );
-}
-```
+TODO: examples of c++ integration
