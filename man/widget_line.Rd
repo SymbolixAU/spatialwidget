@@ -22,7 +22,7 @@ or a single value to apply to all rows of data}
 \item{sf}{\code{sf} object}
 }
 \description{
-Widget Line
+Converts an `sf` object with LINESTRING geometriers into JSON for plotting in an htmlwidget
 }
 \examples{
 

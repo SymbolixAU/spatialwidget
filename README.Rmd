@@ -128,5 +128,15 @@ Notice now the `geometry` object has within it an `origin` and a `destination`
 
 TODO: examples of c++ integration
 
+- 
+
+
+### what else
+
+- dependencies / design philosophy
+- colourvalues
+- jsonify
+
+The c++ functions require data, list of parameters, names, geometries
 
 

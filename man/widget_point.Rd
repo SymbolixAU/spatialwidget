@@ -10,10 +10,19 @@ widget_point(data, fill_colour, fill_opacity, lon = NULL, lat = NULL,
 \arguments{
 \item{fill_opacity}{}
 
-\item{lat}{}
+\item{lon}{string specifying the column of \code{data} containing the longitude.
+Ignored if using an \code{sf} object}
+
+\item{lat}{string specifying the column of \code{data} containing the latitude.
+Ignored if using an \code{sf} object}
 
 \item{legend}{logical indicating if legend data will be returned}
 }
 \description{
-Widget Point
+Converts an `sf` object with POINT geometriers into JSON for plotting in an htmlwidget
+}
+\examples{
+
+l <- widget_point( data = capitals, legend = FALSE )
+
 }

@@ -22,7 +22,7 @@ or a single value to apply to all rows of data}
 \item{legend}{logical indicating if legend data will be returned}
 }
 \description{
-Widget Polygon
+Converts an `sf` object with POLYGON geometriers into JSON for plotting in an htmlwidget
 }
 \examples{
 

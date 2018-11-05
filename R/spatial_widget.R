@@ -1,5 +1,7 @@
 #' Widget Line
 #'
+#' Converts an `sf` object with LINESTRING geometriers into JSON for plotting in an htmlwidget
+#'
 #' @param sf \code{sf} object
 #' @param stroke_colour string specifying column of \code{sf} to use for the stroke colour,
 #' or a single value to apply to all rows of data
@@ -36,14 +38,9 @@ widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, lege
 }
 
 
-## TODO( allow MULTI* objects)
-sfrow <- function( data , sfc_type ) {
-  geom_column <- attr(data, "sf_column")
-  return( which(vapply(data[[geom_column]], function(x) attr(x, "class")[[2]], "") == sfc_type ) )
-}
-
-
 #' Widget Polygon
+#'
+#' Converts an `sf` object with POLYGON geometriers into JSON for plotting in an htmlwidget
 #'
 #' @inheritParams widget_line
 #' @param fill_colour
@@ -79,9 +76,17 @@ widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
 
 #' Widget Point
 #'
+#' Converts an `sf` object with POINT geometriers into JSON for plotting in an htmlwidget
+#'
 #' @inheritParams widget_polygon
-#' @param lon
-#' @param lat
+#' @param lon string specifying the column of \code{data} containing the longitude.
+#' Ignored if using an \code{sf} object
+#' @param lat string specifying the column of \code{data} containing the latitude.
+#' Ignored if using an \code{sf} object
+#'
+#' @examples
+#'
+#' l <- widget_point( data = capitals, legend = FALSE )
 #'
 #' @export
 widget_point <- function( data, fill_colour, fill_opacity, lon = NULL, lat = NULL, legend = TRUE ) {
@@ -119,6 +124,14 @@ resolve_legend <- function( l, legend ) {
   return( l )
 }
 
+## TODO( allow MULTI* objects)
+sfrow <- function( data , sfc_type ) {
+  geom_column <- attr(data, "sf_column")
+  return(
+    which(vapply(data[[geom_column]], function(x) attr(x, "class")[[2]], "") %in% c(sfc_type, paste0("MULTI", sfc_type) ) )
+  )
+}
+
 resolve_data <- function( data, l, sf_geom ) UseMethod("resolve_data")
 
 #' @export
@@ -138,6 +151,7 @@ resolve_data.data.frame <- function( data, l, sf_geom ) {
   if( sf_geom != "POINT") {
     stop("only POINTS are supported for data.frames")
   }
+  l[["geometry"]] <- c( l[["lon"]], l[["lat"]] )
   l[["data"]] <- data
   l[["data_type"]] <- "df"
   return( l )
