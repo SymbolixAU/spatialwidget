@@ -19,3 +19,36 @@ Rcpp::StringVector rcpp_resolve_palette( Rcpp::List lst_params, Rcpp::List param
   }
   return R_NilValue;
 }
+
+
+/*
+ * colour_str_with_palette
+ *
+ */
+// [[Rcpp::export]]
+Rcpp::List rcpp_colour_str_with_palette(
+    SEXP palette,
+    Rcpp::StringVector fill_colour_vec,
+    Rcpp::NumericVector alpha,
+    std::string na_colour,
+    bool include_alpha) {
+  return spatialwidget::palette::colour_with_palette(
+    palette, fill_colour_vec, alpha, na_colour, include_alpha
+  );
+}
+
+/*
+ * colour_with_num_with_palette
+ *
+ */
+// [[Rcpp::export]]
+Rcpp::List rcpp_colour_num_with_palette(
+    SEXP palette,
+    Rcpp::NumericVector fill_colour_vec,
+    Rcpp::NumericVector alpha,
+    std::string na_colour,
+    bool include_alpha) {
+  return spatialwidget::palette::colour_with_palette(
+    palette, fill_colour_vec, alpha, na_colour, include_alpha
+  );
+}

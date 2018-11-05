@@ -7,7 +7,12 @@
 namespace spatialwidget {
 namespace legend {
 
-  inline void set_legend_option( Rcpp::List& opts, const char* option, std::string& value, const char* colour_name ) {
+  inline void set_legend_option(
+      Rcpp::List& opts,
+      const char* option,
+      std::string& value,
+      const char* colour_name ) {
+
     if ( opts.containsElementNamed( option ) ) {
       Rcpp::String s_value = opts[ option ];
       value = s_value;
@@ -22,7 +27,10 @@ namespace legend {
                                     Rcpp::StringVector& param_names,
                                     Rcpp::StringVector& legend_types ) {
 
-    legend_types = Rcpp::intersect(legend_types, param_names);
+    // Rcpp::Rcout << "legend types before: " << legend_types << std::endl;
+    legend_types = Rcpp::intersect( legend_types, param_names );
+    // Rcpp::Rcout << "legend types after : " << legend_types << std::endl;
+    // Rcpp::Rcout << "param_names: " << param_names << std::endl;
 
     int n = legend_types.size();
     int i;

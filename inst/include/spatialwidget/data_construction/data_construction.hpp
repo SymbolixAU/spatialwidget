@@ -30,7 +30,6 @@ namespace construction {
    */
   inline Rcpp::DataFrame construct_data(
   		Rcpp::StringVector& param_names,
-  		//Rcpp::StringVector& required_columns,
   		Rcpp::List& params,
   		Rcpp::StringVector& data_names,
   		Rcpp::List& lst_defaults,
@@ -39,6 +38,10 @@ namespace construction {
 
   	int n = params.size();
   	int colIndex = -1;
+
+  	if (param_names.size() != n ) {
+  	  Rcpp::stop("unsuitable data object");
+  	}
 
   	// Rcpp::Rcout << "param names: " << param_names << std::endl;
 
@@ -60,12 +63,16 @@ namespace construction {
 
   				Rcpp::String param_value = params[i];
 
-  				// Rcpp::Rcout << "param value: " << param_value << std::endl;
+  				// Rcpp::Rcout << "param value: " << param_value.get_cstring() << std::endl;
 
   				// returns -1 if length != 1
   				// colIndex = spatialwidget::utils::data_column_index( param_value, data_names );
-  				colIndex = spatialwidget::utils::where::where_is( param_value.get_cstring(), data_names );
+  				colIndex = spatialwidget::utils::where::where_is( param_value, data_names );
   				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
+
+  				if ( colIndex == -1 ) {
+  				  Rcpp::stop("unknown column");
+  				}
 
   				if ( colIndex >= 0 ) {
   					// The param_value IS a column name
