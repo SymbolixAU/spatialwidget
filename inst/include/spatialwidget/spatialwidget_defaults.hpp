@@ -17,5 +17,4 @@ Rcpp::List line_defaults( int n );
 
 Rcpp::List polygon_defaults( int n );
 
-
 #endif

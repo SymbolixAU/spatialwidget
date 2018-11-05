@@ -1,18 +1,7 @@
 #include <Rcpp.h>
 #include "spatialwidget/spatialwidget.hpp"
 #include "spatialwidget/spatialwidget_defaults.hpp"
-
-// map between colour and opacity values
-std::unordered_map< std::string, std::string > polygon_colours = {
-  { "stroke_colour", "stroke_opacity" },
-  { "fill_colour", "fill_opacity"}
-};
-
-// vector of possible legend components
-Rcpp::StringVector polygon_legend = Rcpp::StringVector::create(
-  "stroke_colour", "fill_colour"
-);
-
+#include "spatialwidget/layers/widgetpolygon.hpp"
 
 // [[Rcpp::export]]
 Rcpp::List rcpp_widget_polygon(
@@ -23,6 +12,9 @@ Rcpp::List rcpp_widget_polygon(
 
   int data_rows = data.nrows();
   Rcpp::List defaults = polygon_defaults( data_rows );
+
+  std::unordered_map< std::string, std::string > polygon_colours = spatialwidget::widgetpolygon::polygon_colours;
+  Rcpp::StringVector polygon_legend = spatialwidget::widgetpolygon::polygon_legend;
 
   return spatialwidget::api::create_geojson(
     data,

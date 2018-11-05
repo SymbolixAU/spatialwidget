@@ -56,7 +56,7 @@ namespace parameters {
 
       if ( parameter_type == STRSXP ) { // STRSXP (string vector)
         Rcpp::String param_value = params[i];
-        data_column_index[i] = spatialwidget::utils::where::where_is( param_value.get_cstring(), data_names );
+        data_column_index[i] = spatialwidget::utils::where::where_is( param_value, data_names );
       }
     }
     return Rcpp::List::create(
@@ -74,8 +74,6 @@ namespace parameters {
   		Rcpp::List& data_types,               // column data types of 'data'
   		Rcpp::List& params,                   // list of parameters from calling function
   		Rcpp::List& lst_defaults,
-  		//Rcpp::StringVector& layer_columns,
-  		//Rcpp::StringVector& colour_columns,
   		std::unordered_map< std::string, std::string > colour_columns,
   		Rcpp::StringVector& legend_types,
   		int& data_rows) {
@@ -85,6 +83,7 @@ namespace parameters {
 
   	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
   	// Rcpp::Rcout << "param name: " << param_names << std::endl;
+  	// Rcpp::Rcout << "legend_types: " << legend_types << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
 
@@ -94,7 +93,12 @@ namespace parameters {
   	// lst_legend[ "fill_colour" ] = true;
   	// lst_legend[ "stroke_colour" ] = false;
 
-  	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list( lst_params, params, param_names, legend_types );
+  	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list(
+  	  lst_params,
+  	  params,
+  	  param_names,
+  	  legend_types
+  	);
 
   	Rcpp::StringVector legend_names = lst_legend.names();
   	// Rcpp::Rcout << "legend_names: " <<  legend_names << std::endl;
@@ -113,9 +117,16 @@ namespace parameters {
 
 		  // Rcpp::Rcout << "colour_column: " << colour_column << std::endl;
 		  // Rcpp::Rcout << "opacity_column: " << opacity_column << std::endl;
+		  // Rcpp::Rcout << "legend_names: " << legend_names << std::endl;
 
-		  include_legend = spatialwidget::utils::where::where_is( colour_column.c_str(), legend_names ) >= 0 ? true : false;
-	    spatialwidget::colour::resolve_colour( lst_params, params, data, data_types, lst_defaults, colour_column.c_str(), opacity_column.c_str(),  lst_legend, include_legend );
+		  include_legend = spatialwidget::utils::where::where_is( colour_column, legend_names ) >= 0 ? true : false;
+
+	    spatialwidget::colour::resolve_colour(
+	      lst_params, params, data, data_types, lst_defaults,
+	      colour_column.c_str(),
+	      opacity_column.c_str(),
+	      lst_legend, include_legend
+	      );
 		}
 
 		// Rcpp::Rcout << "colours resolved" << std::endl;

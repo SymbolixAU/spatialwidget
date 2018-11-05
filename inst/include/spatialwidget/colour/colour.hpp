@@ -27,7 +27,7 @@ namespace colour {
 
     // Rcpp::Rcout << "include_legend: " << include_legend << std::endl;
 
-    std::string na_colour = params.containsElementNamed("na_colour") ?
+    std::string na_colour = params.containsElementNamed( "na_colour" ) ?
     params["na_colour" ] :
     default_na_colour;
 
@@ -143,6 +143,7 @@ namespace colour {
     }
 
     // Rcpp::Rcout << "going to make the legend " << std::endl;
+    // Rcpp::Rcout << "include_legend: " << include_legend << std::endl;
 
     Rcpp::List legend = make_colours(
       lst_params, params, data, data_types, lst_defaults, colourColIndex, //data_column_index, //hex_strings,

@@ -37,6 +37,8 @@ namespace api {
     Rcpp::StringVector data_names = data.names();
     // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
 
+    // Rcpp::Rcout << "layer_legend: " << layer_legend << std::endl;
+
     // TODO receive the geometry columns from user input
 
     //std::string geom_column = data.attr("sf_column");

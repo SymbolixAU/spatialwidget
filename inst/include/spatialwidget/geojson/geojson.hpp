@@ -103,7 +103,7 @@ namespace geojson {
     // Rcpp::Rcout << "sf.length: " << sf.length() << std::endl;
 
     for (int i = 0; i < sf.length(); i++) {
-      const char* this_column = column_names[i];
+      Rcpp::String this_column = column_names[i];
       int idx = spatialwidget::utils::where::where_is( this_column, geometries );
 
       // Rcpp::Rcout << "this_column: " << this_column << std::endl;
@@ -298,7 +298,7 @@ namespace geojson {
 
     for (int i = 0; i < df.length(); i++) {
 
-      const char* this_column = column_names[i];
+      Rcpp::String this_column = column_names[i];
       // Rcpp::Rcout << "this_column: " << this_column << std::endl;
 
       int idx_lon = spatialwidget::utils::where::where_is( this_column, lons );

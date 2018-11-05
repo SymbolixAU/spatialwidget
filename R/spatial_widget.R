@@ -106,6 +106,8 @@ widget_point <- function( data, fill_colour, fill_opacity, lon = NULL, lat = NUL
   tp <- l[["data_type"]]
   l[["data_type"]] <- NULL
 
+  print( l )
+
   if( tp == "sf" ) {
     js_data <- rcpp_widget_point( data, data_types, l, c("geometry") )
   } else if (tp == "df" ) {
