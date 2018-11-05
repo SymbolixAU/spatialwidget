@@ -27,6 +27,7 @@ widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, lege
     data <- l[["data"]]
     l[["data"]] <- NULL
   }
+  l[["data_type"]] <- NULL
 
   data_types <- vapply( data, function(x) class(x)[[1]], "")
 
@@ -67,6 +68,7 @@ widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
     data <- l[["data"]]
     l[["data"]] <- NULL
   }
+  l[["data_type"]] <- NULL
 
   data_types <- vapply( data, function(x) class(x)[[1]], "")
 
@@ -75,11 +77,47 @@ widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
 }
 
 
+#' Widget Point
+#'
+#' @inheritParams widget_polygon
+#' @param lon
+#' @param lat
+#'
+#' @export
+widget_point <- function( data, fill_colour, fill_opacity, lon = NULL, lat = NULL, legend = TRUE ) {
+  l <- as.list( match.call( expand.dots = F ) )
+  l[[1]] <- NULL
+  l[["data"]] <- NULL
+
+  l <- resolve_legend( l, legend )
+  l <- resolve_data( data, l, "POINT" )
+
+  if( !is.null( l[["data"]] ) ) {
+    data <- l[["data"]]
+    l[["data"]] <- NULL
+  }
+
+  data_types <- vapply( data, function(x) class(x)[[1]], "")
+  tp <- l[["data_type"]]
+  l[["data_type"]] <- NULL
+
+  if( tp == "sf" ) {
+    js_data <- rcpp_widget_point( data, data_types, l, c("geometry") )
+  } else if (tp == "df" ) {
+    if( is.null( lon ) || is.null( lat ) ) {
+      stop("lon and lat are requried for data.frames")
+    }
+    js_data <- rcpp_widget_point_df( data, data_types, l, list(myGeometry = c("lon","lat") ) )
+  }
+
+  return( js_data )
+}
+
+
 resolve_legend <- function( l, legend ) {
   l[['legend']] <- legend
   return( l )
 }
-
 
 resolve_data <- function( data, l, sf_geom ) UseMethod("resolve_data")
 
@@ -91,5 +129,16 @@ resolve_data.sf <- function( data, l, sf_geom ) {
   if ( paste0("sfc_", sfc_col) != toupper(sf_geom) ) {
     l[["data"]] <- data[ sfrow(data, sf_geom) , ]
   }
+  l[["data_type"]] <- "sf"
+  return( l )
+}
+
+#' @export
+resolve_data.data.frame <- function( data, l, sf_geom ) {
+  if( sf_geom != "POINT") {
+    stop("only POINTS are supported for data.frames")
+  }
+  l[["data"]] <- data
+  l[["data_type"]] <- "df"
   return( l )
 }

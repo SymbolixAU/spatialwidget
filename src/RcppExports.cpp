@@ -132,6 +132,34 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_widget_point
+Rcpp::List rcpp_widget_point(Rcpp::DataFrame data, Rcpp::List data_types, Rcpp::List params, Rcpp::StringVector geometry_columns);
+RcppExport SEXP _spatialwidget_rcpp_widget_point(SEXP dataSEXP, SEXP data_typesSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type data_types(data_typesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type params(paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type geometry_columns(geometry_columnsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_widget_point(data, data_types, params, geometry_columns));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_widget_point_df
+Rcpp::List rcpp_widget_point_df(Rcpp::DataFrame data, Rcpp::List data_types, Rcpp::List params, Rcpp::List geometries);
+RcppExport SEXP _spatialwidget_rcpp_widget_point_df(SEXP dataSEXP, SEXP data_typesSEXP, SEXP paramsSEXP, SEXP geometriesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type data_types(data_typesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type params(paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type geometries(geometriesSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_widget_point_df(data, data_types, params, geometries));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_widget_polygon
 Rcpp::List rcpp_widget_polygon(Rcpp::DataFrame data, Rcpp::List data_types, Rcpp::List params, Rcpp::StringVector geometry_columns);
 RcppExport SEXP _spatialwidget_rcpp_widget_polygon(SEXP dataSEXP, SEXP data_typesSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP) {
@@ -157,6 +185,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
     {"_spatialwidget_rcpp_remove_list_elements", (DL_FUNC) &_spatialwidget_rcpp_remove_list_elements, 2},
     {"_spatialwidget_rcpp_widget_line", (DL_FUNC) &_spatialwidget_rcpp_widget_line, 4},
+    {"_spatialwidget_rcpp_widget_point", (DL_FUNC) &_spatialwidget_rcpp_widget_point, 4},
+    {"_spatialwidget_rcpp_widget_point_df", (DL_FUNC) &_spatialwidget_rcpp_widget_point_df, 4},
     {"_spatialwidget_rcpp_widget_polygon", (DL_FUNC) &_spatialwidget_rcpp_widget_polygon, 4},
     {NULL, NULL, 0}
 };

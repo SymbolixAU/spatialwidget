@@ -87,24 +87,27 @@ namespace api {
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
-      const char* lon,
-      const char* lat
+      Rcpp::List& geometries
   ) {
 
     Rcpp::StringVector data_names = data.names();
     // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-      data, data_types,
-      params, lst_defaults,
-      layer_colours, layer_legend, data_rows
+      data,
+      data_types,
+      params,
+      lst_defaults,
+      layer_colours,
+      layer_legend,
+      data_rows
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     SEXP legend = lst[ "legend" ];
     legend = jsonify::vectors::to_json( legend );
 
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, lon, lat );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometries );
 
     return Rcpp::List::create(
       Rcpp::_["data"] = js_data,

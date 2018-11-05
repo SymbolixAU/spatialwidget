@@ -84,6 +84,7 @@ namespace parameters {
   	Rcpp::StringVector data_names = data.names();
 
   	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
+  	// Rcpp::Rcout << "param name: " << param_names << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
 
@@ -154,7 +155,9 @@ namespace parameters {
   	//   "stroke_to_opacity","stroke_opacity","fill_opacity","palette"
   	//   );
 
+  	// Rcpp::Rcout << "param_names 1: " << param_names << std::endl;
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, colours_remove );
+  	// Rcpp::Rcout << "param_names 2: " << param_names << std::endl;
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_types );
 //
   	lst_params = construct_params( data, params );

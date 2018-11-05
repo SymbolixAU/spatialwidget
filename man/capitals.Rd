@@ -15,6 +15,6 @@
 capitals
 }
 \description{
-A data set containing the coordinates of 200 capitical cities in the world
+A simple feature \code{sf} object containing the coordinates of 200 capitical cities in the world
 }
 \keyword{datasets}

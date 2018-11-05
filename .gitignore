@@ -12,4 +12,4 @@ src/*.o
 src/*.so
 src/*.dll
 inst/doc
-.DS_Store.DS_Store
+.DS_Store

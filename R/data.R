@@ -1,6 +1,6 @@
 #' Capital cities for each country
 #'
-#' A data set containing the coordinates of 200 capitical cities in the world
+#' A simple feature \code{sf} object containing the coordinates of 200 capitical cities in the world
 #'
 #' @format A data frame with 200 observations and 4 variables
 #' \describe{
@@ -25,7 +25,7 @@
 
 #' Melbourne
 #'
-#' Polygons for Melbourne and the surrounding area
+#' A simple feature \code{sf} object of Polygons for Melbourne and the surrounding area
 #'
 #' This data set is a subset of the Statistical Area Level 2 (SA2) ASGS
 #' Edition 2016 data released by the Australian Bureau of Statistics

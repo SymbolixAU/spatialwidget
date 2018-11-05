@@ -35,3 +35,10 @@ Rcpp::List polygon_defaults( int n ) {
     Rcpp::_["fill_colour"] = default_fill_colour( n )
   );
 }
+
+
+Rcpp::List point_defaults( int n ) {
+  return Rcpp::List::create(
+    Rcpp::_["fill_colour"] = default_fill_colour( n )
+  );
+}

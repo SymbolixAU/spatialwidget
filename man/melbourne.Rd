@@ -20,7 +20,7 @@
 melbourne
 }
 \description{
-Polygons for Melbourne and the surrounding area
+A simple feature \code{sf} object of Polygons for Melbourne and the surrounding area
 }
 \details{
 This data set is a subset of the Statistical Area Level 2 (SA2) ASGS

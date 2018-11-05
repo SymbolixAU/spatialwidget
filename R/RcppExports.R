@@ -37,6 +37,14 @@ rcpp_widget_line <- function(data, data_types, params, geometry_columns) {
     .Call(`_spatialwidget_rcpp_widget_line`, data, data_types, params, geometry_columns)
 }
 
+rcpp_widget_point <- function(data, data_types, params, geometry_columns) {
+    .Call(`_spatialwidget_rcpp_widget_point`, data, data_types, params, geometry_columns)
+}
+
+rcpp_widget_point_df <- function(data, data_types, params, geometries) {
+    .Call(`_spatialwidget_rcpp_widget_point_df`, data, data_types, params, geometries)
+}
+
 rcpp_widget_polygon <- function(data, data_types, params, geometry_columns) {
     .Call(`_spatialwidget_rcpp_widget_polygon`, data, data_types, params, geometry_columns)
 }
