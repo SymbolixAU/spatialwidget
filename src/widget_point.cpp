@@ -8,7 +8,8 @@ Rcpp::List rcpp_widget_point(
     Rcpp::DataFrame data,
     Rcpp::List data_types,
     Rcpp::List params,
-    Rcpp::StringVector geometry_columns ) {
+    Rcpp::StringVector geometry_columns,
+    bool jsonify_legend ) {
 
   int data_rows = data.nrows();
   Rcpp::List defaults = point_defaults( data_rows );
@@ -26,7 +27,8 @@ Rcpp::List rcpp_widget_point(
     point_colours,
     point_legend,
     data_rows,
-    geometry_columns
+    geometry_columns,
+    jsonify_legend
   );
 }
 
@@ -36,7 +38,8 @@ Rcpp::List rcpp_widget_point_df(
     Rcpp::DataFrame data,
     Rcpp::List data_types,
     Rcpp::List params,
-    Rcpp::List geometries) {
+    Rcpp::List geometries,
+    bool jsonify_legend) {
     // Rcpp::StringVector lons,
     // Rcpp::StringVector lats) {
 
@@ -60,6 +63,7 @@ Rcpp::List rcpp_widget_point_df(
     point_colours,
     point_legend,
     data_rows,
-    geometries
+    geometries,
+    jsonify_legend
   );
 }

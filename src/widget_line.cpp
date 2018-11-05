@@ -8,7 +8,8 @@ Rcpp::List rcpp_widget_line(
     Rcpp::DataFrame data,
     Rcpp::List data_types,
     Rcpp::List params,
-    Rcpp::StringVector geometry_columns ) {
+    Rcpp::StringVector geometry_columns,
+    bool jsonify_legend ) {
 
   int data_rows = data.nrows();
   Rcpp::List defaults = line_defaults( data_rows );
@@ -24,6 +25,7 @@ Rcpp::List rcpp_widget_line(
     line_colours,
     line_legend,
     data_rows,
-    geometry_columns
+    geometry_columns,
+    jsonify_legend
   );
 }

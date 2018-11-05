@@ -5,7 +5,7 @@
 \title{Widget Polygon}
 \usage{
 widget_polygon(data, stroke_colour, stroke_opacity, stroke_width,
-  fill_colour, fill_opacity, legend = TRUE)
+  fill_colour, fill_opacity, legend = TRUE, json_legend = TRUE)
 }
 \arguments{
 \item{stroke_colour}{string specifying column of \code{sf} to use for the stroke colour,
@@ -20,6 +20,8 @@ or a single value to apply to all rows of data}
 \item{fill_opacity}{}
 
 \item{legend}{logical indicating if legend data will be returned}
+
+\item{json_legend}{logical indicating if the legend will be returned as json}
 }
 \description{
 Converts an `sf` object with POLYGON geometriers into JSON for plotting in an htmlwidget

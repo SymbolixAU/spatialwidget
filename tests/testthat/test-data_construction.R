@@ -83,3 +83,4 @@ test_that("parameters not supplied by user are ignored", {
   # expect_true( all( names(res) %in% c("stroke_opacity", "stroke_width")))
 
 })
+

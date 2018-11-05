@@ -10,6 +10,7 @@
 #' @param stroke_width string specifying column of \code{sf} to use for the stroke width,
 #' or a single value to apply to all rows of data
 #' @param legend logical indicating if legend data will be returned
+#' @param json_legend logical indicating if the legend will be returned as json
 #'
 #' @examples
 #'
@@ -17,10 +18,11 @@
 #' l <- widget_line( roads, legend = F )
 #'
 #' @export
-widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, legend = TRUE) {
+widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, legend = TRUE, json_legend = TRUE) {
   l <- as.list( match.call( expand.dots = F) )
   l[[1]] <- NULL
   l[["data"]] <- NULL
+  l[["json_legend"]] <- NULL
 
   l <- resolve_legend( l, legend )
   l <- resolve_data( data, l, "LINESTRING")
@@ -33,7 +35,7 @@ widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, lege
 
   data_types <- vapply( data, function(x) class(x)[[1]], "")
 
-  js_data <- rcpp_widget_line( data, data_types, l, c("geometry") )
+  js_data <- rcpp_widget_line( data, data_types, l, c("geometry"), json_legend  )
   return( js_data )
 }
 
@@ -53,10 +55,11 @@ widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, lege
 #'
 #' @export
 widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
-                            fill_colour, fill_opacity, legend = TRUE ) {
+                            fill_colour, fill_opacity, legend = TRUE, json_legend = TRUE ) {
   l <- as.list( match.call( expand.dots = F ) )
   l[[1]] <- NULL
   l[["data"]] <- NULL
+  l[["json_legend"]] <- NULL
 
   l <- resolve_legend( l, legend )
   l <- resolve_data( data, l, "POLYGON" )
@@ -69,7 +72,7 @@ widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
 
   data_types <- vapply( data, function(x) class(x)[[1]], "")
 
-  js_data <- rcpp_widget_polygon( data, data_types, l, c("geometry") )
+  js_data <- rcpp_widget_polygon( data, data_types, l, c("geometry"), json_legend  )
   return( js_data )
 }
 
@@ -89,10 +92,11 @@ widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
 #' l <- widget_point( data = capitals, legend = FALSE )
 #'
 #' @export
-widget_point <- function( data, fill_colour, fill_opacity, lon = NULL, lat = NULL, legend = TRUE ) {
+widget_point <- function( data, fill_colour, fill_opacity, lon = NULL, lat = NULL, legend = TRUE, json_legend = TRUE ) {
   l <- as.list( match.call( expand.dots = F ) )
   l[[1]] <- NULL
   l[["data"]] <- NULL
+  l[["json_legend"]] <- NULL
 
   l <- resolve_legend( l, legend )
   l <- resolve_data( data, l, "POINT" )
@@ -106,15 +110,15 @@ widget_point <- function( data, fill_colour, fill_opacity, lon = NULL, lat = NUL
   tp <- l[["data_type"]]
   l[["data_type"]] <- NULL
 
-  print( l )
-
   if( tp == "sf" ) {
-    js_data <- rcpp_widget_point( data, data_types, l, c("geometry") )
+    js_data <- rcpp_widget_point( data, data_types, l, c("geometry"), json_legend )
   } else if (tp == "df" ) {
     if( is.null( lon ) || is.null( lat ) ) {
       stop("lon and lat are requried for data.frames")
     }
-    js_data <- rcpp_widget_point_df( data, data_types, l, list(myGeometry = c("lon","lat") ) )
+    js_data <- rcpp_widget_point_df(
+      data, data_types, l, list(myGeometry = c("lon","lat") ), json_legend
+      )
   }
 
   return( js_data )

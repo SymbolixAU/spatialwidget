@@ -5,7 +5,7 @@
 \title{Widget Point}
 \usage{
 widget_point(data, fill_colour, fill_opacity, lon = NULL, lat = NULL,
-  legend = TRUE)
+  legend = TRUE, json_legend = TRUE)
 }
 \arguments{
 \item{fill_opacity}{}
@@ -17,6 +17,8 @@ Ignored if using an \code{sf} object}
 Ignored if using an \code{sf} object}
 
 \item{legend}{logical indicating if legend data will be returned}
+
+\item{json_legend}{logical indicating if the legend will be returned as json}
 }
 \description{
 Converts an `sf` object with POINT geometriers into JSON for plotting in an htmlwidget

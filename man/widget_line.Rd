@@ -5,7 +5,7 @@
 \title{Widget Line}
 \usage{
 widget_line(data, stroke_colour, stroke_opacity, stroke_width,
-  legend = TRUE)
+  legend = TRUE, json_legend = TRUE)
 }
 \arguments{
 \item{stroke_colour}{string specifying column of \code{sf} to use for the stroke colour,
@@ -18,6 +18,8 @@ or a single value to apply to all rows of data}
 or a single value to apply to all rows of data}
 
 \item{legend}{logical indicating if legend data will be returned}
+
+\item{json_legend}{logical indicating if the legend will be returned as json}
 
 \item{sf}{\code{sf} object}
 }

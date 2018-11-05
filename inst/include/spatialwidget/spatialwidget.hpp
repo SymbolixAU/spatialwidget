@@ -32,7 +32,8 @@ namespace api {
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
-      Rcpp::StringVector geometry_columns ) {
+      Rcpp::StringVector geometry_columns,
+      bool jsonify_legend = true ) {
 
     Rcpp::StringVector data_names = data.names();
     // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
@@ -63,7 +64,9 @@ namespace api {
     // Rcpp::Rcout << "nmes2: " << nmes << std::endl;
 
     SEXP legend = lst[ "legend" ];
-    legend = jsonify::vectors::to_json( legend );
+    if ( jsonify_legend ) {
+      legend = jsonify::vectors::to_json( legend );
+    }
 
     // df.attr("sf_column") = geom_column;
 
@@ -89,7 +92,8 @@ namespace api {
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
-      Rcpp::List& geometries
+      Rcpp::List& geometries,
+      bool jsonify_legend = true
   ) {
 
     Rcpp::StringVector data_names = data.names();
@@ -107,7 +111,9 @@ namespace api {
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     SEXP legend = lst[ "legend" ];
-    legend = jsonify::vectors::to_json( legend );
+    if ( jsonify_legend ) {
+      legend = jsonify::vectors::to_json( legend );
+    }
 
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometries );
 
@@ -127,7 +133,8 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows
+      int& data_rows,
+      bool jsonify_legend = true
   ) {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
@@ -140,7 +147,9 @@ namespace api {
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     SEXP legend = lst[ "legend" ];
-    legend = jsonify::vectors::to_json( legend );
+    if ( jsonify_legend ) {
+      legend = jsonify::vectors::to_json( legend );
+    }
 
     Rcpp::StringVector js_data = jsonify::dataframe::to_json( df );
 
