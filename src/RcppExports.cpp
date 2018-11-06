@@ -63,23 +63,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// spatialwidget_geojson
-Rcpp::List spatialwidget_geojson(Rcpp::DataFrame data, Rcpp::List data_types, Rcpp::List params, Rcpp::List defaults, Rcpp::StringMatrix colours, Rcpp::StringVector legend, Rcpp::StringVector geometry);
-RcppExport SEXP _spatialwidget_spatialwidget_geojson(SEXP dataSEXP, SEXP data_typesSEXP, SEXP paramsSEXP, SEXP defaultsSEXP, SEXP coloursSEXP, SEXP legendSEXP, SEXP geometrySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type data_types(data_typesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type params(paramsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type defaults(defaultsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::StringMatrix >::type colours(coloursSEXP);
-    Rcpp::traits::input_parameter< Rcpp::StringVector >::type legend(legendSEXP);
-    Rcpp::traits::input_parameter< Rcpp::StringVector >::type geometry(geometrySEXP);
-    rcpp_result_gen = Rcpp::wrap(spatialwidget_geojson(data, data_types, params, defaults, colours, legend, geometry));
-    return rcpp_result_gen;
-END_RCPP
-}
 // rcpp_fill_vector
 Rcpp::List rcpp_fill_vector(Rcpp::List lst_defaults, Rcpp::String param_name, SEXP value, int n_rows);
 RcppExport SEXP _spatialwidget_rcpp_fill_vector(SEXP lst_defaultsSEXP, SEXP param_nameSEXP, SEXP valueSEXP, SEXP n_rowsSEXP) {
@@ -184,7 +167,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_rcpp_colour_str_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_str_with_palette, 5},
     {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 5},
-    {"_spatialwidget_spatialwidget_geojson", (DL_FUNC) &_spatialwidget_spatialwidget_geojson, 7},
     {"_spatialwidget_rcpp_fill_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_vector, 4},
     {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
     {"_spatialwidget_rcpp_remove_list_elements", (DL_FUNC) &_spatialwidget_rcpp_remove_list_elements, 2},

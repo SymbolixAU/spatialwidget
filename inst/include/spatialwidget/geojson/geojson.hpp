@@ -245,9 +245,9 @@ namespace geojson {
   inline Rcpp::StringVector to_geojson_atomise(
       Rcpp::DataFrame& df,
       Rcpp::List& geometries ) // i.e., list(origin = c("start_lon", "start_lat", destination = c("end_lon", "end_lat")))
-    {
-      // Rcpp::StringVector& lons,
-      // Rcpp::StringVector& lats ) {
+  {
+    // Rcpp::StringVector& lons,
+    // Rcpp::StringVector& lats ) {
 
     size_t n_cols = df.ncol();
     size_t n_rows = df.nrows();
@@ -369,6 +369,132 @@ namespace geojson {
     geojson.attr("class") = Rcpp::CharacterVector::create("json");
     return geojson;
   }
+
+
+  // list of geometries is designed for lon & lat columns of data
+  inline Rcpp::StringVector to_geojson_z_atomise(
+      Rcpp::DataFrame& df,
+      Rcpp::List& geometries ) // i.e., list(origin = c("start_lon", "start_lat", destination = c("end_lon", "end_lat")))
+  {
+
+    size_t n_cols = df.ncol();
+    size_t n_rows = df.nrows();
+
+    size_t n_lons = geometries.size();
+    size_t n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
+    size_t n_elevs = geometries.size();
+
+    size_t n_lonlat = n_lons + n_lats + n_elevs;
+    size_t n_properties = n_cols - n_lonlat; // LON & LAT & ELEV columns
+
+    // it comes as columns on a data.frame
+    size_t i, j;
+    Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
+    Rcpp::StringVector lats( n_lats );
+    Rcpp::StringVector elevs( n_elevs );
+    Rcpp::StringVector geometry_names = geometries.names();
+    // Rcpp::Rcout << "geometry_names: " << geometry_names << std::endl;
+    // Rcpp::Rcout << "n_lons: " << n_lons << std::endl;
+    // Rcpp::Rcout << "n_lonlat: " << n_lonlat << std::endl;
+    // Rcpp::Rcout << "n_properties: " << n_properties << std::endl;
+    // Rcpp::Rcout << "n_elevs: " << n_elevs << std::endl;
+
+    for ( i = 0; i < n_lons; i++ ) {
+      Rcpp::StringVector this_lonlat = geometries[i];
+      // Rcpp::Rcout << "this_longlat " << this_lonlat << std::endl;
+      lons[i] = this_lonlat[0];
+      lats[i] = this_lonlat[1];
+      elevs[i] = this_lonlat[2];
+    }
+
+    Rcpp::StringVector column_names = df.names();
+    Rcpp::StringVector property_names( n_properties );
+    // Rcpp::Rcout << "column_names: " << column_names << std::endl;
+
+    Rcpp::CharacterVector cls = Rcpp::CharacterVector::create("XYZ", "POINT", "sfg");
+
+    int property_counter = 0;
+
+    for (int i = 0; i < df.length(); i++) {
+
+      Rcpp::String this_column = column_names[i];
+      // Rcpp::Rcout << "this_column: " << this_column << std::endl;
+
+      int idx_lon = spatialwidget::utils::where::where_is( this_column, lons );
+      int idx_lat = spatialwidget::utils::where::where_is( this_column, lats );
+      int idx_elev = spatialwidget::utils::where::where_is( this_column, elevs );
+
+      if ( idx_lon == -1 && idx_lat == -1 && idx_elev == -1 ) {
+        // Rcpp::Rcout << "setting property " << std::endl;
+        property_names[property_counter] = column_names[i];
+        property_counter++;
+      }
+    }
+
+    // Rcpp::Rcout << "property_names: " << property_names << std::endl;
+
+    rapidjson::StringBuffer sb;
+    rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
+    writer.StartArray();
+
+
+    for( i = 0; i < n_rows; i++ ) {
+
+      if ( n_properties > 0 ) {
+
+        writer.StartObject();
+        geojsonsf::writers::start_features( writer );
+        geojsonsf::writers::start_properties( writer );
+
+        writer.StartObject();
+
+        // properties first, then sfc
+        for( j = 0; j < n_properties; j++ ) {
+          const char *h = property_names[ j ];
+
+          // Rcpp::Rcout << "property: " << h << std::endl;
+
+          SEXP this_vec = df[ h ];
+
+          jsonify::writers::write_value( writer, h );
+          jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+        }
+        writer.EndObject();
+      }
+
+      // now geometries
+      if( n_properties > 0 ) {
+        writer.String("geometry");
+      }
+
+      for ( j = 0; j < n_lons; j++ ) {
+        writer.StartObject();
+        const char* this_lon = lons[j];
+        const char* this_lat = lats[j];
+        const char* this_elev = elevs[j];
+
+        Rcpp::NumericVector nv_lon = df[this_lon];
+        Rcpp::NumericVector nv_lat = df[this_lat];
+        Rcpp::NumericVector nv_elev = df[this_elev];
+        SEXP sfg = Rcpp::NumericVector::create( nv_lon[i], nv_lat[i], nv_elev[i] );
+
+        writer.String( geometry_names[j] );
+
+        write_geometry( writer, sfg, cls );
+        writer.EndObject();
+      }
+
+      if( n_properties > 0 ) {
+        writer.EndObject();
+      }
+    }
+    writer.EndArray();
+
+    Rcpp::StringVector geojson = sb.GetString();
+    geojson.attr("class") = Rcpp::CharacterVector::create("json");
+    return geojson;
+  }
+
 
 
 } // namespace geojson

@@ -17,10 +17,6 @@ rcpp_colour_num_with_palette <- function(palette, fill_colour_vec, alpha, na_col
     .Call(`_spatialwidget_rcpp_colour_num_with_palette`, palette, fill_colour_vec, alpha, na_colour, include_alpha)
 }
 
-spatialwidget_geojson <- function(data, data_types, params, defaults, colours, legend, geometry) {
-    .Call(`_spatialwidget_spatialwidget_geojson`, data, data_types, params, defaults, colours, legend, geometry)
-}
-
 rcpp_fill_vector <- function(lst_defaults, param_name, value, n_rows) {
     .Call(`_spatialwidget_rcpp_fill_vector`, lst_defaults, param_name, value, n_rows)
 }

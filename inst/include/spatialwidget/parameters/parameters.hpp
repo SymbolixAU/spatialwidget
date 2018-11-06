@@ -78,6 +78,8 @@ namespace parameters {
   		Rcpp::StringVector& legend_types,
   		int& data_rows) {
 
+    // Rcpp::Rcout << "parameters_to_data" << std::endl;
+
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
 
@@ -188,7 +190,7 @@ namespace parameters {
   		data_rows
   	);
 
-  	/// Rcpp::Rcout << "data has been constructed" << std::endl;
+  	// Rcpp::Rcout << "data has been constructed" << std::endl;
   	// data_names = df.names();
   	// Rcpp::Rcout << "df_names: " << data_names << std::endl;
 
