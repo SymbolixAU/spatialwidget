@@ -12,18 +12,7 @@
 # sf_line$psx <- sample( seq( as.POSIXct("2018-01-01 00:00:00"), as.POSIXct("2018-12-30 00:00:00"), length.out = 300), size = nrow(sf_line), replace = T )
 # sf_line$fact <- as.factor(sf_line$dte)
 #
-# l <- list()
-# l[["stroke_colour"]] <- "fact"
-#
-#
-# ## the list of parameters should include the geometry columns,
-# l[["thisWillBeTheGeometry"]] <- "geometry"       ## a geometry column
-# l[["legend"]] <- TRUE
-# ## and you need topass in those parameter names which inlcude the geometry columns
-#
-# data_types <- vapply( sf_line, function(x) class(x)[[1]], "")
-#
-# js_data <- spatialwidget:::line_example_geojson( sf_line[1:2, ], data_types, l, c("thisWillBeTheGeometry") )
+# js_data <- widget_line( sf_line[1:2, ], stroke_colour = "fact" )
 # str(js_data)
 
 ## need to grab the R data type(s) used for colouring, so we can then specify the 'format' argument.

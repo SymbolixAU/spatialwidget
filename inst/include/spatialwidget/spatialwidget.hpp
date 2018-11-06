@@ -32,7 +32,7 @@ namespace api {
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
-      Rcpp::StringVector geometry_columns,
+      Rcpp::StringVector& geometry_columns,
       bool jsonify_legend
     ) {
 
@@ -183,6 +183,7 @@ inline Rcpp::List create_geojson(
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
+      Rcpp::StringVector geometry_columns,
       bool jsonify_legend
   ) {
 
@@ -191,7 +192,9 @@ inline Rcpp::List create_geojson(
       data_types,
       params,
       lst_defaults,
-      layer_colours, layer_legend, data_rows
+      layer_colours,
+      layer_legend,
+      data_rows
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
