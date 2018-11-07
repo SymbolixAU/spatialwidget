@@ -345,8 +345,8 @@ namespace geojson {
         writer.String("geometry");
       }
 
+      writer.StartObject();
       for ( j = 0; j < n_lons; j++ ) {
-        writer.StartObject();
         const char* this_lon = lons[j];
         const char* this_lat = lats[j];
         Rcpp::NumericVector nv_lon = df[this_lon];
@@ -356,8 +356,8 @@ namespace geojson {
         writer.String( geometry_names[j] );
 
         write_geometry( writer, sfg, cls );
-        writer.EndObject();
       }
+      writer.EndObject();
 
       if( n_properties > 0 ) {
         writer.EndObject();
@@ -467,8 +467,8 @@ namespace geojson {
         writer.String("geometry");
       }
 
+      writer.StartObject();
       for ( j = 0; j < n_lons; j++ ) {
-        writer.StartObject();
         const char* this_lon = lons[j];
         const char* this_lat = lats[j];
         const char* this_elev = elevs[j];
@@ -481,8 +481,8 @@ namespace geojson {
         writer.String( geometry_names[j] );
 
         write_geometry( writer, sfg, cls );
-        writer.EndObject();
       }
+      writer.EndObject();
 
       if( n_properties > 0 ) {
         writer.EndObject();
