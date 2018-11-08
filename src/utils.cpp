@@ -23,7 +23,7 @@ Rcpp::List rcpp_fill_vector(
  * find_character_index_in_vector
  *
  * @param sv StringVector
- * @param to_find const char* value to find in sv
+ * @param to_find StringVector value to find in sv
  *
  * @return index of to_find in sv
  */

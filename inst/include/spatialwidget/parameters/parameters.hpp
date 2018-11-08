@@ -85,7 +85,7 @@ namespace parameters {
 
   	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
   	// Rcpp::Rcout << "param name: " << param_names << std::endl;
-  	// Rcpp::Rcout << "legend_types: " << legend_types << std::endl;
+  	//Rcpp::Rcout << "legend_types: " << legend_types << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
 
@@ -125,8 +125,8 @@ namespace parameters {
 
 	    spatialwidget::colour::resolve_colour(
 	      lst_params, params, data, data_types, lst_defaults,
-	      colour_column.c_str(),
-	      opacity_column.c_str(),
+	      colour_column,
+	      opacity_column,
 	      lst_legend, include_legend
 	      );
 		}
@@ -169,8 +169,10 @@ namespace parameters {
   	//   );
 
   	// Rcpp::Rcout << "param_names 1: " << param_names << std::endl;
+  	//Rcpp::Rcout << "removing colours: " << colours_remove << std::endl;
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, colours_remove );
   	// Rcpp::Rcout << "param_names 2: " << param_names << std::endl;
+  	//Rcpp::Rcout << "removing legends: " << legend_types << std::endl;
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_types );
 //
   	lst_params = construct_params( data, params );

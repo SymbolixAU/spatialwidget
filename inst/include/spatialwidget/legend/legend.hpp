@@ -9,14 +9,14 @@ namespace legend {
 
   inline void set_legend_option(
       Rcpp::List& opts,
-      const char* option,
+      std::string& option,
       std::string& value,
-      const char* colour_name ) {
+      std::string& colour_name ) {
 
-    if ( opts.containsElementNamed( option ) ) {
+    if ( opts.containsElementNamed( option.c_str() ) ) {
       Rcpp::String s_value = opts[ option ];
       value = s_value;
-    } else if ( opts.containsElementNamed( colour_name ) ) {
+    } else if ( opts.containsElementNamed( colour_name.c_str() ) ) {
       Rcpp::List opts2 = opts[ colour_name ];
       set_legend_option( opts2, option, value, colour_name );
     }

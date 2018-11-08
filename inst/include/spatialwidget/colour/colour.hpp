@@ -22,7 +22,7 @@ namespace colour {
       //Rcpp::IntegerVector& data_column_index,
       SEXP& palette_type,
       Rcpp::NumericVector& alpha,
-      const char* colour_name,
+      std::string& colour_name,
       bool include_legend) {
 
     // Rcpp::Rcout << "include_legend: " << include_legend << std::endl;
@@ -48,11 +48,11 @@ namespace colour {
 
       // Rcpp::Rcout << "using default colours: " << colour_name << std::endl;
 
-      palette_type = lst_defaults[ colour_name ];
+      palette_type = lst_defaults[ colour_name.c_str() ];
       format_type = "numeric";
 
     } else {
-      Rcpp::String this_colour = params[ colour_name ];
+      Rcpp::String this_colour = params[ colour_name.c_str() ];
       // Rcpp::Rcout << "this_colour: " << this_colour.get_cstring() << std::endl;
 
       Rcpp::StringVector sv_r_type;
@@ -96,8 +96,8 @@ namespace colour {
       Rcpp::DataFrame& data,
       Rcpp::List& data_types,      // the R data types (class) of `data`
       Rcpp::List& lst_defaults,
-      const char* colour_name,
-      const char* opacity_name,
+      std::string& colour_name,
+      std::string& opacity_name,
       Rcpp::List& lst_legend,
       bool include_legend ) {
 
@@ -109,7 +109,7 @@ namespace colour {
 
     Rcpp::NumericVector alpha( 1, 255.0 ); // can be overwritten by user
 
-    SEXP this_colour = lst_defaults[ colour_name ];
+    SEXP this_colour = lst_defaults[ colour_name.c_str() ];
 
     int colour_location = spatialwidget::utils::where::where_is( colour_name, param_names );
     int opacity_location = spatialwidget::utils::where::where_is( opacity_name, param_names );
@@ -157,13 +157,13 @@ namespace colour {
     bool make_legend;
     // Rcpp::Rcout << "make_legend: " << make_legend << std::endl;
 
-    if ( lst_legend.containsElementNamed( colour_name ) ) {
-      make_legend = lst_legend[ colour_name ];
+    if ( lst_legend.containsElementNamed( colour_name.c_str() ) ) {
+      make_legend = lst_legend[ colour_name.c_str() ];
     }
 
-    lst_defaults[ colour_name ] = legend[ "colours" ];
+    lst_defaults[ colour_name.c_str() ] = legend[ "colours" ];
 
-    if (lst_legend.containsElementNamed( colour_name ) ) {
+    if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {
 
       if (  make_legend == true ) {
 
@@ -173,8 +173,10 @@ namespace colour {
         if ( params.containsElementNamed("legend_options") ) {
 
           Rcpp::List opts = params[ "legend_options" ];
-          spatialwidget::legend::set_legend_option( opts, "title", title, colour_name );
-          spatialwidget::legend::set_legend_option( opts, "css", css, colour_name );
+          std::string title_string = "title";
+          std::string css_string = "css";
+          spatialwidget::legend::set_legend_option( opts, title_string, title, colour_name );
+          spatialwidget::legend::set_legend_option( opts, css_string, css, colour_name );
         }
 
         Rcpp::List summary = Rcpp::List::create(
