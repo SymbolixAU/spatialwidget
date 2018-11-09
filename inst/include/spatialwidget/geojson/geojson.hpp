@@ -127,7 +127,7 @@ namespace geojson {
 
     for( i = 0; i < n_rows; i++ ) {
 
-      if ( n_properties > 0 ) {
+      //if ( n_properties > 0 ) {
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
@@ -145,12 +145,12 @@ namespace geojson {
           jsonify::dataframe::dataframe_cell( writer, this_vec, i );
         }
         writer.EndObject();
-      }
+      //}
 
       // now geometries
-      if( n_properties > 0 ) {
+      //if( n_properties > 0 ) {
         writer.String("geometry");
-      }
+      //}
 
       //writer.StartArray();
       writer.StartObject();
@@ -168,9 +168,9 @@ namespace geojson {
       // Rcpp::List sfc = sf[ geom_column ];
       // write_geometry( writer, sfc, i );
 
-      if( n_properties > 0 ) {
+      //if( n_properties > 0 ) {
         writer.EndObject();
-      }
+      //}
     }
     writer.EndArray();
 
@@ -318,7 +318,7 @@ namespace geojson {
 
     for( i = 0; i < n_rows; i++ ) {
 
-      if ( n_properties > 0 ) {
+      //if ( n_properties > 0 ) {
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
@@ -338,12 +338,15 @@ namespace geojson {
           jsonify::dataframe::dataframe_cell( writer, this_vec, i );
         }
         writer.EndObject();
-      }
+      //} else {
+        // force an empty properties object
+
+      //}
 
       // now geometries
-      if( n_properties > 0 ) {
+      //if( n_properties > 0 ) {
         writer.String("geometry");
-      }
+      //}
 
       writer.StartObject();
       for ( j = 0; j < n_lons; j++ ) {
@@ -359,9 +362,9 @@ namespace geojson {
       }
       writer.EndObject();
 
-      if( n_properties > 0 ) {
+      //if( n_properties > 0 ) {
         writer.EndObject();
-      }
+      //}
     }
     writer.EndArray();
 

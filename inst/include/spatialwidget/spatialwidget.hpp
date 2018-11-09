@@ -36,18 +36,10 @@ namespace api {
       bool jsonify_legend
     ) {
 
+    Rcpp::List res(2);
+
     Rcpp::StringVector data_names = data.names();
-    // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
 
-    // Rcpp::Rcout << "layer_legend: " << layer_legend << std::endl;
-
-    // TODO receive the geometry columns from user input
-
-    //std::string geom_column = data.attr("sf_column");
-    // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
-    // Rcpp::Rcout << "create_geojson" << std::endl;
-
-    // Rcpp::Rcout << "parameters to data " << std::endl;
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       data_types,
@@ -58,28 +50,22 @@ namespace api {
       data_rows
     );
 
-    // Rcpp::Rcout << "getting data from list " << std::endl;
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
 
-    // Rcpp::StringVector nmes = df.names();
-    // Rcpp::Rcout << "nmes2: " << nmes << std::endl;
+    res[0] = js_data;
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
       legend = jsonify::vectors::to_json( legend );
+      Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+      res[1] = sv_leg;
+    } else {
+      res[1] = legend;
     }
 
-    // df.attr("sf_column") = geom_column;
-
-    //Rcpp::Rcout << "js_data-ing" << std::endl;
-
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
-    //Rcpp::Rcout << "js_data: " << js_data << std::endl;
-
-    return Rcpp::List::create(
-      Rcpp::_["data"] = js_data,
-      Rcpp::_["legend"] = legend
-    );
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    return res;
   }
 
   /*
@@ -97,8 +83,8 @@ namespace api {
       bool jsonify_legend
   ) {
 
+    Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
-    // Rcpp::Rcout << "data_names start: " << data_names << std::endl;
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
@@ -110,21 +96,23 @@ namespace api {
       data_rows
     );
 
-    // Rcpp::Rcout << "parameters done" << std::endl;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
+
+    res[0] = js_data;
+
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
       legend = jsonify::vectors::to_json( legend );
+      Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+      res[1] = sv_leg;
+    } else {
+      res[1] = legend;
     }
 
-    // Rcpp::Rcout << "legend done " << std::endl;
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
-
-    return Rcpp::List::create(
-      Rcpp::_["data"] = js_data,
-      Rcpp::_["legend"] = legend
-    );
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    return res;
   }
 
 
@@ -144,6 +132,7 @@ inline Rcpp::List create_geojson(
     bool elevation
 ) {
 
+  Rcpp::List res(2);
   Rcpp::StringVector data_names = data.names();
 
   Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
@@ -157,17 +146,22 @@ inline Rcpp::List create_geojson(
   );
 
   Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+  Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_z_atomise( df, geometry_columns );
+
+
+  res[0] = js_data;
+
   SEXP legend = lst[ "legend" ];
   if ( jsonify_legend ) {
     legend = jsonify::vectors::to_json( legend );
+    Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+    res[1] = sv_leg;
+  } else {
+    res[1] = legend;
   }
 
-  Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_z_atomise( df, geometry_columns );
-
-  return Rcpp::List::create(
-    Rcpp::_["data"] = js_data,
-    Rcpp::_["legend"] = legend
-  );
+  res.names() = Rcpp::CharacterVector::create("data", "legend");
+  return res;
 }
 
 
@@ -187,6 +181,8 @@ inline Rcpp::List create_geojson(
       bool jsonify_legend
   ) {
 
+    Rcpp::List res(2);
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       data_types,
@@ -198,17 +194,21 @@ inline Rcpp::List create_geojson(
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    Rcpp::StringVector js_data = jsonify::dataframe::to_json( df );
+
+    res[0] = js_data;
+
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
       legend = jsonify::vectors::to_json( legend );
+      Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+      res[1] = sv_leg;
+    } else {
+      res[1] = legend;
     }
 
-    Rcpp::StringVector js_data = jsonify::dataframe::to_json( df );
-
-    return Rcpp::List::create(
-      Rcpp::_["data"] = js_data,
-      Rcpp::_["legend"] = legend
-    );
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    return res;
   }
 
 } // namespace api

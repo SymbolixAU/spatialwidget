@@ -174,6 +174,9 @@ namespace parameters {
   	// Rcpp::Rcout << "param_names 2: " << param_names << std::endl;
   	//Rcpp::Rcout << "removing legends: " << legend_types << std::endl;
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_types );
+
+  	Rcpp::StringVector remove_palette = Rcpp::StringVector::create("palette");
+  	spatialwidget::utils::remove::remove_list_elements( params, param_names, remove_palette);
 //
   	lst_params = construct_params( data, params );
 
