@@ -8,6 +8,8 @@ widget_line(data, stroke_colour, stroke_opacity, stroke_width,
   legend = TRUE, json_legend = TRUE)
 }
 \arguments{
+\item{data}{\code{sf} object}
+
 \item{stroke_colour}{string specifying column of \code{sf} to use for the stroke colour,
 or a single value to apply to all rows of data}
 
@@ -20,8 +22,6 @@ or a single value to apply to all rows of data}
 \item{legend}{logical indicating if legend data will be returned}
 
 \item{json_legend}{logical indicating if the legend will be returned as json}
-
-\item{sf}{\code{sf} object}
 }
 \description{
 Converts an `sf` object with LINESTRING geometriers into JSON for plotting in an htmlwidget
@@ -29,6 +29,6 @@ Converts an `sf` object with LINESTRING geometriers into JSON for plotting in an
 \examples{
 
 ## use default stroke options
-l <- widget_line( roads, legend = F )
+l <- widget_line( roads, legend = TRUE )
 
 }

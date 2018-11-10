@@ -8,6 +8,8 @@ widget_polygon(data, stroke_colour, stroke_opacity, stroke_width,
   fill_colour, fill_opacity, legend = TRUE, json_legend = TRUE)
 }
 \arguments{
+\item{data}{\code{sf} object}
+
 \item{stroke_colour}{string specifying column of \code{sf} to use for the stroke colour,
 or a single value to apply to all rows of data}
 
@@ -17,7 +19,11 @@ or a single value to apply to all rows of data}
 \item{stroke_width}{string specifying column of \code{sf} to use for the stroke width,
 or a single value to apply to all rows of data}
 
-\item{fill_opacity}{}
+\item{fill_colour}{string specifying column of \code{sf} to use for the fill colour,
+or a single value to apply to all rows of data}
+
+\item{fill_opacity}{string specifying column of \code{sf} to use for the fill opacity,
+or a single value to apply to all rows of data}
 
 \item{legend}{logical indicating if legend data will be returned}
 
@@ -28,7 +34,7 @@ Converts an `sf` object with POLYGON geometriers into JSON for plotting in an ht
 }
 \examples{
 
-l <- widget_polygon( melbourne, legend = F)
-l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = F)
+l <- widget_polygon( melbourne, legend = FALSE)
+l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = TRUE)
 
 }

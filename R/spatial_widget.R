@@ -15,7 +15,7 @@
 #' @examples
 #'
 #' ## use default stroke options
-#' l <- widget_line( roads, legend = F )
+#' l <- widget_line( roads, legend = TRUE )
 #'
 #' @export
 widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, legend = TRUE, json_legend = TRUE) {
@@ -45,13 +45,15 @@ widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, lege
 #' Converts an `sf` object with POLYGON geometriers into JSON for plotting in an htmlwidget
 #'
 #' @inheritParams widget_line
-#' @param fill_colour
-#' @param fill_opacity
+#' @param fill_colour string specifying column of \code{sf} to use for the fill colour,
+#' or a single value to apply to all rows of data
+#' @param fill_opacity string specifying column of \code{sf} to use for the fill opacity,
+#' or a single value to apply to all rows of data
 #'
 #' @examples
 #'
-#' l <- widget_polygon( melbourne, legend = F)
-#' l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = F)
+#' l <- widget_polygon( melbourne, legend = FALSE)
+#' l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = TRUE)
 #'
 #' @export
 widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,

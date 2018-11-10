@@ -1,6 +1,6 @@
 Package: spatialwidget
 Type: Package
-Title: Converts Spatial Data for use in Htmlwidgets
+Title: Converts Spatial Data to JSON for use in Htmlwidgets
 Version: 0.1
 Date: 2018-10-18
 Authors@R: c(
@@ -10,6 +10,7 @@ Description: Many packages use 'htmlwidgets' for interactive plotting of spatial
     This package provides functions for converting R objects, such as simple features, 
     into structures suitable for use in 'htmlwidgets'. 
 License: GPL-3
+Depends: R (>= 3.3.0)
 Encoding: UTF-8
 LazyData: true
 Imports:
@@ -28,8 +29,8 @@ RoxygenNote: 6.1.0
 Suggests: 
     covr,
     jsonlite,
-    sf,
-    testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    sf,
+    testthat
 VignetteBuilder: knitr

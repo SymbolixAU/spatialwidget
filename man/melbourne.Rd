@@ -6,14 +6,9 @@
 \title{Melbourne}
 \format{A data frame with 397 observations and 7 variables
 \describe{
-  \item{SA3_NAME16}{statistical area 3 name of the polygon}
-  \item{GCC_NAME16}{}
-  \item{GCC_CODE16}{}
-  \item{SA2_MAIN16}{statistical area 2 code of the polygon}
-  \item{AREASQKM16}{area of the SA2 polygon}
-  \item{SA2_NAME16}{statistical area 2 name of the polygon}
-  \item{SA4_CODE16}{statistical area 4 code of the polygon}
-  \item{SA4_NAME16}{statistical area 4 name of the polygon}
+  \item{SA2_NAME}{statistical area 2 name of the polygon}
+  \item{SA3_NAME}{statistical area 3 name of the polygon}
+  \item{AREASQKM}{area of the SA2 polygon}
   \item{geometry}{sfc geometry column}
 }}
 \usage{
