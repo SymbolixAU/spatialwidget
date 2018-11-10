@@ -2,7 +2,7 @@
 #'
 #' Converts an `sf` object with LINESTRING geometriers into JSON for plotting in an htmlwidget
 #'
-#' @param sf \code{sf} object
+#' @param data \code{sf} object
 #' @param stroke_colour string specifying column of \code{sf} to use for the stroke colour,
 #' or a single value to apply to all rows of data
 #' @param stroke_opacity string specifying column of \code{sf} to use for the stroke opacity,

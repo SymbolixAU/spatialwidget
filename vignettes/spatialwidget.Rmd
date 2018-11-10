@@ -16,14 +16,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Spatialwidget
+## Spatialwidget
 
 This package is designed to convert R data to JSON, ready for plotting on a map in an `htmlwidget`. 
 
 There are R functions you can call, but these are limited. You will primarily use the C++ functions.
 
 
-# R Interface
+## R Interface
 
 There are 3 R functions you can call for creating POINTs, LINEs or POLYGONs. 
 
@@ -32,7 +32,7 @@ Each of these functions returns a list with two elements, `data` and `legend`.
 - data : the R `data.frame` or `sf` object converted to pseudo-GeoJSON
 - legend : a summary of the values and colours suitable for a legend on the map
 
-## Pseudo-GeoJSON
+### Pseudo-GeoJSON
 
 The `data` is returned as **pseudo-GeoJSON** because some plotting libraries can use more than one geometry, such as `mapdeck::add_arc()`, which uses an origin and destination. So spatialwidget needs to handle multiple geometries.
 
@@ -80,7 +80,9 @@ l
 
 The capabilities of these functions is limited. You get more control by implementing your own R functions and using the c++ API. 
 
-# C++ API
+---
+
+## C++ API
 
 There are 4 functions you can call, 3 will return pseudo-GeoJSON, and the other will return encoded polylines. 
 
@@ -97,16 +99,16 @@ Each function uses these same 8 common arguments
 Common arguments
 ---
 
-**`Rcpp::DataFrame data`**
+### Rcpp::DataFrame data
 
-This will either be a data.frame with lon & lat columns, or `sf` objects. 
+This will either be a data.frame with lon & lat columns, or an `sf` object.
 
 
-**`Rcpp::List& data_types`**
+### Rcpp::List data_types
 
 A named vector Each name is the columns of `data`, and the values are the `r` data types of the column. Only one value per name is accepted. This is used to help determine how the legend values should be formatted.  
 
-**`Rcpp::List& params`**
+### Rcpp::List params
 
 A named list. The names are the arguments of the calling R function which will be supplied to the javascript widget. These are typically columns of `data`, or a single value that will be applied to all rows of `data`.
 
@@ -141,7 +143,7 @@ const polygonLayer = new PolygonLayer({
   });
 ```
 
-**`Rcpp::List& lst_defaults`**
+### Rcpp::List lst_defaults
 
 Either a named list, or an empty list.
 
@@ -163,7 +165,7 @@ Rcpp::List lst_defaults;
 
 ```
 
-**`std::unordered_map< std::string, std::string >& layer_colours`**
+### std::unordered_map< std::string, std::string > layer_colours
 
 A c++ `unorderd_map` specifying colours and their associated opacity. 
 
@@ -185,7 +187,7 @@ l[["stroke_colour"]] <- force( stroke_colour )
 But you don't have to supply the opacity, it will be set to 'opaque' by default. 
 
 
-**`Rcpp::StringVector& layer_legend`**
+### Rcpp::StringVector layer_legend
 
 A vector of the colour values you want to use in a lenged. 
 
@@ -197,11 +199,11 @@ const Rcpp::StringVector polygon_legend = Rcpp::StringVector::create(
 
 In this example, both `fill_colour` and `stroke_colour` will be returned in the legend data. 
 
-**`int& data_rows`**
+### int data_rows
 
 The number of rows of `data`. 
 
-**`bool jsonify_legend`**
+### bool jsonify_legend
 
 A logical value indicating if you want the legend data returned as JSON (TRUE) or a a list (FALSE)
 
@@ -209,7 +211,7 @@ A logical value indicating if you want the legend data returned as JSON (TRUE) o
 Function-dependent arguments
 ---
 
-**`geometry_columns`**
+#### geometry_columns
 
 Either an `Rcpp::List` or `Rcpp::StringVector`. 
 
@@ -223,11 +225,11 @@ geometry_column <- list( geometry = c("lon","lat") )
 The `StringVector` is used for `sf` objects to specify the geometry columns.
 
 ```r
-sf <- sf::st_sf( geometry = sf::st_sfc( sf::st_point(c(0,0 ) ) ) )
+sf <- sf::st_sf( origin = sf::st_sfc( sf::st_point(c(0,0 ) ) ) )
 geometry_column <- c( "origin" )
 ```
 
-**`bool elevation`**
+#### bool elevation
 
 The `elevation` argument is used to indicate the `data.frame` has a column used to specify the elevation of the geometry. When using the elevation you also need to supply this column in the `geometry_column` list. 
 
@@ -316,7 +318,105 @@ inline Rcpp::List create_polyline(
 )
 ```
 
+# Example
 
+Here's an example implementation of the R, cpp and hpp files required to convert R data to pseudo-GeoJSON
+
+**widgetpoint.R**
+
+```r
+#' Widget Point
+#'
+#' Converts an `sf` object with POINT geometriers into JSON for plotting in an htmlwidget
+#'
+#' @param data `sf` object with POINT geometries
+#' @param fill_colour string specifying column of `sf` to use for the fill colour
+#' @param legend logical indicating if legend data will be returned
+#' @param json_legend logical indicating if the lgend will be returned as JSON or a list
+#'
+#' @examples
+#'
+#' l <- widget_point( data = capitals, fill_colour = "country", legend = FALSE )
+#'
+#' @export
+widget_point <- function( data,
+                          fill_colour,
+                          legend = TRUE,
+                          json_legend = TRUE ) {
+
+  l <- list()
+  l[["fill_colour"]] <- force( fill_colour )
+  l[["legend"]] <- legend
+
+  data_types <- vapply( data, function(x) class(x)[[1]], "")
+
+  js_data <- rcpp_widget_point( data, data_types, l, c("geometry"), json_legend )
+
+  return( js_data )
+}
+```
+
+**widgetpoint.cpp**
+
+```c++
+#include <Rcpp.h>
+#include "spatialwidget/spatialwidget.hpp"
+#include "spatialwidget/spatialwidget_defaults.hpp"
+#include "spatialwidget/layers/widgetpoint.hpp"
+
+// [[Rcpp::export]]
+Rcpp::List rcpp_widget_point(
+    Rcpp::DataFrame data,
+    Rcpp::List data_types,
+    Rcpp::List params,
+    Rcpp::StringVector geometry_columns,
+    bool jsonify_legend ) {
+
+  int data_rows = data.nrows();
+  Rcpp::List defaults = point_defaults( data_rows );
+
+  std::unordered_map< std::string, std::string > point_colours = spatialwidget::widgetpoint::point_colours;
+  Rcpp::StringVector point_legend = spatialwidget::widgetpoint::point_legend;
+
+  return spatialwidget::api::create_geojson(
+    data,
+    data_types,
+    params,
+    defaults,
+    point_colours,
+    point_legend,
+    data_rows,
+    geometry_columns,
+    jsonify_legend
+  );
+}
+```
+
+**/layers/widgetpoint.hpp**
+
+```c++
+#ifndef SPATIALWIDGET_WIDGETPOINT_H
+#define SPATIALWIDGET_WIDGETPOINT_H
+
+#include <Rcpp.h>
+namespace spatialwidget {
+namespace widgetpoint {
+
+// map between colour and opacity values
+  std::unordered_map< std::string, std::string > point_colours = {
+    { "fill_colour", "fill_opacity" }
+  };
+
+  // vector of possible legend components
+  Rcpp::StringVector point_legend = Rcpp::StringVector::create(
+    "fill_colour"
+  );
+
+} // namespace widgetpoint
+} // namespace spatialwidget
+
+#endif
+```
 
 
 
