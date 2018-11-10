@@ -1,6 +1,6 @@
 Package: spatialwidget
 Type: Package
-Title: Converts Spatial Data to JSON for use in Htmlwidgets
+Title: Converts Spatial Data to JSON for Use in Htmlwidgets
 Version: 0.1
 Date: 2018-10-18
 Authors@R: c(

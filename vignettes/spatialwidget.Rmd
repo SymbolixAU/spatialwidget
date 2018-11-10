@@ -106,7 +106,15 @@ This will either be a data.frame with lon & lat columns, or an `sf` object.
 
 ### Rcpp::List data_types
 
-A named vector Each name is the columns of `data`, and the values are the `r` data types of the column. Only one value per name is accepted. This is used to help determine how the legend values should be formatted.  
+A named vector. Each name is the columns of `data`, and the values are the `r` data types of the column. Only one value per name is accepted. This is used to help determine how the legend values should be formatted. 
+
+An example is
+
+```{r}
+df <- data.frame(id = 1:5, val = letters[1:5])
+data_types <- vapply( df, function(x) class(x)[[1]], "")
+data_types
+```
 
 ### Rcpp::List params
 
