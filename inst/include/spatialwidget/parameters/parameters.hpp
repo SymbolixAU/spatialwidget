@@ -169,10 +169,10 @@ namespace parameters {
   	//   );
 
   	// Rcpp::Rcout << "param_names 1: " << param_names << std::endl;
-  	//Rcpp::Rcout << "removing colours: " << colours_remove << std::endl;
+  	// Rcpp::Rcout << "removing colours: " << colours_remove << std::endl;
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, colours_remove );
   	// Rcpp::Rcout << "param_names 2: " << param_names << std::endl;
-  	//Rcpp::Rcout << "removing legends: " << legend_types << std::endl;
+  	// Rcpp::Rcout << "removing legends: " << legend_types << std::endl;
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_types );
 
   	Rcpp::StringVector remove_palette = Rcpp::StringVector::create("palette");
@@ -182,7 +182,7 @@ namespace parameters {
 
   	// Rcpp::Rcout << "constructing data " << std::endl;
 
-  	data_names = data.names();
+  	// data_names = data.names();
   	// Rcpp::Rcout << "data_names2: " << data_names << std::endl;
 
   	Rcpp::DataFrame df = spatialwidget::construction::construct_data(

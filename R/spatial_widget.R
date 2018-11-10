@@ -92,8 +92,13 @@ widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
 #' l <- widget_point( data = capitals, legend = FALSE )
 #'
 #' @export
-widget_point <- function( data, fill_colour, fill_opacity, lon = NULL, lat = NULL,
-                          legend = TRUE, json_legend = TRUE ) {
+widget_point <- function( data,
+                          fill_colour,
+                          fill_opacity,
+                          lon = NULL,
+                          lat = NULL,
+                          legend = TRUE,
+                          json_legend = TRUE ) {
 
   l <- as.list( match.call( expand.dots = F ) )
   l[[1]] <- NULL

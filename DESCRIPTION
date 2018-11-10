@@ -29,4 +29,7 @@ Suggests:
     covr,
     jsonlite,
     sf,
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

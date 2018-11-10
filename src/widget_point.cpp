@@ -30,7 +30,6 @@ Rcpp::List rcpp_widget_point(
   );
 }
 
-
 // [[Rcpp::export]]
 Rcpp::List rcpp_widget_point_df(
     Rcpp::DataFrame data,

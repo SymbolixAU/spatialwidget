@@ -1,0 +1,322 @@
+---
+title: "spatialwidget"
+author: "D Cooley"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Spatialwidget
+
+This package is designed to convert R data to JSON, ready for plotting on a map in an `htmlwidget`. 
+
+There are R functions you can call, but these are limited. You will primarily use the C++ functions.
+
+
+# R Interface
+
+There are 3 R functions you can call for creating POINTs, LINEs or POLYGONs. 
+
+Each of these functions returns a list with two elements, `data` and `legend`.
+
+- data : the R `data.frame` or `sf` object converted to pseudo-GeoJSON
+- legend : a summary of the values and colours suitable for a legend on the map
+
+## Pseudo-GeoJSON
+
+The `data` is returned as **pseudo-GeoJSON** because some plotting libraries can use more than one geometry, such as `mapdeck::add_arc()`, which uses an origin and destination. So spatialwidget needs to handle multiple geometries.
+
+Typical GeoJSON will take the form
+
+```js
+[{"type":"Feature", "properties":{},"geometry":{"type":"Point","coordinates":[0,0]}}]
+```
+
+Whereas I’ve nested the geometries one-level deeper, so the pseudo-GeoJSON i’m using takes the form
+
+```js
+[{"type":"Feature", "properties":{},"geometry":{"myGeometry":{"type":"Point","coordinates":[0,0]}}}]
+```
+
+Where the myGeometry object is defined on a per-application bases. You are free to call this whatever you want inside your library.
+
+
+
+### Points
+
+```{r, echo = FALSE}
+library(spatialwidget)
+```
+
+```{r}
+l <- widget_point( capitals[1:2, ], fill_colour = "country", legend = T )
+l
+```
+
+### Lines
+
+```{r}
+l <- widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
+l
+```
+
+### Polygon
+
+```{r}
+l <- widget_polygon( melbourne[1:2, ], fill_colour = "AREASQKM16", legend = F)
+l
+```
+
+
+The capabilities of these functions is limited. You get more control by implementing your own R functions and using the c++ API. 
+
+# C++ API
+
+There are 4 functions you can call, 3 will return pseudo-GeoJSON, and the other will return encoded polylines. 
+
+The function retuning geojson is overloaded, so you use the same function name, but supply different arguments. 
+
+```c++
+Rcpp::List create_geojson() // 3 overloads
+
+Rcpp::List create_polyline()
+```
+
+Each function uses these same 8 common arguments
+
+Common arguments
+---
+
+**`Rcpp::DataFrame data`**
+
+This will either be a data.frame with lon & lat columns, or `sf` objects. 
+
+
+**`Rcpp::List& data_types`**
+
+A named vector Each name is the columns of `data`, and the values are the `r` data types of the column. Only one value per name is accepted. This is used to help determine how the legend values should be formatted.  
+
+**`Rcpp::List& params`**
+
+A named list. The names are the arguments of the calling R function which will be supplied to the javascript widget. These are typically columns of `data`, or a single value that will be applied to all rows of `data`.
+
+For example, the R function will look like
+
+```r
+add_layer <- function(
+  data, 
+  fill_colour = NULL,
+  stroke_colour = NULL,
+  another_argument = TRUE
+)
+```
+
+And the list passed to c++ will be
+
+```r
+l <- list()
+l[["fill_colour"]] <- force( fill_colour )
+l[["stroke_colour"]] <- force( stroke_colour ) 
+```
+
+In this case, the `another_argument` is not passed to the javascript widget as part of the data, so we don't include it in our list.
+
+The javascript function will then access the `stroke_colour` and `fill_colour` properties from the data. This code is taken from the javascript binding of `mapdeck::add_polygon()`
+
+```js
+// this function is called when an `sf` object is used in R
+const polygonLayer = new PolygonLayer({
+    getLineColor: d => hexToRGBA2( d.properties.stroke_colour ),
+    getFillColor: d => hexToRGBA2( d.properties.fill_colour ),
+  });
+```
+
+**`Rcpp::List& lst_defaults`**
+
+Either a named list, or an empty list.
+
+You can use this list to supply default values to the widget.
+
+```c++
+
+Rcpp::List scatterplot_defaults(int n) {
+	return Rcpp::List::create(
+		_["fill_colour"] = mapdeck::defaults::default_fill_colour(n)
+	);
+}
+
+// use Either a named list, 
+Rcpp::List lst_defaults = scatterplot_defaults( data_rows );  // initialise with defaults
+
+// or an empty object
+Rcpp::List lst_defaults;
+
+```
+
+**`std::unordered_map< std::string, std::string >& layer_colours`**
+
+A c++ `unorderd_map` specifying colours and their associated opacity. 
+
+```c++
+std::unordered_map< std::string, std::string > polygon_colours = {
+  	{ "fill_colour", "fill_opacity" },
+  	{ "stroke_colour", "stroke_opacity"}
+  };
+```
+
+These values will match the colour parameters used in the `params` list
+
+```r
+l <- list()
+l[["fill_colour"]] <- force( fill_colour )
+l[["stroke_colour"]] <- force( stroke_colour ) 
+```
+
+But you don't have to supply the opacity, it will be set to 'opaque' by default. 
+
+
+**`Rcpp::StringVector& layer_legend`**
+
+A vector of the colour values you want to use in a lenged. 
+
+```c++
+const Rcpp::StringVector polygon_legend = Rcpp::StringVector::create(
+  	"fill_colour", "stroke_colour"
+  );
+```
+
+In this example, both `fill_colour` and `stroke_colour` will be returned in the legend data. 
+
+**`int& data_rows`**
+
+The number of rows of `data`. 
+
+**`bool jsonify_legend`**
+
+A logical value indicating if you want the legend data returned as JSON (TRUE) or a a list (FALSE)
+
+
+Function-dependent arguments
+---
+
+**`geometry_columns`**
+
+Either an `Rcpp::List` or `Rcpp::StringVector`. 
+
+The `List` is used for `data.frame`s with lon & lat columns. 
+
+```r
+df <- data.frame(lon = 0, lat = 0)
+geometry_column <- list( geometry = c("lon","lat") )
+```
+
+The `StringVector` is used for `sf` objects to specify the geometry columns.
+
+```r
+sf <- sf::st_sf( geometry = sf::st_sfc( sf::st_point(c(0,0 ) ) ) )
+geometry_column <- c( "origin" )
+```
+
+**`bool elevation`**
+
+The `elevation` argument is used to indicate the `data.frame` has a column used to specify the elevation of the geometry. When using the elevation you also need to supply this column in the `geometry_column` list. 
+
+```r
+geometry_column <- list( geometry = c("lon","lat","elevation") )
+```
+
+### Function definitions
+
+Here are the 4 function signatures
+
+
+```c++
+/*
+ * expects `data` to be an sf object, where the geometry_columns is a string vector
+ * of the sfc colunm names (of sf) you want to use as the geometry object inside the GeoJSON 
+ */
+inline Rcpp::List create_geojson(
+    Rcpp::DataFrame& data,
+    Rcpp::List& data_types,
+    Rcpp::List& params,
+    Rcpp::List& lst_defaults,
+    std::unordered_map< std::string, std::string >& layer_colours,
+    Rcpp::StringVector& layer_legend,
+    int& data_rows,
+    Rcpp::StringVector& geometry_columns,
+    bool jsonify_legend
+  )
+
+```
+
+
+```c++
+/*
+ * expects `data` to be data.frame withn lon & lat columns. The geometry_columns
+ * argument is a named list, list(myGeometry = c("lon","lat")), where 'myGeometry'
+ * will be returned inside the 'geometry' object of the GeoJSON
+ */
+inline Rcpp::List create_geojson(
+    Rcpp::DataFrame& data,
+    Rcpp::List& data_types,
+    Rcpp::List& params,
+    Rcpp::List& lst_defaults,
+    std::unordered_map< std::string, std::string >& layer_colours,
+    Rcpp::StringVector& layer_legend,
+    int& data_rows,
+    Rcpp::List& geometry_columns,
+    bool jsonify_legend
+)
+```
+
+```c++
+/*
+ * expects `data` to be data.frame withn lon & lat & elev columns. The 'bool elevation'
+ * argument must be set to 'true', and the 'geometry_columns' should contain an 'elevation'
+ * value - 'geometry_column <- list( geometry = c("lon","lat","elevation") )'
+ */
+inline Rcpp::List create_geojson(
+    Rcpp::DataFrame& data,
+    Rcpp::List& data_types,
+    Rcpp::List& params,
+    Rcpp::List& lst_defaults,
+    std::unordered_map< std::string, std::string >& layer_colours,
+    Rcpp::StringVector& layer_legend,
+    int& data_rows,
+    Rcpp::List& geometry_columns,
+    bool jsonify_legend,
+    bool elevation
+)
+```
+
+```c++
+/*
+ * expects `data` to be data.frame withn a polyline
+ */
+inline Rcpp::List create_polyline(
+    Rcpp::DataFrame& data,
+    Rcpp::List& data_types,
+    Rcpp::List& params,
+    Rcpp::List& lst_defaults,
+    std::unordered_map< std::string, std::string >& layer_colours,
+    Rcpp::StringVector& layer_legend,
+    int& data_rows,
+    Rcpp::StringVector geometry_columns,
+    bool jsonify_legend
+)
+```
+
+
+
+
+

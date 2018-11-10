@@ -1,60 +1,59 @@
 
 
-## TODO
 
-# sf inputs, geojson outputs
+## benchmarking defaults vs no defaults
+## - this is to test if allocating a default list element is worth it
 
-# library(sf)
-# library(mapdeck) ## for roads data
+# lons <- seq(-180,180, by = 0.001)
+# lats <- seq(-90, 90, by = 0.001)
+# n <- 1e6
+# df <- data.frame(
+#   lon = sample(lons, size = n, replace = T)
+#   , lat = sample(lats, size = n, replace = T)
+#   , radius = rnorm(n = n)
+#   , fill_colour = rnorm(n = n)
+#   , fill_opacity = rnorm(n = n)
+# )
+# data_types <- vapply(df, function(x) class(x)[[1]], "")
 #
-# sf_line <- mapdeck::roads
-# sf_line$dte <- sample( seq( as.Date("2018-01-01"), as.Date("2018-12-30"), length.out = 300), size = nrow(sf_line), replace = T )
-# sf_line$psx <- sample( seq( as.POSIXct("2018-01-01 00:00:00"), as.POSIXct("2018-12-30 00:00:00"), length.out = 300), size = nrow(sf_line), replace = T )
-# sf_line$fact <- as.factor(sf_line$dte)
+# l <- list()
+# l[["lon"]] <- "lon"
+# l[["lat"]] <- "lat"
+# l[["fill_colour"]] <- "fill_colour"
+# l[["fill_opacity"]] <- "fill_opacity"
+# l[["radius"]] <- "radius"
+# l[["json_legend"]] <- FALSE
 #
-# js_data <- widget_line( sf_line[1:2, ], stroke_colour = "fact" )
-# str(js_data)
+# geometry_columns <- list(mygeom = c("lon","lat"))
+#
+# library(microbenchmark)
+#
+# microbenchmark(
+#
+#   defaults = {
+#     js <- spatialwidget:::rcpp_widget_point_df_defaults(
+#       data = df,
+#       data_types = data_types,
+#       params = l,
+#       geometries = geometry_columns,
+#       jsonify_legend = TRUE
+#     )
+#   },
+#   no_defaults = {
+#     js <- spatialwidget:::rcpp_widget_point_df(
+#       data = df,
+#       data_types = data_types,
+#       params = l,
+#       geometries = geometry_columns,
+#       jsonify_legend = TRUE
+#     )
+#   },
+#   times = 5
+# )
+#
+# # Unit: seconds
+# #        expr      min       lq     mean   median       uq      max neval
+# #    defaults 6.447032 6.634274 6.640007 6.659364 6.722150 6.737213     5
+# # no_defaults 5.743852 5.818002 5.912442 5.879783 5.996567 6.124006     5
 
-## need to grab the R data type(s) used for colouring, so we can then specify the 'format' argument.
-## so, in R, use vapply(data, class, "")
 
-# if you have multiple geometry columns, you need to pass in all of them (for example, if plotting a 'from' & 'to' arc)
-#
-# n <- 5
-# a_point <- function() {
-#   lon <- sample(-180:180, size = 1)
-#   lat <- sample(-90:90, size = 1)
-#   paste0('{"type":"Point","coordinates":[',lon,',',lat,']}')
-# }
-#
-# geojson <- paste0("[",paste0(sapply(seq_len(n), function(x) a_point() ), collapse = ","),"]")
-#
-# sf <- geojsonsf::geojson_sf( geojson )
-# sf$id <- 1:n
-#
-#
-# data <- sf[1:n, ]
-# params <- l
-# defaults <- list("fill_colour" = rep(1.0, n), "radius" = rep(1.0, n) )
-# colours <- matrix(c("fill_colour", "fill_opacity"), ncol = 2)
-# legend <- "fill_colour"
-# geometry <- "myPathGeometry"
-#
-# spatialwidget:::spatialwidget_geojson(
-#   data
-#   , params
-#   , defaults
-#   , colours
-#   , legend
-#   , geometry
-#   )
-
-
-
-# spatialwidget:::spatialwidget_geojson(
-#   Rcpp::DataFrame data,
-#   Rcpp::List params,
-#   Rcpp::List defaults,
-#   Rcpp::StringMatrix colours,
-#   Rcpp::StringVector legend,
-#   Rcpp::StringVector geometry)

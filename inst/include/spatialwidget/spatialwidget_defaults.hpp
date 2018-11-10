@@ -11,6 +11,10 @@ Rcpp::NumericVector default_fill_colour( int n );
 
 Rcpp::NumericVector default_fill_width( int n );
 
+Rcpp::NumericVector default_fill_opacity( int n );
+
+Rcpp::NumericVector default_radius( int n );
+
 Rcpp::List point_defaults( int n );
 
 Rcpp::List line_defaults( int n );
