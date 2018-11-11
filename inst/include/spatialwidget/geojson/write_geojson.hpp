@@ -44,5 +44,38 @@ void write_geojson(Writer& writer, SEXP sfg, std::string& geom_type, Rcpp::Chara
   }
 }
 
+template< typename Writer >
+void write_geojson(Writer& writer, SEXP sfg, std::string& geom_type,
+                   Rcpp::CharacterVector& cls, int geometry ) {
+
+  if (geom_type == "POINT") {
+    geojsonsf::writers::points_to_geojson( writer, sfg );
+
+  } else if (geom_type == "MULTIPOINT") {
+    Rcpp::NumericMatrix mls = Rcpp::as< Rcpp::NumericMatrix >( sfg );
+    Rcpp::NumericVector pts = mls(geometry, Rcpp::_ );
+    geojsonsf::writers::points_to_geojson( writer, pts );
+
+  } else if (geom_type == "LINESTRING") {
+    geojsonsf::writers::linestring_to_geojson( writer, sfg );
+
+  } else if (geom_type == "MULTILINESTRING") {
+    Rcpp::List multiline = Rcpp::as< Rcpp::List >( sfg );
+    SEXP ml = multiline[ geometry ];
+    geojsonsf::writers::linestring_to_geojson( writer, ml );
+
+  } else if (geom_type == "POLYGON") {
+    Rcpp::List polygon = Rcpp::as< Rcpp::List >(sfg);
+    geojsonsf::writers::polygon_to_geojson( writer, polygon );
+
+  } else if (geom_type == "MULTIPOLYGON") {
+    Rcpp::List multipolygon = Rcpp::as< Rcpp::List >( sfg );
+    Rcpp::List mlp = multipolygon[ geometry ];
+    geojsonsf::writers::polygon_to_geojson( writer, mlp );
+
+  } else {
+    Rcpp::stop("unknown geojson type used for down-casting");
+  }
+}
 
 #endif

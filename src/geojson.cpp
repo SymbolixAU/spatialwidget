@@ -11,8 +11,8 @@ Rcpp::StringVector rcpp_geojson_sf( Rcpp::DataFrame df, Rcpp::StringVector geome
 Rcpp::StringVector rcpp_geojson_df( Rcpp::DataFrame df, Rcpp::List geometries ) {
   return spatialwidget::geojson::to_geojson_atomise( df, geometries );
 }
-//
-// // [[Rcpp::export]]
-// Rcpp::StringVector rcpp_sf_to_geojson_downcast( Rcpp::DataFrame df, Rcpp::List geometries ) {
-//   return spatialwidget::geojson::to_geojson_downcast( df, geometries );
-// }
+
+// [[Rcpp::export]]
+Rcpp::StringVector rcpp_sf_to_geojson_downcast( Rcpp::DataFrame df ) {
+  return spatialwidget::geojson::to_geojson_downcast_atomise( df );
+}
