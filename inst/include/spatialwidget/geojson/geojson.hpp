@@ -187,9 +187,17 @@ namespace geojson {
 
   // down-casts MULTIGEOMETRIES to their simpler geometry
   // only for one-column sfc objects
-  inline Rcpp::StringVector to_geojson_downcast_atomise( Rcpp::DataFrame& sf ) {
+  inline Rcpp::StringVector to_geojson_downcast_atomise(
+      Rcpp::DataFrame& sf,
+      Rcpp::StringVector geometries ) {
 
-    std::string geom_column = sf.attr("sf_column");
+    // std::string geom_column = sf.attr("sf_column");
+    //int n_geometries = geometries.size();
+    if ( geometries.size() != 1) {
+      Rcpp::stop("Down-casting only supported for single-sfc column objects");
+    }
+    //int geom;
+    const char* geom_column = geometries[0];
 
     size_t n_cols = sf.ncol();
     size_t n_properties = n_cols - 1;  // single geometry column
@@ -204,8 +212,16 @@ namespace geojson {
 
     int property_counter = 0;
     for (int i = 0; i < sf.length(); i++) {
-      if (column_names[i] != geom_column) {
-        property_names[property_counter] = column_names[i];
+      // if (column_names[i] != geom_column) {
+      //   property_names[property_counter] = column_names[i];
+      //   property_counter++;
+      // }
+
+      Rcpp::String this_column = column_names[i];
+      int idx = spatialwidget::utils::where::where_is( this_column, geometries );
+
+      if ( idx == -1 ) {  // i.e., it's not in the vector of geometries
+        property_names[ property_counter ] = column_names[i];
         property_counter++;
       }
     }
@@ -249,8 +265,17 @@ namespace geojson {
         writer.EndObject();
 
         writer.String("geometry");
-        write_geometry( writer, sfc, i, geometry, geom_type, cls );
+        writer.StartObject();
 
+        //for ( geom = 0; geom < n_geometries; geom++ ) {
+        //  const char* geom_column = geometries[ geom ];
+
+          writer.String( geom_column );
+          //Rcpp::List sfc = sf[ geom_column ];
+          //write_geometry( writer, sfc, i );
+          write_geometry( writer, sfc, i, geometry, geom_type, cls );
+        //}
+        writer.EndObject();
         writer.EndObject();
       }
     }

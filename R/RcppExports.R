@@ -13,8 +13,8 @@ rcpp_geojson_df <- function(df, geometries) {
     .Call(`_spatialwidget_rcpp_geojson_df`, df, geometries)
 }
 
-rcpp_sf_to_geojson_downcast <- function(df) {
-    .Call(`_spatialwidget_rcpp_sf_to_geojson_downcast`, df)
+rcpp_sf_to_geojson_downcast <- function(df, geometry_column) {
+    .Call(`_spatialwidget_rcpp_sf_to_geojson_downcast`, df, geometry_column)
 }
 
 rcpp_resolve_palette <- function(lst_params, params) {
