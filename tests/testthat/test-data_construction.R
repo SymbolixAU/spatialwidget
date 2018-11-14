@@ -59,6 +59,22 @@ test_that("invalid columns and parameters handled", {
   # expect_true(ncol(res) == 1)
   # expect_true(names(res) == "stroke_colour")
 
+  n <- 5
+  lst_params <- list(parameter = c("stroke_colour", "stroke_width"), parameter_type = c(), data_column_index = c() )
+  params <- list(stroke_colour = "col2", stroke_width = 3)
+  param_names <- lst_params[[ "parameter" ]]
+  df <- data.frame(col1 = 1:n)
+  data_names <- names( df )
+  data <- df
+  data_rows <- nrow( df )
+  lst_defaults <- list(stroke_opacity = rep(100, n))
+
+  ## when entering the 'construct_data' function, all the colours and palettes will have been sorted out
+  expect_error(
+    spatialwidget:::rcpp_construct_data( param_names, params, data_names, lst_defaults, data, data_rows )
+    , "unknown column - col2"
+  )
+
 })
 
 test_that("parameters not supplied by user are ignored", {

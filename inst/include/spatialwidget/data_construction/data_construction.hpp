@@ -71,7 +71,10 @@ namespace construction {
   				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
 
   				if ( colIndex == -1 ) {
-  				  Rcpp::stop("unknown column");
+  				  std::ostringstream oss;
+  				  oss << "unknown column - " << param_value.get_cstring() << std::endl;
+  				  //Rcpp::stop("unknown column");
+  				  Rcpp::stop(oss.str());
   				}
 
   				if ( colIndex >= 0 ) {
