@@ -283,7 +283,7 @@ namespace geojson {
     writer.EndArray();
 
     Rcpp::StringVector geojson = sb.GetString();
-    geojson.attr("class") = Rcpp::CharacterVector::create("geojson","json");
+    geojson.attr("class") = Rcpp::CharacterVector::create("json");
     return geojson;
   }
 
