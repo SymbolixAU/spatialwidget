@@ -71,10 +71,11 @@ namespace construction {
   				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
 
   				if ( colIndex == -1 ) {
-  				  std::ostringstream oss;
-  				  oss << "unknown column - " << param_value.get_cstring() << std::endl;
-  				  //Rcpp::stop("unknown column");
-  				  Rcpp::stop(oss.str());
+  				  // std::ostringstream oss;
+  				  // oss << "unknown column - " << param_value.get_cstring() << std::endl;
+  				  // //Rcpp::stop("unknown column");
+  				  // Rcpp::stop(oss.str());
+  				  continue;
   				}
 
   				if ( colIndex >= 0 ) {
@@ -95,11 +96,7 @@ namespace construction {
   			}
   		} // TODO( is there an 'else' condition? )
 
-  	// Rcpp::Rcout << "constructing df: " << std::endl;
   	construct_df( lst_defaults, data_rows );
-  	// Rcpp::Rcout << "constructed" << std::endl;
-  	// Rcpp::StringVector default_names = lst_defaults.names();
-  	// Rcpp::Rcout << "default_names: " << default_names << std::endl;
   	return lst_defaults;
   }
 
