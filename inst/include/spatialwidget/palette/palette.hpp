@@ -41,6 +41,8 @@ namespace palette {
   		std::string& na_colour,
   		bool& include_alpha) {
 
+    Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
+
   	switch ( TYPEOF( palette ) ) {
   	case 1: { // SYMSXP
   	Rcpp::stop("Unsupported palette type");
@@ -48,12 +50,12 @@ namespace palette {
   }
   	case 14: { // REALSXP (i.e, matrix)
   		Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-  		return colourvalues::colours_hex::colour_value_hex( fill_colour_vec, thispal, na_colour, include_alpha, true );
+  		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
   		break;
   	}
   	case 16: {
   		std::string thispal = Rcpp::as< std::string>( palette );
-  		return colourvalues::colours_hex::colour_value_hex( fill_colour_vec, thispal, na_colour, alpha, include_alpha, true );
+  		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
   		break;
   	}
   	default: {
@@ -72,6 +74,8 @@ namespace palette {
 			bool& include_alpha,
 			std::string format_type = "numeric") {
 
+	  Rcpp::NumericVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
+
 		//int n_summaries = 5;
 	  // TODO( supply 'format' arguments to colour_value_hex)
 	  // need the R obj type
@@ -88,7 +92,7 @@ namespace palette {
 		case 14: { // REALSXP (i.e, matrix)
 			// Rcpp::Rcout << "caes 14" << std::endl;
 			Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-			return colourvalues::colours_hex::colour_value_hex( fill_colour_vec, thispal, na_colour, include_alpha, n_summaries, format, format_type, digits );
+			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, digits );
 			// Rcpp::Rcout << "caes 14 done " << std::endl;
 			break;
 		}
@@ -98,7 +102,7 @@ namespace palette {
 			// Rcpp::Rcout << "thispal: " << thispal.c_str() << std::endl;
 			// Rcpp::Rcout << "format: " << format << std::endl;
 			// Rcpp::Rcout << "format_type: " << format_type << std::endl;
-			return colourvalues::colours_hex::colour_value_hex( fill_colour_vec, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, digits );
+			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, digits );
 			break;
 		}
 		default: {

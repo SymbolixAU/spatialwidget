@@ -100,3 +100,30 @@ test_that("parameters not supplied by user are ignored", {
 
 })
 
+test_that("input data remains unchanged", {
+
+
+  df <- data.frame(lon = c(1,2,-5,0.3), lat = 1:4)
+
+  spatialwidget::widget_point(
+    data = df
+    , lon = "lon"
+    , lat = "lat"
+    , fill_colour = "lon"
+  )
+
+  expect_true( all( df$lon == c(1,2,-5,0.3) ) )
+
+
+  df <- data.frame(lon = c(1,2,-5,0.3), lat = 1:4, col = c("a","b","d","z"))
+
+  spatialwidget::widget_point(
+    data = df
+    , lon = "lon"
+    , lat = "lat"
+    , fill_colour = "col"
+  )
+
+  expect_true( all( df$col == c("a","b","d","z") ) )
+
+})
