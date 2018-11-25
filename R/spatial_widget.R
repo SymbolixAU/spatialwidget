@@ -29,6 +29,9 @@ widget_line <- function( data,
   l[[1]] <- NULL
   l[["data"]] <- NULL
   l[["json_legend"]] <- NULL
+  l[["stroke_colour"]] <- force( stroke_colour )
+  l[["stroke_opacity"]] <- force( stroke_opacity )
+  l[["stroke_width"]] <- force( stroke_width )
 
   l <- resolve_legend( l, legend )
   l <- resolve_data( data, l, "LINESTRING")
@@ -75,6 +78,11 @@ widget_polygon <- function( data,
   l[[1]] <- NULL
   l[["data"]] <- NULL
   l[["json_legend"]] <- NULL
+  l[["stroke_colour"]] <- force( stroke_colour )
+  l[["stroke_opacity"]] <- force( stroke_opacity )
+  l[["stroke_width"]] <- force( stroke_width )
+  l[["fill_colour"]] <- force( fill_colour )
+  l[["fill_opacity"]] <- force( fill_opacity )
 
   l <- resolve_legend( l, legend )
   l <- resolve_data( data, l, "POLYGON" )
@@ -119,6 +127,10 @@ widget_point <- function( data,
   l[[1]] <- NULL
   l[["data"]] <- NULL
   l[["json_legend"]] <- NULL
+  l[["lon"]] <- force( lon )
+  l[["lat"]] <- force( lat )
+  l[["fill_colour"]] <- force( fill_colour )
+  l[["fill_opacity"]] <- force( fill_opacity )
 
   l <- resolve_legend( l, legend )
   l <- resolve_data( data, l, "POINT" )

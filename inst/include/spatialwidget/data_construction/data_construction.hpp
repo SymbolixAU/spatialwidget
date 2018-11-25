@@ -43,58 +43,43 @@ namespace construction {
   	  Rcpp::stop("unsuitable data object");
   	}
 
-  	// Rcpp::Rcout << "param names: " << param_names << std::endl;
-
   	// iterate each of the parameters
   	for (int i = 0; i < n; i ++ ) {
   		// if the param element is length 1; check if it's a column name
 
   		Rcpp::String this_param = param_names[i];
-  		// Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
 
-  		// If we use R to construct the parameter list, we don't need to do this check
-  		//if ( idx >= 0 ) {
-  			// to get into this if statement the parameter passed into the R function is
-  			// to be used as a column of data
+			if( TYPEOF( params[i] ) == STRSXP ) {
+				// it's a string
+				// is it also a column name
 
-  			if( TYPEOF( params[i] ) == STRSXP ) {
-  				// it's a string
-  				// is it also a column name
+				Rcpp::String param_value = params[i];
 
-  				Rcpp::String param_value = params[i];
+				// returns -1 if length != 1
+				colIndex = spatialwidget::utils::where::where_is( param_value, data_names );
+				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
 
-  				// Rcpp::Rcout << "param value: " << param_value.get_cstring() << std::endl;
+				if ( colIndex == -1 ) {
+				  continue;
+				}
 
-  				// returns -1 if length != 1
-  				// colIndex = spatialwidget::utils::data_column_index( param_value, data_names );
-  				colIndex = spatialwidget::utils::where::where_is( param_value, data_names );
-  				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
+				if ( colIndex >= 0 ) {
+					// The param_value IS a column name
+					lst_defaults[ this_param ] = data[ colIndex ];
 
-  				if ( colIndex == -1 ) {
-  				  // std::ostringstream oss;
-  				  // oss << "unknown column - " << param_value.get_cstring() << std::endl;
-  				  // //Rcpp::stop("unknown column");
-  				  // Rcpp::stop(oss.str());
-  				  continue;
-  				}
+				} else {
+					// IT's not a column name, but it is still a string
+					// and needs to be applied to all rows
+					//SEXP value = param_value;
+					lst_defaults[ this_param ] = spatialwidget::utils::fill::fill_vector( param_value, data_rows );
 
-  				if ( colIndex >= 0 ) {
-  					// The param_value IS a column name
-  					lst_defaults[ this_param ] = data[ colIndex ];
-
-  				} else {
-  					// IT's not a column name, but it is still a string
-  					// and needs to be applied to all rows
-  					//SEXP value = param_value;
-  					lst_defaults[ this_param ] = spatialwidget::utils::fill::fill_vector( param_value, data_rows );
-
-  				}
-  			} else {
-  				// paramter is not a string, so it can't be a column name
-  				SEXP value = params[i];
-  			  spatialwidget::utils::fill::fill_vector( lst_defaults, this_param, value, data_rows );
-  			}
-  		} // TODO( is there an 'else' condition? )
+				}
+			} else {
+				// paramter is not a string, so it can't be a column name
+				SEXP value = params[i];
+			  spatialwidget::utils::fill::fill_vector( lst_defaults, this_param, value, data_rows );
+			}
+		} // TODO( is there an 'else' condition? )
 
   	construct_df( lst_defaults, data_rows );
   	return lst_defaults;

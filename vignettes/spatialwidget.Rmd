@@ -135,8 +135,8 @@ l
 ### Lines
 
 ```{r}
-# l <- widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
-# l
+l <- widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
+l
 ```
 
 ### Polygon

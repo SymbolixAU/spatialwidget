@@ -31,15 +31,9 @@ namespace colour {
 
     SEXP pal = spatialwidget::palette::resolve_palette( lst_params, params );
 
-    // TODO( if the colour_name wasn't passed in as a paramter (e.g. stroke_colour),
-    // need to use the default)
-
     std::string format_type;
 
     if ( col_index == -1 ) {
-      //Rcpp::stop( "I still need to work out how to use the default colour");
-
-      //Rcpp::Rcout << "using default colours: " << colour_name << std::endl;
 
       palette_type = lst_defaults[ colour_name.c_str() ];
       format_type = "numeric";
@@ -115,7 +109,6 @@ namespace colour {
     // Rcpp::Rcout << "colour_location: " << colour_location << std::endl;
 
     // if 'colour_name' doesn't exist in the list of default, we need to make one
-    //
 
     int colourColIndex = colour_location >= 0 ? data_column_index[ colour_location ] : -1;
     int alphaColIndex = opacity_location >= 0 ? data_column_index[ opacity_location ] : -1;
@@ -131,10 +124,24 @@ namespace colour {
       // Rcpp::StringVector hex( data_rows, hex );
       //}
       // otherwise, if it's not a hex string, create a vector of defaults
-      Rcpp::NumericVector nv( data.nrows(), 1.0 );
-      this_colour = nv;
-      lst_defaults[ colour_name.c_str() ] = nv; // need to add back to lst_defaults
+      if ( colour_location >= 0 ) {
+        Rcpp::Rcout << "colour was passed in, but it's not on the data object: " << std::endl;
 
+        if( TYPEOF( params[ colour_location ] ) == STRSXP ) {
+          Rcpp::Rcout << "and it's a string" << std::endl;
+          Rcpp::StringVector sv = params[ colour_location ];
+          Rcpp::Rcout << "sv; " << sv << std::endl;
+        } else {
+          Rcpp::Rcout << "it's not a STRSXP" << std::endl;
+          int thisType = TYPEOF( params[ colour_location ] );
+          Rcpp::Rcout << "it's a " << thisType << std::endl;
+        }
+
+      } else {
+        Rcpp::NumericVector nv( data.nrows(), 1.0 );
+        this_colour = nv;
+        lst_defaults[ colour_name.c_str() ] = nv; // need to add back to lst_defaults
+      }
     }
 
     if ( alphaColIndex >= 0 ) {
