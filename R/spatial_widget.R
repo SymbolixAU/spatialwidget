@@ -156,7 +156,7 @@ widget_point <- function( data,
 #'
 #' @examples
 #'
-#' l <- widget_od( data = arcs, legend = FALSE )
+#' l <- widget_od( data = arcs, origin = "origin", destination = "destination", legend = FALSE )
 #'
 #' @export
 widget_od <- function( data,

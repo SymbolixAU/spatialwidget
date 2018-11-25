@@ -8,26 +8,26 @@ Authors@R: c(
     )
 Description: Many packages use 'htmlwidgets' for interactive plotting of spatial data.
     This package provides functions for converting R objects, such as simple features, 
-    into structures suitable for use in 'htmlwidgets'. 
+    into structures suitable for use in 'htmlwidgets' mapping libraries. 
 License: GPL-3
 Depends: R (>= 3.3.0)
 Encoding: UTF-8
 LazyData: true
 Imports:
-    colourvalues (>= 0.2.0),
-    geojsonsf (>= 1.2.1),
-    jsonify (>= 0.1.1),
     Rcpp
 LinkingTo: 
     BH,
-    colourvalues,
-    geojsonsf,
-    jsonify,
+    colourvalues (>= 0.2.0),
+    geojsonsf (>= 1.2.1),
+    jsonify (>= 0.1.1),
     rapidjsonr,
     Rcpp
 RoxygenNote: 6.1.0
-Suggests: 
+Suggests:
+    colourvalues,
     covr,
+    geojsonsf,
+    jsonify,
     jsonlite,
     knitr,
     rmarkdown,

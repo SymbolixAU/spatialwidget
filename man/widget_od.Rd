@@ -29,6 +29,6 @@ Converts an `sf` object with two POINT geometriers into JSON for plotting in an 
 }
 \examples{
 
-l <- widget_od( data = arcs, legend = FALSE )
+l <- widget_od( data = arcs, origin = "origin", destination = "destination", legend = FALSE )
 
 }
