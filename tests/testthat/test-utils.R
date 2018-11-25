@@ -24,3 +24,19 @@ test_that("list elements are removed", {
   new_lst <- spatialwidget:::rcpp_remove_list_elements(lst, "vals")
   expect_true( all(names(new_lst) == "let") )
 })
+
+test_that("hex colour regex works", {
+
+  expect_true( spatialwidget:::is_hex( "#ABC" ) )
+  expect_true( spatialwidget:::is_hex( "#ABCF" ) )
+  expect_true( spatialwidget:::is_hex( "#1111" ) )
+  expect_true( spatialwidget:::is_hex( "#808080FF" ) )
+
+  expect_false( spatialwidget:::is_hex( "#" ) )
+  expect_false( spatialwidget:::is_hex( "#0" ) )
+  expect_false( spatialwidget:::is_hex( "808080FF" ) )
+  expect_false( spatialwidget:::is_hex( "#80" ) )
+  expect_false( spatialwidget:::is_hex( "#80808" ) )
+  expect_false( spatialwidget:::is_hex( "#808080F" ) )
+
+})

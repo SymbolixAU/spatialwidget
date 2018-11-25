@@ -41,6 +41,10 @@ rcpp_remove_list_elements <- function(lst, to_remove) {
     .Call(`_spatialwidget_rcpp_remove_list_elements`, lst, to_remove)
 }
 
+is_hex <- function(hex_str) {
+    .Call(`_spatialwidget_is_hex`, hex_str)
+}
+
 rcpp_widget_line <- function(data, data_types, params, geometry_columns, jsonify_legend) {
     .Call(`_spatialwidget_rcpp_widget_line`, data, data_types, params, geometry_columns, jsonify_legend)
 }

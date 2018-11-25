@@ -45,4 +45,13 @@ Rcpp::List rcpp_remove_list_elements( Rcpp::List lst, Rcpp::StringVector to_remo
   return lst;
 }
 
-
+/*
+ * is_hex
+ */
+// [[Rcpp::export]]
+Rcpp::LogicalVector is_hex( std::string hex_str ) {
+  bool res = spatialwidget::utils::colour::is_hex( hex_str );
+  Rcpp::LogicalVector lv(1);
+  lv[0] = res;
+  return res;
+}

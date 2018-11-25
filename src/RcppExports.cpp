@@ -137,6 +137,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// is_hex
+Rcpp::LogicalVector is_hex(std::string hex_str);
+RcppExport SEXP _spatialwidget_is_hex(SEXP hex_strSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type hex_str(hex_strSEXP);
+    rcpp_result_gen = Rcpp::wrap(is_hex(hex_str));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_widget_line
 Rcpp::List rcpp_widget_line(Rcpp::DataFrame data, Rcpp::List data_types, Rcpp::List params, Rcpp::StringVector geometry_columns, bool jsonify_legend);
 RcppExport SEXP _spatialwidget_rcpp_widget_line(SEXP dataSEXP, SEXP data_typesSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP, SEXP jsonify_legendSEXP) {
@@ -209,6 +220,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_fill_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_vector, 4},
     {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
     {"_spatialwidget_rcpp_remove_list_elements", (DL_FUNC) &_spatialwidget_rcpp_remove_list_elements, 2},
+    {"_spatialwidget_is_hex", (DL_FUNC) &_spatialwidget_is_hex, 1},
     {"_spatialwidget_rcpp_widget_line", (DL_FUNC) &_spatialwidget_rcpp_widget_line, 5},
     {"_spatialwidget_rcpp_widget_point", (DL_FUNC) &_spatialwidget_rcpp_widget_point, 5},
     {"_spatialwidget_rcpp_widget_point_df", (DL_FUNC) &_spatialwidget_rcpp_widget_point_df, 5},
