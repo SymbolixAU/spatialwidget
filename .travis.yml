@@ -6,7 +6,7 @@ dist: trusty
 sudo: required
 cache: packages
 after_success:
-    - Rscript -e 'covr::codecov()'
+  - Rscript -e 'covr::codecov()'
 
 ## for sf
 before_install:
