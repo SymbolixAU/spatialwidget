@@ -2,7 +2,7 @@ Package: spatialwidget
 Type: Package
 Title: Converts Spatial Data to JSON for Use in Htmlwidgets
 Version: 0.1
-Date: 2018-10-18
+Date: 2018-11-25
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )

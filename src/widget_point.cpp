@@ -16,6 +16,7 @@ Rcpp::List rcpp_widget_point(
 
   std::unordered_map< std::string, std::string > point_colours = spatialwidget::widgetpoint::point_colours;
   Rcpp::StringVector point_legend = spatialwidget::widgetpoint::point_legend;
+  Rcpp::StringVector parameter_exclusions = Rcpp::StringVector::create("legend","legend_options","palette","na_colour");
 
   return spatialwidget::api::create_geojson(
     data,
@@ -25,6 +26,7 @@ Rcpp::List rcpp_widget_point(
     point_colours,
     point_legend,
     data_rows,
+    parameter_exclusions,
     geometry_columns,
     jsonify_legend
   );
@@ -43,6 +45,7 @@ Rcpp::List rcpp_widget_point_df(
 
   std::unordered_map< std::string, std::string > point_colours = spatialwidget::widgetpoint::point_colours;
   Rcpp::StringVector point_legend = spatialwidget::widgetpoint::point_legend;
+  Rcpp::StringVector parameter_exclusions = Rcpp::StringVector::create("legend","legend_options","palette","na_colour");
 
   return spatialwidget::api::create_geojson(
     data,
@@ -52,6 +55,7 @@ Rcpp::List rcpp_widget_point_df(
     point_colours,
     point_legend,
     data_rows,
+    parameter_exclusions,
     geometries,
     jsonify_legend
   );

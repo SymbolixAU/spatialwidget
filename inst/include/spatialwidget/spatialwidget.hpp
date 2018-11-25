@@ -11,7 +11,6 @@
 
 #include "spatialwidget/colour/colour.hpp"
 #include "spatialwidget/data_construction/data_construction.hpp"
-//#include "spatialwidget/geojson/geometrycollection.hpp"
 #include "spatialwidget/geojson/geojson.hpp"
 #include "spatialwidget/legend/legend.hpp"
 #include "spatialwidget/palette/palette.hpp"
@@ -32,6 +31,7 @@ namespace api {
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector& geometry_columns,
       bool jsonify_legend
     ) {
@@ -47,7 +47,8 @@ namespace api {
       lst_defaults,
       layer_colours,
       layer_legend,
-      data_rows
+      data_rows,
+      parameter_exclusions
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -79,6 +80,7 @@ namespace api {
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
       std::string& geometry_column,
       bool jsonify_legend
   ) {
@@ -94,7 +96,8 @@ namespace api {
       lst_defaults,
       layer_colours,
       layer_legend,
-      data_rows
+      data_rows,
+      parameter_exclusions
     );
 
     // Rcpp::Rcout << "parameters to data done" << std::endl;
@@ -128,6 +131,7 @@ namespace api {
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
       Rcpp::List& geometry_columns,
       bool jsonify_legend
   ) {
@@ -142,7 +146,8 @@ namespace api {
       lst_defaults,
       layer_colours,
       layer_legend,
-      data_rows
+      data_rows,
+      parameter_exclusions
     );
 
 
@@ -176,6 +181,7 @@ inline Rcpp::List create_geojson(
     std::unordered_map< std::string, std::string >& layer_colours,
     Rcpp::StringVector& layer_legend,
     int& data_rows,
+    Rcpp::StringVector& parameter_exclusions,
     Rcpp::List& geometry_columns,
     bool jsonify_legend,
     bool elevation
@@ -191,7 +197,8 @@ inline Rcpp::List create_geojson(
     lst_defaults,
     layer_colours,
     layer_legend,
-    data_rows
+    data_rows,
+    parameter_exclusions
   );
 
   Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -226,6 +233,7 @@ inline Rcpp::List create_geojson(
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector geometry_columns,
       bool jsonify_legend
   ) {
@@ -239,7 +247,8 @@ inline Rcpp::List create_geojson(
       lst_defaults,
       layer_colours,
       layer_legend,
-      data_rows
+      data_rows,
+      parameter_exclusions
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );

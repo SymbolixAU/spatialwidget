@@ -16,6 +16,7 @@ Rcpp::List rcpp_widget_line(
 
   std::unordered_map< std::string, std::string > line_colours = spatialwidget::widgetline::line_colours;
   Rcpp::StringVector line_legend = spatialwidget::widgetline::line_legend;
+  Rcpp::StringVector parameter_exclusions = Rcpp::StringVector::create("legend","legend_options","palette","na_colour");
 
   return spatialwidget::api::create_geojson(
     data,
@@ -25,6 +26,7 @@ Rcpp::List rcpp_widget_line(
     line_colours,
     line_legend,
     data_rows,
+    parameter_exclusions,
     geometry_columns,
     jsonify_legend
   );

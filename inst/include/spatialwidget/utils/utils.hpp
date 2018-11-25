@@ -4,5 +4,6 @@
 #include "spatialwidget/utils/fill/fill.hpp"
 #include "spatialwidget/utils/where/where.hpp"
 #include "spatialwidget/utils/remove/remove.hpp"
+#include "spatialwidget/utils/map/map.hpp"
 
 #endif
