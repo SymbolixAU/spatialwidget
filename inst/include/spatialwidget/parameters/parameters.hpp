@@ -112,8 +112,6 @@ namespace parameters {
   	//)
 
   	// need to remove any paramters which won't be used in the data being plotted
-  	//Rcpp::StringVector legend_params = Rcpp::StringVector::create("legend","legend_options","palette","na_colour"); // TODO( hard-coded?)
-  	//spatialwidget::utils::remove::remove_list_elements( params, param_names, legend_params );
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, parameter_exclusions );
 
     Rcpp::StringVector colours_remove = spatialwidget::utils::map::extract_map( colour_columns, colour_columns.size() * 2 );

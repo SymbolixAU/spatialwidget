@@ -27,10 +27,7 @@ namespace legend {
                                     Rcpp::StringVector& param_names,
                                     Rcpp::StringVector& legend_types ) {
 
-    // Rcpp::Rcout << "legend types before: " << legend_types << std::endl;
     legend_types = Rcpp::intersect( legend_types, param_names );
-    // Rcpp::Rcout << "legend types after : " << legend_types << std::endl;
-    // Rcpp::Rcout << "param_names: " << param_names << std::endl;
 
     int n = legend_types.size();
     int i;
@@ -57,23 +54,17 @@ namespace legend {
         // the user supplied either legend = T or legend = F
         // if T, switch all the 'false' elements to true
         for ( i = 0; i < n; i++ ) {  // TODO( dont' swithc the FALSEs to TRUE)
-        //bool use_legend = lege[i];
-        //Rcpp::Rcout << "use_legend: " << use_legend;
         legend[ i ] = lege;
       }
-        //Rcpp::Rcout << "lglsxp legend" << std::endl;
         break;
       }
       case VECSXP: { // list
-        //Rcpp::Rcout << "list legend " << std::endl;
         // iterate the list, and, if the item is true, switch the element of the list to true
         Rcpp::List lege_list = Rcpp::as< Rcpp::List >( lege );
         n = lege_list.size();
         Rcpp::StringVector lege_list_names = lege_list.names();
-        //Rcpp::Rcout << "names: " << lege_list_names << std::endl;
         for (i = 0; i < n; i++ ) {
           this_legend = lege_list_names[ i ];
-          //Rcpp::Rcout << "this_legend " << this_legend.get_cstring() << std::endl;
           legend[ this_legend ] = lege_list[ i ];
         }
         break;

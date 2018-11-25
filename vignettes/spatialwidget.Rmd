@@ -20,6 +20,75 @@ knitr::opts_chunk$set(
 
 This package is designed to convert R data to JSON, ready for plotting on a map in an `htmlwidget`. 
 
+## Design
+
+The basic idea of this package is to take a data.frame 
+
+```{r}
+n <- 100
+set.seed(20181125)
+lons <- sample(seq(-180, 180, by = 0.001), size = n)
+lats <- sample(seq(-90, 90, by = 0.001), size = n)
+
+df <- data.frame(
+  myLon = lons
+  , myLat = lats
+  , val = rnorm(n=n)
+  , samp = sample(1:100, size = n)
+)
+head( df )
+```
+
+And a list specifying which columns of `df` will be used as colouring values, plus other options, such as whether a legend is required,
+
+```{r}
+lst <- list(
+  lon = "lon"
+  , lat = "lat"
+  , fill_colour = "val"
+  , fill_opacity = "samp"
+  , legend = T
+  , na_colour = "#808080FF"
+)
+```
+
+converts the required values of `df` into colours 
+
+```{r}
+
+colours <- colourvalues::colour_values( df$val, alpha = df$samp, n_summaries = 5 )
+df$val <- colours$colours
+
+head( df )
+```
+
+and constructs the legend
+
+```{r}
+legend <- list( 
+  colours$summary_values
+  , colours$summary_colours
+)
+
+legend
+```
+
+and then converts the remaining data into the pseudo-GeoJSON
+
+```{r}
+l <- spatialwidget:::rcpp_geojson_df( df, list(geometry = c("myLon","myLat")))
+
+substr( l, 1, 500) 
+
+```
+
+
+Notice the `val` columns is now a hex colour, and the `myLon` and `myLat` have been converted into `Point` coordinates. 
+
+This pseudo-GeoJSON can then be parsed in a htmlwidget javascript function.
+
+---
+
 There are R functions you can call, but these are limited. You will primarily use the C++ functions.
 
 
@@ -213,6 +282,16 @@ In this example, both `fill_colour` and `stroke_colour` will be returned in the 
 ### int data_rows
 
 The number of rows of `data`. 
+
+### Rcpp::StringVector parameter_exclusions
+
+A vector describing the elements of `params` which will be excluded from the final JSON data. 
+
+```c++
+Rcpp::StringVector parameter_exclusions = Rcpp::StringVector::create("palette","legend","na_colour");
+```
+
+
 
 ### bool jsonify_legend
 
@@ -449,6 +528,5 @@ namespace widgetpoint {
 
 #endif
 ```
-
 
 
