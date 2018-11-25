@@ -10,6 +10,23 @@
 #' }
 "capitals"
 
+
+#' Origin Destination points between Sydney, Australia and other capitals cities
+#'
+#' A simple feature \code{sf} object with two \code{sfc} columns, "origin" and "destination"
+#'
+#' @format A sf object with 199 observations and 6 variables
+#' \describe{
+#'   \item{country_from}{origin country}
+#'   \item{capital_from}{origin capital}
+#'   \item{country_to}{destination country}
+#'   \item{capital_to}{destination capital}
+#'   \item{origin}{sfc geometry column}
+#'   \item{destination}{sfc geometry column}
+#' }
+"arcs"
+
+
 #' Roads in central Melbourne
 #'
 #' A simple feature \code{sf} object of roads in central Melbourne

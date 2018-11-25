@@ -18,7 +18,13 @@
 #' l <- widget_line( roads, legend = TRUE )
 #'
 #' @export
-widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, legend = TRUE, json_legend = TRUE) {
+widget_line <- function( data,
+                         stroke_colour = NULL,
+                         stroke_opacity = NULL,
+                         stroke_width = NULL,
+                         legend = TRUE,
+                         json_legend = TRUE) {
+
   l <- as.list( match.call( expand.dots = F) )
   l[[1]] <- NULL
   l[["data"]] <- NULL
@@ -56,8 +62,15 @@ widget_line <- function( data, stroke_colour, stroke_opacity, stroke_width, lege
 #' l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = TRUE)
 #'
 #' @export
-widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
-                            fill_colour, fill_opacity, legend = TRUE, json_legend = TRUE ) {
+widget_polygon <- function( data,
+                            stroke_colour = NULL,
+                            stroke_opacity = NULL,
+                            stroke_width = NULL,
+                            fill_colour = NULL,
+                            fill_opacity = NULL,
+                            legend = TRUE,
+                            json_legend = TRUE ) {
+
   l <- as.list( match.call( expand.dots = F ) )
   l[[1]] <- NULL
   l[["data"]] <- NULL
@@ -95,8 +108,8 @@ widget_polygon <- function( data, stroke_colour, stroke_opacity, stroke_width,
 #'
 #' @export
 widget_point <- function( data,
-                          fill_colour,
-                          fill_opacity,
+                          fill_colour = NULL,
+                          fill_opacity = NULL,
                           lon = NULL,
                           lat = NULL,
                           legend = TRUE,
@@ -129,9 +142,53 @@ widget_point <- function( data,
       data, data_types, l, list(myGeometry = c("lon","lat") ), json_legend
       )
   }
+  return( js_data )
+}
+
+
+#' Widget OD
+#'
+#' Converts an `sf` object with two POINT geometriers into JSON for plotting in an htmlwidget
+#'
+#' @inheritParams widget_polygon
+#' @param origin string specifying the column of \code{data} containing the origin geometry
+#' @param destination string specifying the column of \code{data} containing the destination geometry
+#'
+#' @examples
+#'
+#' l <- widget_od( data = arcs, legend = FALSE )
+#'
+#' @export
+widget_od <- function( data,
+                       origin,
+                       destination,
+                       fill_colour = NULL,
+                       fill_opacity = NULL,
+                       legend = TRUE,
+                       json_legend = TRUE ) {
+
+  l <- as.list( match.call( expand.dots = F ) )
+  l[[1]] <- NULL
+  l[["data"]] <- NULL
+  l[["json_legend"]] <- NULL
+
+  l <- resolve_legend( l, legend )
+  l <- resolve_od_data( data, l, "POINT" )
+
+  if( !is.null( l[["data"]] ) ) {
+    data <- l[["data"]]
+    l[["data"]] <- NULL
+  }
+
+  data_types <- vapply( data, function(x) class(x)[[1]], "")
+  tp <- l[["data_type"]]
+  l[["data_type"]] <- NULL
+
+  js_data <- rcpp_widget_point( data, data_types, l, c("origin","destination"), json_legend )
 
   return( js_data )
 }
+
 
 resolve_legend <- function( l, legend ) {
   l[['legend']] <- legend
@@ -145,6 +202,20 @@ sfrow <- function( data , sfc_type ) {
     which(vapply(data[[geom_column]], function(x) attr(x, "class")[[2]], "") %in% c(sfc_type, paste0("MULTI", sfc_type) ) )
   )
 }
+
+resolve_od_data <- function( data, l, origin, destination ) UseMethod("resolve_od_data")
+
+#' @export
+resolve_od_data.sf <- function( data, l, origin, destination ) {
+  if ( is.null( l[["origin"]] ) || is.null( l[["destination"]] ) ) {
+    stop("origin and destination columns required")
+  }
+  l[["data_type"]] <- "sf"
+  return( l )
+}
+
+#' @export
+resolve_od_data.default <- function( data, l, origin, destination ) stop("only sf objects are supported for OD")
 
 resolve_data <- function( data, l, sf_geom ) UseMethod("resolve_data")
 

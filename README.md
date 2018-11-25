@@ -54,7 +54,7 @@ object of all the capital cities.
 ``` r
 library(spatialwidget)
 library(sf)
-#  Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
+#  Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
 sf <- spatialwidget::capitals
 sf
 #  Simple feature collection with 200 features and 2 fields
@@ -171,61 +171,16 @@ library.
 
 Yep.
 
-Say we want to generate an arc-map showing an arc between Sydney and all
-the other capitals cities. After a bit of manipulation we can make a
-`sf` object with two geometry columns
-
-``` r
-sf_sydney <- capitals[ capitals$country == "Australia", ]
-sf_world <- capitals[ capitals$country != "Australia", ]
-
-sf <- cbind( sf_world, sf_sydney[rep(1, nrow(sf_world)), ])
-sf
-#  Simple feature collection with 199 features and 4 fields
-#  Active geometry column: geometry
-#  geometry type:  POINT
-#  dimension:      XY
-#  bbox:           xmin: -174 ymin: -53 xmax: 179.13 ymax: 64.1
-#  epsg (SRID):    NA
-#  proj4string:    NA
-#  First 10 features:
-#                 country          capital country.1 capital.1
-#  1          Afghanistan            Kabul Australia  Canberra
-#  2              Albania           Tirane Australia  Canberra
-#  3              Algeria          Algiers Australia  Canberra
-#  4       American Samoa        Pago Pago Australia  Canberra
-#  5              Andorra Andorra la Vella Australia  Canberra
-#  6               Angola           Luanda Australia  Canberra
-#  7  Antigua and Barbuda      West Indies Australia  Canberra
-#  8            Argentina     Buenos Aires Australia  Canberra
-#  9              Armenia          Yerevan Australia  Canberra
-#  10               Aruba       Oranjestad Australia  Canberra
-#                   geometry            geometry.1
-#  1     POINT (69.11 34.28) POINT (149.08 -35.15)
-#  2     POINT (19.49 41.18) POINT (149.08 -35.15)
-#  3      POINT (3.08 36.42) POINT (149.08 -35.15)
-#  4  POINT (-170.43 -14.16) POINT (149.08 -35.15)
-#  5      POINT (1.32 42.31) POINT (149.08 -35.15)
-#  6      POINT (13.15 -8.5) POINT (149.08 -35.15)
-#  7     POINT (-61.48 17.2) POINT (149.08 -35.15)
-#  8       POINT (-60 -36.3) POINT (149.08 -35.15)
-#  9      POINT (44.31 40.1) POINT (149.08 -35.15)
-#  10   POINT (-70.02 12.32) POINT (149.08 -35.15)
-```
-
-NOTE: I’m still writing the R function to handle OD, but here’s how you
-call the `rcpp` function
+The `arcs` data is an `sf` object with two POINT geometry columns. So
+say we want to generate an arc-map showing an arc between Sydney and all
+the other capitals cities. Just call `widget_od`, supplying the origin
+and destination columns.
 
 ``` r
 
-data_types <- vapply( sf, function(x) class(x)[[1]], "")
-l <- list()
-l[["origin"]] <- "geometry"
-l[["destination"]] <- "geometry.1"
-l[["fill_colour"]] <- "country"
-js <- spatialwidget:::rcpp_widget_point( sf[1:2, ], data_types, l, c("origin","destination") )
+l <- widget_od( arcs[1:2, ], origin = "origin", destination = "destination")
 
-jsonlite::prettify( js$data )
+jsonlite::prettify( l$data )
 #  [
 #      {
 #          "type": "Feature",
@@ -236,15 +191,15 @@ jsonlite::prettify( js$data )
 #              "origin": {
 #                  "type": "Point",
 #                  "coordinates": [
-#                      69.11,
-#                      34.28
+#                      149.08,
+#                      -35.15
 #                  ]
 #              },
 #              "destination": {
 #                  "type": "Point",
 #                  "coordinates": [
-#                      149.08,
-#                      -35.15
+#                      69.11,
+#                      34.28
 #                  ]
 #              }
 #          }
@@ -252,21 +207,21 @@ jsonlite::prettify( js$data )
 #      {
 #          "type": "Feature",
 #          "properties": {
-#              "fill_colour": "#FDE725FF"
+#              "fill_colour": "#440154FF"
 #          },
 #          "geometry": {
 #              "origin": {
 #                  "type": "Point",
 #                  "coordinates": [
-#                      19.49,
-#                      41.18
+#                      149.08,
+#                      -35.15
 #                  ]
 #              },
 #              "destination": {
 #                  "type": "Point",
 #                  "coordinates": [
-#                      149.08,
-#                      -35.15
+#                      19.49,
+#                      41.18
 #                  ]
 #              }
 #          }
@@ -276,8 +231,12 @@ jsonlite::prettify( js$data )
 ```
 
 Notice now the `geometry` object has within it an `origin` and a
-`destination`
+`destination`. This is why I’ve nested the geometries one level deeper
+within the GeoJSON
 
 ### How do I use it in my package?
 
-TODO: examples of c++ integration
+You can use these R functions, but they have limited scope. This package
+has been designed so you use the C++ functions directly. I’ve gone into
+more detail in the vignette, so it’s probably best you read that to
+understand how to call the C++ functions.

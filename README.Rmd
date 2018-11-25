@@ -95,48 +95,34 @@ Where the `myGeometry` object is defined on a per-application bases. You are fre
 
 Yep. 
 
-Say we want to generate an arc-map showing an arc between Sydney and all the other capitals cities. After a bit of manipulation we can make a `sf` object with two geometry columns
+The `arcs` data is an `sf` object with two POINT geometry columns. So say we want to generate an arc-map showing an arc between Sydney and all the other capitals cities. Just call `widget_od`, supplying the origin and destination columns.
 
-```{r}
-sf_sydney <- capitals[ capitals$country == "Australia", ]
-sf_world <- capitals[ capitals$country != "Australia", ]
-
-sf <- cbind( sf_world, sf_sydney[rep(1, nrow(sf_world)), ])
-sf
-```
-
-
-NOTE: I'm still writing the R function to handle OD, but here's how you call the `rcpp` function
 
 ```{r}
 
-data_types <- vapply( sf, function(x) class(x)[[1]], "")
-l <- list()
-l[["origin"]] <- "geometry"
-l[["destination"]] <- "geometry.1"
-l[["fill_colour"]] <- "country"
-js <- spatialwidget:::rcpp_widget_point( sf[1:2, ], data_types, l, c("origin","destination") )
+l <- widget_od( arcs[1:2, ], origin = "origin", destination = "destination")
 
-jsonlite::prettify( js$data )
+jsonlite::prettify( l$data )
 
 ```
 
-Notice now the `geometry` object has within it an `origin` and a `destination`
+Notice now the `geometry` object has within it an `origin` and a `destination`. This is why I've nested the geometries one level deeper within the GeoJSON
 
 
 ### How do I use it in my package?
 
-TODO: examples of c++ integration
-
-- 
+You can use these R functions, but they have limited scope. This package has been designed so you use the C++ functions directly. I've gone into more detail in the vignette, so it's probably best you read that to understand how to call the C++ functions. 
 
 
-### what else
 
-- dependencies / design philosophy
-- colourvalues
-- jsonify
 
-The c++ functions require data, list of parameters, names, geometries
+
+
+
+
+
+
+
+
 
 

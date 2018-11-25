@@ -12,7 +12,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "# "
 )
 ```
 
@@ -25,7 +25,7 @@ There are R functions you can call, but these are limited. You will primarily us
 
 ## R Interface
 
-There are 3 R functions you can call for creating POINTs, LINEs or POLYGONs. 
+There are 4 R functions you can call for creating POINTs, LINEs, POLYGONs or origin-destination shapes. 
 
 Each of these functions returns a list with two elements, `data` and `legend`.
 
@@ -84,12 +84,15 @@ The capabilities of these functions is limited. You get more control by implemen
 
 ## C++ API
 
-There are 4 functions you can call, 3 will return pseudo-GeoJSON, and the other will return encoded polylines. 
+There are 5 functions you can call, 4 will return pseudo-GeoJSON, and the other will return encoded polylines. 
 
-The function retuning geojson is overloaded, so you use the same function name, but supply different arguments. 
+Three of functions retuning geojson are overloaded, so you use the same function name, but supply different arguments. 
+The other is used for down-casting MULTI geometry objects into their equivalent non-MULTI objects. (For example, if you have a MULTIPOINT object, but the widget can only handle POINTs, you will have to down-cast the MULTIPOINT to POINTS)
 
 ```c++
 Rcpp::List create_geojson() // 3 overloads
+
+Rcpp::List create_geojson_downcast()
 
 Rcpp::List create_polyline()
 ```
@@ -268,6 +271,27 @@ inline Rcpp::List create_geojson(
   )
 
 ```
+
+```c++
+/*
+ * expects `data` to be an sf object, where the geometry_columsn is a string vector
+ * of the sfc column names (of sf) you want to use as the geometry object inside the GeoJSON.
+ * This function will down-cast MULTI* objects to their single form
+ *
+ */
+inline Rcpp::List create_geojson_downcast(
+      Rcpp::DataFrame& data,
+      Rcpp::List& data_types, 
+      Rcpp::List& params,
+      Rcpp::List& lst_defaults,
+      std::unordered_map< std::string, std::string >& layer_colours,
+      Rcpp::StringVector& layer_legend,
+      int& data_rows,
+      std::string& geometry_column,
+      bool jsonify_legend
+  ) 
+```
+
 
 
 ```c++
