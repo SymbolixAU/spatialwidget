@@ -135,8 +135,8 @@ l
 ### Lines
 
 ```{r}
-l <- widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
-l
+# l <- widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
+# l
 ```
 
 ### Polygon
@@ -156,7 +156,7 @@ The capabilities of these functions is limited. You get more control by implemen
 There are 5 functions you can call, 4 will return pseudo-GeoJSON, and the other will return encoded polylines. 
 
 Three of functions retuning geojson are overloaded, so you use the same function name, but supply different arguments. 
-The other is used for down-casting MULTI geometry objects into their equivalent non-MULTI objects. (For example, if you have a MULTIPOINT object, but the widget can only handle POINTs, you will have to down-cast the MULTIPOINT to POINTS)
+The `create_geojson_downcast()` is used for down-casting MULTI geometry objects into their equivalent non-MULTI objects. (For example, if you have a MULTIPOINT object, but the widget can only handle POINTs, you will have to down-cast the MULTIPOINT to POINTS)
 
 ```c++
 Rcpp::List create_geojson() // 3 overloads

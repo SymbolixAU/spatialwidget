@@ -19,24 +19,17 @@ namespace colour {
       Rcpp::List& data_types,
       Rcpp::List& lst_defaults,
       int col_index,
-      //Rcpp::IntegerVector& data_column_index,
       SEXP& palette_type,
       Rcpp::NumericVector& alpha,
       std::string& colour_name,
       bool include_legend) {
 
-    // Rcpp::Rcout << "include_legend: " << include_legend << std::endl;
-
     std::string na_colour = params.containsElementNamed( "na_colour" ) ?
-    params["na_colour" ] :
-    default_na_colour;
+    params["na_colour"] : default_na_colour;
 
     bool include_alpha = true;            // always true - deck.gl supports alpha
 
     SEXP pal = spatialwidget::palette::resolve_palette( lst_params, params );
-
-    //Rcpp::Rcout << "data_column_index: " << data_column_index << std::endl;
-    //Rcpp::StringVector this_name = data_names[ data_column_index ];
 
     // TODO( if the colour_name wasn't passed in as a paramter (e.g. stroke_colour),
     // need to use the default)
@@ -46,14 +39,13 @@ namespace colour {
     if ( col_index == -1 ) {
       //Rcpp::stop( "I still need to work out how to use the default colour");
 
-      // Rcpp::Rcout << "using default colours: " << colour_name << std::endl;
+      //Rcpp::Rcout << "using default colours: " << colour_name << std::endl;
 
       palette_type = lst_defaults[ colour_name.c_str() ];
       format_type = "numeric";
 
     } else {
       Rcpp::String this_colour = params[ colour_name.c_str() ];
-      // Rcpp::Rcout << "this_colour: " << this_colour.get_cstring() << std::endl;
 
       Rcpp::StringVector sv_r_type;
       Rcpp::String rs_format_type;
@@ -77,7 +69,7 @@ namespace colour {
     default: {
 
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
-      //Rcpp::Rcout << "colour_vec: " << colour_vec << std::endl;
+
       Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, format_type );
 
       if ( include_legend ) {
@@ -105,30 +97,44 @@ namespace colour {
     Rcpp::IntegerVector parameter_type = lst_params[ "parameter_type" ];
     Rcpp::StringVector param_names = params.names();
 
+    // Rcpp::Rcout << "idx: " << data_column_index << ", p_type: " << parameter_type << ", p_names: " << param_names << std::endl;
+
     Rcpp::StringVector hex_strings( data.nrows() );
 
     Rcpp::NumericVector alpha( 1, 255.0 ); // can be overwritten by user
 
-    SEXP this_colour = lst_defaults[ colour_name.c_str() ];
+    // Rcpp::StringVector default_names = lst_defaults.names();
+    // int provided_default = spatialwidget::utils::where::where_is( colour_name, default_names );
+    // Rcpp::Rcout << "located at: " << provided_default << std::endl;
+
+    //SEXP this_colour = lst_defaults[ colour_name.c_str() ];
+    SEXP this_colour;
 
     int colour_location = spatialwidget::utils::where::where_is( colour_name, param_names );
     int opacity_location = spatialwidget::utils::where::where_is( opacity_name, param_names );
+    // Rcpp::Rcout << "colour_location: " << colour_location << std::endl;
+
+    // if 'colour_name' doesn't exist in the list of default, we need to make one
+    //
 
     int colourColIndex = colour_location >= 0 ? data_column_index[ colour_location ] : -1;
     int alphaColIndex = opacity_location >= 0 ? data_column_index[ opacity_location ] : -1;
 
-    // Rcpp::Rcout << "colourColIndex: " << colourColIndex << std::endl;
-    // Rcpp::Rcout << "alphaColIndex: " << alphaColIndex << std::endl;
-
     if ( colourColIndex >= 0 ) {
       this_colour = data[ colourColIndex ];
     } else {
+      //Rcpp::Rcout << "else! " << std::endl;
       // TODO ( if it's a hex string, apply it to all rows of data )
       // i.e., when not a column of data, but ISS a hex string
       // so this will be
       // } else if (is_hex_string() ) {
       // Rcpp::StringVector hex( data_rows, hex );
       //}
+      // otherwise, if it's not a hex string, create a vector of defaults
+      Rcpp::NumericVector nv( data.nrows(), 1.0 );
+      this_colour = nv;
+      lst_defaults[ colour_name.c_str() ] = nv; // need to add back to lst_defaults
+
     }
 
     if ( alphaColIndex >= 0 ) {
@@ -142,20 +148,12 @@ namespace colour {
       }
     }
 
-    // Rcpp::Rcout << "going to make the legend " << std::endl;
-    // Rcpp::Rcout << "include_legend: " << include_legend << std::endl;
-
     Rcpp::List legend = make_colours(
       lst_params, params, data, data_types, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
       this_colour, alpha, colour_name, include_legend
     );
-
-    // Rcpp::Rcout << "made the legend " << std::endl;
-
-    // TODO( can this be replaced with 'include_legend') ?
-    // NO!
+    // this can't be replaced with 'include_legend'
     bool make_legend;
-    // Rcpp::Rcout << "make_legend: " << make_legend << std::endl;
 
     if ( lst_legend.containsElementNamed( colour_name.c_str() ) ) {
       make_legend = lst_legend[ colour_name.c_str() ];

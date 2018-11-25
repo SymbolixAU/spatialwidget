@@ -90,18 +90,12 @@ namespace palette {
 		break;
 	}
 		case 14: { // REALSXP (i.e, matrix)
-			// Rcpp::Rcout << "caes 14" << std::endl;
 			Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
 			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, digits );
-			// Rcpp::Rcout << "caes 14 done " << std::endl;
 			break;
 		}
 		case 16: {
-		  // Rcpp::Rcout << "caes 16" << std::endl;
 			std::string thispal = Rcpp::as< std::string>( palette );
-			// Rcpp::Rcout << "thispal: " << thispal.c_str() << std::endl;
-			// Rcpp::Rcout << "format: " << format << std::endl;
-			// Rcpp::Rcout << "format_type: " << format_type << std::endl;
 			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, digits );
 			break;
 		}

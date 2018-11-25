@@ -23,7 +23,7 @@ Rcpp::NumericVector default_fill_width( int n ) {
 
 Rcpp::List line_defaults( int n ) {
   return Rcpp::List::create(
-    Rcpp::_["stroke_colour"] = default_stroke_colour( n ),
+    //Rcpp::_["stroke_colour"] = default_stroke_colour( n ),
     Rcpp::_["stroke_width"] = default_stroke_width( n )
   );
 }
