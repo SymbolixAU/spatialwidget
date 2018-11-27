@@ -17,14 +17,14 @@ before_install:
 addons:
   apt:
     packages:
-      - gcc-5
-      - g++-5
+      - gcc-4.9
+      - g++-4.9
 
 matrix:
   include:
   - os: linux
     dist: trusty
-    env: CC=gcc-5 CXX=g++-5
+    env: CC=gcc-4.9 CXX=g++-4.9
   - os: linux
     dist: trusty
     env: CC=gcc CXX=g++
