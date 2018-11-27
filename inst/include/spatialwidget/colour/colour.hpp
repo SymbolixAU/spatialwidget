@@ -52,12 +52,28 @@ namespace colour {
     switch ( TYPEOF( palette_type ) ) {
     case 16: {
       Rcpp::StringVector colour_vec = Rcpp::as< Rcpp::StringVector >( palette_type );
-      Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha );
-      if ( include_legend ) {
-        legend[ "colour_type" ] = colour_name;
-        legend[ "type" ] = "category";
+      // TODO( if colour_vec is hex_strings, assume the user passed-in the colours they want to use? )
+      Rcpp::String first_colour = colour_vec[0];
+      std::string first_colour_str = first_colour;
+      if ( spatialwidget::utils::colour::is_hex( first_colour_str ) ) {
+
+        //Rcpp::Rcout << "assuming column of hex colours is used" << std::endl;
+        // Rcpp::List hex_colours(1);
+        // hex_colours[0] = colour_vec;
+        Rcpp::List hex_colours = Rcpp::List::create(
+          _["colours"] = colour_vec
+        );
+
+        return hex_colours;
+      } else {
+        Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha );
+
+        if ( include_legend ) {
+          legend[ "colour_type" ] = colour_name;
+          legend[ "type" ] = "category";
+        }
+        return legend;
       }
-      return legend;
       break;
     }
     default: {
@@ -125,17 +141,25 @@ namespace colour {
       //}
       // otherwise, if it's not a hex string, create a vector of defaults
       if ( colour_location >= 0 ) {
-        Rcpp::Rcout << "colour was passed in, but it's not on the data object: " << std::endl;
+        //Rcpp::Rcout << "colour was passed in, but it's not on the data object: " << std::endl;
 
-        if( TYPEOF( params[ colour_location ] ) == STRSXP ) {
-          Rcpp::Rcout << "and it's a string" << std::endl;
-          Rcpp::StringVector sv = params[ colour_location ];
-          Rcpp::Rcout << "sv; " << sv << std::endl;
-        } else {
-          Rcpp::Rcout << "it's not a STRSXP" << std::endl;
-          int thisType = TYPEOF( params[ colour_location ] );
-          Rcpp::Rcout << "it's a " << thisType << std::endl;
-        }
+        SEXP val = params[ colour_location ];
+        int n = data.nrows();
+        Rcpp::String col_name = colour_name;
+        spatialwidget::utils::fill::fill_vector( lst_defaults, col_name, val, n );
+
+        // if( TYPEOF( params[ colour_location ] ) == STRSXP ) {
+        //   // Rcpp::Rcout << "and it's a string" << std::endl;
+        //   // Rcpp::StringVector sv = params[ colour_location ];
+        //   // Rcpp::Rcout << "sv; " << sv << std::endl;
+        //
+        //
+        // } else {
+        //   Rcpp::stop("I can't work out how to use the colour you've supplied");
+        //   // Rcpp::Rcout << "it's not a STRSXP" << std::endl;
+        //   // int thisType = TYPEOF( params[ colour_location ] );
+        //   // Rcpp::Rcout << "it's a " << thisType << std::endl;
+        // }
 
       } else {
         Rcpp::NumericVector nv( data.nrows(), 1.0 );
