@@ -8,22 +8,8 @@ cache: packages
 after_success:
   - Rscript -e 'covr::codecov()'
 
-matrix:
-  include:
-  - os: linux
-    compiler: gcc
-    addons:
-      apt:
-      sources: ['ubuntu-toolchain-r-test']
-      packages: ['g++-5']
-    env:
-      - COMPILER=g++-5
-      - CC=gcc=5
-      - CXX=g++-5
-
 ## for sf
 before_install:
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 100
   - sudo add-apt-repository ppa:ubuntugis/ppa --yes
   - sudo apt-get --yes --force-yes update -qq
   - sudo apt-get install --yes libudunits2-dev libproj-dev libgeos-dev libgdal-dev
