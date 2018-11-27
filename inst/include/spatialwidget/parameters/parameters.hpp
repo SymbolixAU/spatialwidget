@@ -66,8 +66,12 @@ namespace parameters {
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions) {
 
+
   	Rcpp::StringVector param_names = params.names();
+  	// Rcpp::Rcout << "param_names: " << param_names << std::endl;
   	Rcpp::StringVector data_names = data.names();
+  	// Rcpp::Rcout << "data_names: " << data_names << std::endl;
+
 
   	Rcpp::List lst_params = construct_params( data, params );
 
@@ -79,6 +83,8 @@ namespace parameters {
   	);
 
   	Rcpp::StringVector legend_names = lst_legend.names();
+
+  	// Rcpp::Rcout << "legend_names: " << legend_names << std::endl;
 
   	std::unordered_map< std::string, std::string>::iterator it;
 

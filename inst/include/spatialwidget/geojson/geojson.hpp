@@ -288,12 +288,14 @@ namespace geojson {
   }
 
 
-  inline Rcpp::StringVector to_geojson( Rcpp::DataFrame& sf ) {
+  inline Rcpp::StringVector to_geojson( Rcpp::DataFrame& sf, std::string geom_column ) {
 
     rapidjson::StringBuffer sb;
     rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
 
-    std::string geom_column = sf.attr("sf_column");
+    //std::string geom_column = sf.attr("sf_column");
+
+    // Rcpp::Rcout << "geom_column: " << geom_column << std::endl;
 
     size_t n_cols = sf.ncol();
     size_t n_properties = n_cols - 1;
@@ -302,13 +304,18 @@ namespace geojson {
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
+    // Rcpp::Rcout << "n_col: " << n_cols << std::endl;
+    // Rcpp::Rcout << "column_names: " << column_names << std::endl;
+
+
     int property_counter = 0;
-    for (int i = 0; i < sf.length(); i++) {
+    for (int i = 0; i < n_cols; i++) {
       if (column_names[i] != geom_column) {
         property_names[property_counter] = column_names[i];
         property_counter++;
       }
     }
+    // Rcpp::Rcout << "property counter: " << property_counter << std::endl;
 
     writer.StartObject();
     geojsonsf::writers::start_feature_collection( writer );
@@ -326,6 +333,7 @@ namespace geojson {
       for( j = 0; j < n_properties; j++ ) {
         const char *h = property_names[ j ];
 
+        // Rcpp::Rcout << "h: " << h << std::endl;
         SEXP this_vec = sf[ h ];
 
         jsonify::writers::write_value( writer, h );
