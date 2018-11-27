@@ -191,6 +191,9 @@ namespace colour {
       lst_params, params, data, data_types, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
       this_colour, alpha, colour_name, include_legend
     );
+
+    // Rcpp::Rcout << "legend done" << std::endl;
+
     // this can't be replaced with 'include_legend'
     bool make_legend;
 
@@ -198,16 +201,30 @@ namespace colour {
       make_legend = lst_legend[ colour_name.c_str() ];
     }
 
+    // Rcpp::Rcout << "colour_name: " << colour_name << std::endl;
+
     lst_defaults[ colour_name.c_str() ] = legend[ "colours" ];
 
     if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {
 
+      // Rcpp::Rcout << "legend contains element " << std::endl;
+
       if (  make_legend == true ) {
 
-        std::string title = params[ colour_name ];
+        // Rcpp::Rcout << "make_legend: " << make_legend << std::endl;
+        // Rcpp::Rcout << "param_names: " << param_names << std::endl;
+
+        SEXP t = params[ colour_name ];
+        Rcpp::StringVector sv = Rcpp::as< Rcpp::StringVector >( t );
+        Rcpp::String s = sv[0];
+        std::string title = s;
         std::string css = "";
 
+        // Rcpp::Rcout << "title: " << title << std::endl;
+
         if ( params.containsElementNamed("legend_options") ) {
+
+          // Rcpp::Rcout << "setting options: " << std::endl;
 
           Rcpp::List opts = params[ "legend_options" ];
           std::string title_string = "title";

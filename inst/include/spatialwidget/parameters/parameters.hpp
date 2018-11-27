@@ -102,6 +102,8 @@ namespace parameters {
 	      );
 		}
 
+		// Rcpp::Rcout << "colours done: " << std::endl;
+
   	// list(
   	//  colourType ("fill_colour", "stroke_colour", "stroke_from", "stroke_to")
   	//  type = ("gradient","category")

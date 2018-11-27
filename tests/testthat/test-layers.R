@@ -49,11 +49,11 @@ test_that("coloumn of hex colours used", {
 
   l <- widget_point( df, fill_colour = "1" )
   res <- jsonlite::fromJSON( l$data )
-  expect_true( all(res$properties$fill_colour == "#909090"))
+  expect_true( all( res$properties$fill_colour == colourvalues::color_values(1) ) )
 
   l <- widget_point( df, fill_colour = 1 )
   res <- jsonlite::fromJSON( l$data )
-  expect_true( all(res$properties$fill_colour == "#909090"))
+  expect_true( all(res$properties$fill_colour == colourvalues::colour_values(1)))
 
 
 })

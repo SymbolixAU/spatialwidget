@@ -7,9 +7,9 @@
 namespace spatialwidget {
 namespace construction {
 
-  inline void construct_df(Rcpp::List& df, int& nrows) {
+  inline void construct_df( Rcpp::List& df, int& nrows ) {
 
-    if (nrows < 1) {
+    if ( nrows < 1 ) {
       Rcpp::stop("Error creating data layer");
     }
 
