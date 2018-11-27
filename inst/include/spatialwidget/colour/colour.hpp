@@ -22,7 +22,7 @@ namespace colour {
       SEXP& palette_type,
       Rcpp::NumericVector& alpha,
       std::string& colour_name,
-      bool include_legend) {
+      bool& include_legend) {
 
     std::string na_colour = params.containsElementNamed( "na_colour" ) ?
     params["na_colour"] : default_na_colour;
@@ -60,11 +60,19 @@ namespace colour {
         //Rcpp::Rcout << "assuming column of hex colours is used" << std::endl;
         // Rcpp::List hex_colours(1);
         // hex_colours[0] = colour_vec;
-        Rcpp::List hex_colours = Rcpp::List::create(
-          _["colours"] = colour_vec
-        );
+        Rcpp::StringVector lvls = Rcpp::unique( colour_vec );
 
-        return hex_colours;
+        Rcpp::List legend = Rcpp::List::create(
+          _["colours"] = colour_vec,
+          _["summary_values"] = lvls,
+          _["summary_colours"] = lvls
+        );
+        if ( include_legend ) {
+          legend[ "colour_type" ] = colour_name;
+          legend[ "type" ] = "category";
+        }
+        return legend;
+
       } else {
         Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha );
 
@@ -100,7 +108,7 @@ namespace colour {
       std::string& colour_name,
       std::string& opacity_name,
       Rcpp::List& lst_legend,
-      bool include_legend ) {
+      bool& include_legend ) {
 
     Rcpp::IntegerVector data_column_index = lst_params[ "data_column_index" ];
     Rcpp::IntegerVector parameter_type = lst_params[ "parameter_type" ];
@@ -146,6 +154,7 @@ namespace colour {
         int n = data.nrows();
         Rcpp::String col_name = colour_name;
         spatialwidget::utils::fill::fill_vector( lst_defaults, col_name, val, n );
+        //Rcpp::Rcout << "vector filled: " << std::endl;
 
         // if( TYPEOF( params[ colour_location ] ) == STRSXP ) {
         //   // Rcpp::Rcout << "and it's a string" << std::endl;
