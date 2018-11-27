@@ -25,7 +25,7 @@ test_that("legend is not jsonified", {
   expect_true(inherits(l, "list"))
   expect_true(length( l$legend$stroke_colour$colour ) == 5 )
 
-  l <- widget_polygon(melbourne[1:10, ], fill_colour = "AREASQKM16", legend = T, json_legend = FALSE)
+  l <- widget_polygon(melbourne[1:10, ], fill_colour = "AREASQKM", legend = T, json_legend = FALSE)
   expect_true(inherits(l, "list"))
   expect_true(length( l$legend$fill_colour$colour ) == 5 )
 

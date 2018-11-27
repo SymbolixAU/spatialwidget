@@ -79,7 +79,6 @@ namespace colour {
     default: {
 
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
-
       Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, format_type );
 
       if ( include_legend ) {
