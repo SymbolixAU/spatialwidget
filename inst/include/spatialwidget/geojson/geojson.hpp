@@ -2,6 +2,7 @@
 #define R_SPATIALWIDGET_GEOJSONSF_H
 
 #include <Rcpp.h>
+#include <boost/math/common_factor.hpp>
 
 #include "geojsonsf/geojsonsf.h"
 #include "geojsonsf/utils/utils.hpp"
@@ -288,6 +289,137 @@ namespace geojson {
   }
 
 
+  // -----------------------WIP---------------------
+  // down-casts MULTIGEOMETRIES to their simpler geometry
+  // for many columned sf objects
+  inline Rcpp::StringVector to_geojson_multi_column_downcast_atomise(
+      Rcpp::DataFrame& sf,
+      Rcpp::StringVector geometries ) {
+
+    int n_geometries = geometries.size();
+
+    //int geom;
+    //const char* geom_column = geometries[0];
+
+    size_t n_cols = sf.ncol();
+    size_t n_properties = n_cols - 1;  // single geometry column
+    size_t n_rows = sf.nrows();
+    size_t i, j;
+    Rcpp::StringVector column_names = sf.names();
+    Rcpp::StringVector property_names(sf.size() - 1);
+
+    size_t property_multiplier = 0;
+    std::string geom_type;
+    Rcpp::CharacterVector cls;
+
+    int property_counter = 0;
+    for (int i = 0; i < sf.length(); i++) {
+
+      Rcpp::String this_column = column_names[i];
+      int idx = spatialwidget::utils::where::where_is( this_column, geometries );
+
+      if ( idx == -1 ) {  // i.e., it's not in the vector of geometries
+        property_names[ property_counter ] = column_names[i];
+        property_counter++;
+      }
+    }
+
+    rapidjson::StringBuffer sb;
+    rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
+    writer.StartArray();
+
+    for( i = 0; i < n_rows; i++ ) {
+
+      // Rcpp::List sfc = sf[ geom_column ];
+      // SEXP sfg = sfc[ i ];
+      //
+      // cls = geojsonsf::getSfClass(sfg);
+      // geom_type = cls[1];
+
+      // if ( geom_type == "GEOMETRYCOLLECTION" ) {
+      //   Rcpp::stop("GEOMETRYCOLLECTION not supported for down-casting");
+      // }
+
+      // for downcasting multi-column sf objects, need to know the property_multiplier
+      // for ALL geometry columns in this row
+      geometry_size = 0;
+      int row_multiplier = 0;
+      Rcpp::IntegerVector geometry_sizes( n_geometries );
+
+      for ( int geometry = 0; geometry < n_geometries; geometry++ ) {
+        const char* geom_column = geometries[ geometry ];
+
+        Rcpp::List sfc = sf[ geom_column ];
+        SEXP sfg = sfc[ i ];
+
+        cls = geojsonsf::getSfClass(sfg);
+        geom_type = cls[1];
+
+        if ( geom_type == "GEOMETRYCOLLECTION" ) {
+          Rcpp::stop("GEOMETRYCOLLECTION not supported for down-casting");
+        }
+
+        geometry_size = geojsonsf::sizes::geometry_size( sfg, geom_type, cls );
+        geometry_sizes[ geometry ] = geometry_size; // keeping track of the size of each geometry
+
+        // TODO each geometry will need to be multiplied by the length of all the other geometries
+        if ( geometry == 0 ) {
+          row_multiplier = geometry_size;
+        } else {
+          row_multiplier = boost::math::lcm( row_multiplier, geometry_size );
+        }
+
+        Rcpp::Rcout << "row_multiplier: " << row_multiplier << std::endl;
+      }
+
+      for( int geometry = 0; geometry < n_geometries; geometry++ ) {
+
+       // need to loop over each geometry column, down-cast it, and replicate
+       // it
+       // need to know the length of each individual geometry,
+       //
+
+        writer.StartObject();
+        geojsonsf::writers::start_features( writer );
+        geojsonsf::writers::start_properties( writer );
+
+        writer.StartObject();
+
+        // properties first, then sfc
+        for( j = 0; j < n_properties; j++ ) {
+          const char *h = property_names[ j ];
+
+          SEXP this_vec = sf[ h ];
+
+          jsonify::writers::write_value( writer, h );
+          jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+        }
+        writer.EndObject();
+
+        writer.String("geometry");
+        writer.StartObject();
+
+        writer.String( geom_column );
+
+        write_geometry( writer, sfc, i, geometry, geom_type, cls );
+
+        writer.EndObject();
+        writer.EndObject();
+      }
+    }
+
+    writer.EndArray();
+
+    Rcpp::StringVector geojson = sb.GetString();
+    geojson.attr("class") = Rcpp::CharacterVector::create("json");
+    return geojson;
+  }
+  // -----------------------WIP---------------------
+
+
+  /*
+   * converts 'sf' object to standard GeoJSON
+   */
   inline Rcpp::StringVector to_geojson( Rcpp::DataFrame& sf, std::string geom_column ) {
 
     rapidjson::StringBuffer sb;
