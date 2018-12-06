@@ -2,7 +2,7 @@
 #define R_SPATIALWIDGET_GEOJSONSF_H
 
 #include <Rcpp.h>
-#include <boost/math/common_factor.hpp>
+//#include <boost/math/common_factor.hpp>
 
 #include "geojsonsf/geojsonsf.h"
 #include "geojsonsf/utils/utils.hpp"
@@ -344,9 +344,11 @@ namespace geojson {
       // for ALL geometry columns in this row
       geometry_size = 0;
       int row_multiplier = 0;
-      Rcpp::IntegerVector geometry_sizes( n_geometries );
+      //Rcpp::IntegerVector geometry_sizes( n_geometries );
+      Rcpp::List downcast_geometries( n_geometries );
 
       for ( int geometry = 0; geometry < n_geometries; geometry++ ) {
+
         const char* geom_column = geometries[ geometry ];
 
         Rcpp::List sfc = sf[ geom_column ];
@@ -360,34 +362,39 @@ namespace geojson {
         }
 
         geometry_size = geojsonsf::sizes::geometry_size( sfg, geom_type, cls );
+        Rcpp::List this_geometry( geometry_size );
+        for ( int j = 0; j < geometry_size; j++ ) {
+          this_geometry[j] = sfg[j];
+        }
+        downcast_geometries[ geometry ] = this_geometry;
         geometry_sizes[ geometry ] = geometry_size; // keeping track of the size of each geometry
 
         // TODO each geometry will need to be multiplied by the length of all the other geometries
         if ( geometry == 0 ) {
           row_multiplier = geometry_size;
         } else {
-          row_multiplier = boost::math::lcm( row_multiplier, geometry_size );
+          row_multiplier = row_multiplier * geometry_size;
         }
 
         Rcpp::Rcout << "row_multiplier: " << row_multiplier << std::endl;
       }
+      //
+      // we now have stored a list of each geometry - downcast_geometries
+      // And we can create a matrix to store the indexes of the geometries
+      // we need to access in each iteration.
 
-      Rcpp::List downcast_geometries( n_geometries );
+      Rcpp::NumericMatrix geometry_indeces( row_multiplier, n_geometries );
+      // fill this matrix
+      //for( int r = 0; r < row_multiplier; r++ ) {
+      for( int col = 0; col < n_geometries; col++ ) {
+        Rcpp::IntegerVector this_vec( row_multiplier );
+        // rep(1:5, times = ( 60 / 5 ))
+        //geometry_indeces(r, c)
+      }
+      //}
+
 
       for( int geometry = 0; geometry < n_geometries; geometry++ ) {
-
-       // need to loop over each geometry column, down-cast it, and replicate
-       // it
-       // need to know the length of each individual geometry,
-       //
-       geometry_size = geometry_sizes[ geometry ];
-       // TODO:
-       // create a list to hold the down-castsd geometries for this row of the 'sf'
-       //
-       downcast_geometries[ geometry ] = write_geometry() ;
-       // the issues is, 'write_geometry' is void and it fills the writer...
-
-
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
