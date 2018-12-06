@@ -372,12 +372,22 @@ namespace geojson {
         Rcpp::Rcout << "row_multiplier: " << row_multiplier << std::endl;
       }
 
+      Rcpp::List downcast_geometries( n_geometries );
+
       for( int geometry = 0; geometry < n_geometries; geometry++ ) {
 
        // need to loop over each geometry column, down-cast it, and replicate
        // it
        // need to know the length of each individual geometry,
        //
+       geometry_size = geometry_sizes[ geometry ];
+       // TODO:
+       // create a list to hold the down-castsd geometries for this row of the 'sf'
+       //
+       downcast_geometries[ geometry ] = write_geometry() ;
+       // the issues is, 'write_geometry' is void and it fills the writer...
+
+
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
@@ -395,6 +405,9 @@ namespace geojson {
           jsonify::dataframe::dataframe_cell( writer, this_vec, i );
         }
         writer.EndObject();
+
+
+        // loop over geometries, and replicate the geometry 'row_multiplier' number of times?
 
         writer.String("geometry");
         writer.StartObject();
