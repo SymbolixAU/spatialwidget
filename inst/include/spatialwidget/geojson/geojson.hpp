@@ -291,10 +291,11 @@ namespace geojson {
 
   // -----------------------WIP---------------------
   // down-casts MULTIGEOMETRIES to their simpler geometry
-  // for many columned sf objects
+  // for two-sfc-columned sf objects
   inline Rcpp::StringVector to_geojson_multi_column_downcast_atomise(
       Rcpp::DataFrame& sf,
-      Rcpp::StringVector geometries ) {
+      Rcpp::StringVector geometries )
+    {
 
     int n_geometries = geometries.size();
     if ( n_geometries != 2 ) {
@@ -379,34 +380,34 @@ namespace geojson {
           row_multiplier = row_multiplier * geometry_size;
         }
 
-        Rcpp::Rcout << "row_multiplier: " << row_multiplier << std::endl;
+        // Rcpp::Rcout << "row_multiplier: " << row_multiplier << std::endl;
       }
       //
       // we now have stored a list of each geometry - downcast_geometries
       // And we can create a matrix to store the indexes of the geometries
       // we need to access in each iteration.
 
-      Rcpp::Rcout << "defining matrix" << std::endl;
+      // Rcpp::Rcout << "defining matrix" << std::endl;
       Rcpp::IntegerMatrix geometry_indeces( row_multiplier, n_geometries );  // for OD, n_geometries should be 2
       Rcpp::IntegerVector xx = Rcpp::seq_len( geometry_sizes[0] );
       Rcpp::IntegerVector yy = Rcpp::seq_len( geometry_sizes[1] );
       Rcpp::IntegerVector one = Rcpp::rep( xx, yy.size() );
       Rcpp::IntegerVector two = Rcpp::rep_each( yy, xx.size() );
 
-      Rcpp::Rcout << "one: " << one << std::endl;
-      Rcpp::Rcout << "two: " << two << std::endl;
+      // Rcpp::Rcout << "one: " << one << std::endl;
+      // Rcpp::Rcout << "two: " << two << std::endl;
 
       geometry_indeces( Rcpp::_, 0 ) = one;
       geometry_indeces( Rcpp::_, 1 ) = two;
 
       for( int geometry = 0; geometry < row_multiplier; geometry++ ) {
         // loop over all down-casted geometries for this row
-        Rcpp::Rcout << "geometry row: " << geometry << std::endl;
+        // Rcpp::Rcout << "geometry row: " << geometry << std::endl;
 
         int fisrt_geometry_idx = geometry_indeces(geometry, 0) - 1;
         int second_geometry_idx = geometry_indeces(geometry, 1) - 1;
 
-        Rcpp::Rcout << "idx: - first: " << fisrt_geometry_idx << ", second - " << second_geometry_idx << std::endl;
+        // Rcpp::Rcout << "idx: - first: " << fisrt_geometry_idx << ", second - " << second_geometry_idx << std::endl;
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
