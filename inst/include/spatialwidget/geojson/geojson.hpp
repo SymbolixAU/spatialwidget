@@ -297,12 +297,15 @@ namespace geojson {
       Rcpp::StringVector geometries ) {
 
     int n_geometries = geometries.size();
+    if ( n_geometries != 2 ) {
+      Rcpp::stop("Only supports 2-column sf objects");
+    }
 
     //int geom;
     //const char* geom_column = geometries[0];
 
     size_t n_cols = sf.ncol();
-    size_t n_properties = n_cols - 1;  // single geometry column
+    //size_t n_properties = n_cols - n_geometries;
     size_t n_rows = sf.nrows();
     size_t i, j;
     Rcpp::StringVector column_names = sf.names();
@@ -342,10 +345,10 @@ namespace geojson {
 
       // for downcasting multi-column sf objects, need to know the property_multiplier
       // for ALL geometry columns in this row
-      geometry_size = 0;
+      int geometry_size = 0;
       int row_multiplier = 0;
-      //Rcpp::IntegerVector geometry_sizes( n_geometries );
-      Rcpp::List downcast_geometries( n_geometries );
+      Rcpp::IntegerVector geometry_sizes( n_geometries );
+      //Rcpp::List downcast_geometries( n_geometries );
 
       for ( int geometry = 0; geometry < n_geometries; geometry++ ) {
 
@@ -362,11 +365,11 @@ namespace geojson {
         }
 
         geometry_size = geojsonsf::sizes::geometry_size( sfg, geom_type, cls );
-        Rcpp::List this_geometry( geometry_size );
-        for ( int j = 0; j < geometry_size; j++ ) {
-          this_geometry[j] = sfg[j];
-        }
-        downcast_geometries[ geometry ] = this_geometry;
+        //Rcpp::List this_geometry( geometry_size );
+        // for ( int j = 0; j < geometry_size; j++ ) {
+        //   this_geometry[j] = sfg[j];
+        // }
+        // downcast_geometries[ geometry ] = this_geometry;
         geometry_sizes[ geometry ] = geometry_size; // keeping track of the size of each geometry
 
         // TODO each geometry will need to be multiplied by the length of all the other geometries
@@ -383,18 +386,27 @@ namespace geojson {
       // And we can create a matrix to store the indexes of the geometries
       // we need to access in each iteration.
 
-      Rcpp::NumericMatrix geometry_indeces( row_multiplier, n_geometries );
-      // fill this matrix
-      //for( int r = 0; r < row_multiplier; r++ ) {
-      for( int col = 0; col < n_geometries; col++ ) {
-        Rcpp::IntegerVector this_vec( row_multiplier );
-        // rep(1:5, times = ( 60 / 5 ))
-        //geometry_indeces(r, c)
-      }
-      //}
+      Rcpp::Rcout << "defining matrix" << std::endl;
+      Rcpp::IntegerMatrix geometry_indeces( row_multiplier, n_geometries );  // for OD, n_geometries should be 2
+      Rcpp::IntegerVector xx = Rcpp::seq_len( geometry_sizes[0] );
+      Rcpp::IntegerVector yy = Rcpp::seq_len( geometry_sizes[1] );
+      Rcpp::IntegerVector one = Rcpp::rep( xx, yy.size() );
+      Rcpp::IntegerVector two = Rcpp::rep_each( yy, xx.size() );
 
+      Rcpp::Rcout << "one: " << one << std::endl;
+      Rcpp::Rcout << "two: " << two << std::endl;
 
-      for( int geometry = 0; geometry < n_geometries; geometry++ ) {
+      geometry_indeces( Rcpp::_, 0 ) = one;
+      geometry_indeces( Rcpp::_, 1 ) = two;
+
+      for( int geometry = 0; geometry < row_multiplier; geometry++ ) {
+        // loop over all down-casted geometries for this row
+        Rcpp::Rcout << "geometry row: " << geometry << std::endl;
+
+        int fisrt_geometry_idx = geometry_indeces(geometry, 0) - 1;
+        int second_geometry_idx = geometry_indeces(geometry, 1) - 1;
+
+        Rcpp::Rcout << "idx: - first: " << fisrt_geometry_idx << ", second - " << second_geometry_idx << std::endl;
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
@@ -403,7 +415,7 @@ namespace geojson {
         writer.StartObject();
 
         // properties first, then sfc
-        for( j = 0; j < n_properties; j++ ) {
+        for( j = 0; j < property_counter; j++ ) {
           const char *h = property_names[ j ];
 
           SEXP this_vec = sf[ h ];
@@ -419,9 +431,24 @@ namespace geojson {
         writer.String("geometry");
         writer.StartObject();
 
-        writer.String( geom_column );
+        //writer.String( geom_column );
+        //write_geometry( writer, sfc, i, geometry, geom_type, cls );
 
-        write_geometry( writer, sfc, i, geometry, geom_type, cls );
+        for ( int geometry_column = 0; geometry_column < n_geometries; geometry_column++ ) {
+
+          const char* geom_column = geometries[ geometry_column ];
+
+          Rcpp::List sfc = sf[ geom_column ];
+          SEXP sfg = sfc[ i ];
+
+          cls = geojsonsf::getSfClass(sfg);
+          geom_type = cls[1];
+
+          writer.String("geometry");
+          int geometry_index = geometry_indeces(geometry, geometry_column) - 1;
+          write_geometry( writer, sfc, i, geometry_index, geom_type, cls);
+
+        }
 
         writer.EndObject();
         writer.EndObject();
