@@ -5,16 +5,20 @@ rcpp_construct_data <- function(param_names, params, data_names, lst_defaults, d
     .Call(`_spatialwidget_rcpp_construct_data`, param_names, params, data_names, lst_defaults, data, data_rows)
 }
 
-rcpp_geojson_sf <- function(df, geometries) {
-    .Call(`_spatialwidget_rcpp_geojson_sf`, df, geometries)
+rcpp_geojson <- function(sf, geometry) {
+    .Call(`_spatialwidget_rcpp_geojson`, sf, geometry)
+}
+
+rcpp_geojson_sf <- function(sf, geometries) {
+    .Call(`_spatialwidget_rcpp_geojson_sf`, sf, geometries)
 }
 
 rcpp_geojson_df <- function(df, geometries) {
     .Call(`_spatialwidget_rcpp_geojson_df`, df, geometries)
 }
 
-rcpp_sf_to_geojson_downcast <- function(df, geometry_column) {
-    .Call(`_spatialwidget_rcpp_sf_to_geojson_downcast`, df, geometry_column)
+rcpp_sf_to_geojson_downcast <- function(sf, geometry_column) {
+    .Call(`_spatialwidget_rcpp_sf_to_geojson_downcast`, sf, geometry_column)
 }
 
 rcpp_sf_to_geojson_multi_column_downcast <- function(sf, geometries) {

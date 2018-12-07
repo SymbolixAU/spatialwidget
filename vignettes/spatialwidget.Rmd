@@ -14,6 +14,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "# "
 )
+
+library(sf)
+library(geojsonsf)
+
 ```
 
 ## Spatialwidget
@@ -528,5 +532,132 @@ namespace widgetpoint {
 
 #endif
 ```
+
+## GeoJSON
+
+**Atomise** 
+
+When converting an `sf` object to GeoJSON it will typically create a FeatureCollection. 'Atomising' means it treats each row of the `sf` as it's own Feature, without creating a Feature Collection
+
+For example, we can create a GeoJSON FeatureCollection, convert it to `sf` and back again
+
+```{r}
+feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"Point","coordinates":[0,0]}}'
+feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"Point","coordinates":[1,1]}}'
+geojson <- paste0('[{"type":"FeatureCollection","features":[',feat1,',',feat2,']}]')
+sf <- geojsonsf::geojson_sf( geojson )
+sf
+```
+
+and going back the other way creates a FeatureCollection.
+```{r}
+geo <- geojsonsf::sf_geojson( sf )
+geo
+```
+
+If we set to 'atomise' then an array of Features is returned
+
+```{r}
+geojsonsf::sf_geojson( sf, atomise = TRUE )
+```
+
+This is useful for sending to an htmlwidget because each object can be parsed independently, without having to worry about iterating into a Featurecollection.
+
+Therefore, most of the GeoJSON functions inside spatialwidget will return the 'atomised' form. 
+
+They also return the geometry nested one level deeper, thus creating the pseudo-geojson. This is so an `sf` object with multiple `sfc` columns can be converted into a form easily parsable by javascript inside a widget.
+
+
+This is designed to convert an `sf` object with one or more `sfc` columns
+
+```
+  /*
+  * a variation on the atomise function to return an array of atomised features
+  */
+  inline Rcpp::StringVector to_geojson_atomise(
+      Rcpp::DataFrame& sf,
+      Rcpp::StringVector& geometries ) {
+```
+
+```{r}
+geojson <- spatialwidget:::rcpp_geojson_sf(sf = arcs, geometries = c("origin","destination")) 
+substr( geojson, 1, 500)
+```
+
+down-cast MULTI objects to simpler form. for ONE column
+
+```
+  // down-casts MULTIGEOMETRIES to their simpler geometry
+  // only for one-column sfc objects
+  inline Rcpp::StringVector to_geojson_downcast_atomise(
+      Rcpp::DataFrame& sf,
+      std::string geometry ) {
+```
+
+```{r}
+geojson <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf = capitals, geometry_column = "geometry" )
+substr( geojson, 1, 500)
+```
+
+
+down-cast MULTI objects to simpler form. for TWO columns. It will repeat the other columsn to the correct length.
+
+```
+  inline Rcpp::StringVector to_geojson_downcast_atomise(
+      Rcpp::DataFrame& sf,
+      Rcpp::StringVector geometries )
+    {
+```
+
+```{r}
+feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"MultiPoint","coordinates":[[0,0],[2,2],[4,4]]}}'
+feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"MultiPoint","coordinates":[[1,1],[3,3],[5,5]]}}'
+sf1 <- geojsonsf::geojson_sf( feat1 )
+sf2 <- geojsonsf::geojson_sf( feat2 )
+
+sf <- cbind( sf1, sf2)
+
+geojson <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast( sf = sf, geometries = c("geometry","geometry.1"))
+geojson
+```
+
+
+standard GeoJSON
+
+```
+inline Rcpp::StringVector to_geojson( Rcpp::DataFrame& sf, std::string geom_column )
+```
+
+```{r}
+geojson <- spatialwidget:::rcpp_geojson( sf = capitals, geometry = "geometry")
+substr( geojson, 1, 300)
+```
+
+
+data.frame with lon & lat columns
+
+```
+  inline Rcpp::StringVector to_geojson_atomise(
+      Rcpp::DataFrame& df,
+      Rcpp::List& geometries ) // i.e., list(origin = c("start_lon", "start_lat", destination = c("end_lon", "end_lat")))
+  {
+```
+
+```{r}
+
+```
+
+```
+  // list of geometries is designed for lon & lat columns of data
+  inline Rcpp::StringVector to_geojson_z_atomise(
+      Rcpp::DataFrame& df,
+      Rcpp::List& geometries ) // i.e., list(origin = c("start_lon", "start_lat", destination = c("end_lon", "end_lat")))
+  {
+```
+
+```{r}
+
+```
+
 
 
