@@ -50,7 +50,7 @@ Sure. In this example I'm using the `capitals` data, which is an `sf` object of 
 ```{r}
 library(spatialwidget)
 library(sf)
-sf <- spatialwidget::capitals
+sf <- spatialwidget::widget_capitals
 sf
 ```
 
@@ -100,7 +100,7 @@ The `arcs` data is an `sf` object with two POINT geometry columns. So say we wan
 
 ```{r}
 
-l <- widget_od( arcs[1:2, ], origin = "origin", destination = "destination")
+l <- widget_od( widget_arcs[1:2, ], origin = "origin", destination = "destination")
 
 jsonlite::prettify( l$data )
 

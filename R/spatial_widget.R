@@ -15,7 +15,7 @@
 #' @examples
 #'
 #' ## use default stroke options
-#' l <- widget_line( roads, legend = TRUE )
+#' l <- widget_line( widget_roads, legend = TRUE )
 #'
 #' @export
 widget_line <- function( data,
@@ -61,8 +61,8 @@ widget_line <- function( data,
 #'
 #' @examples
 #'
-#' l <- widget_polygon( melbourne, legend = FALSE)
-#' l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = TRUE)
+#' l <- widget_polygon( widget_melbourne, legend = FALSE)
+#' l <- widget_polygon( widget_melbourne, fill_colour = "AREASQKM16", legend = TRUE)
 #'
 #' @export
 widget_polygon <- function( data,
@@ -112,7 +112,7 @@ widget_polygon <- function( data,
 #'
 #' @examples
 #'
-#' l <- widget_point( data = capitals, legend = FALSE )
+#' l <- widget_point( data = widget_capitals, legend = FALSE )
 #'
 #' @export
 widget_point <- function( data,
@@ -168,7 +168,7 @@ widget_point <- function( data,
 #'
 #' @examples
 #'
-#' l <- widget_od( data = arcs, origin = "origin", destination = "destination", legend = FALSE )
+#' l <- widget_od( data = widget_arcs, origin = "origin", destination = "destination", legend = FALSE )
 #'
 #' @export
 widget_od <- function( data,

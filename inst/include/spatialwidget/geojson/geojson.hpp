@@ -16,6 +16,12 @@
 namespace spatialwidget {
 namespace geojson {
 
+  inline void cls_check( Rcpp::CharacterVector& cls ) {
+    if (cls.size() != 3 ) {
+      Rcpp::stop("unknown sf class");
+    }
+  }
+
   template< typename Writer >
   inline void write_geometry(Writer& writer, SEXP sfg, Rcpp::CharacterVector& cls ) {
 
@@ -46,6 +52,7 @@ namespace geojson {
 
     std::string geom_type;
     Rcpp::CharacterVector cls = geojsonsf::getSfClass(sfg);
+    cls_check( cls );
     geom_type = cls[1];
 
     // need to keep track of GEOMETRYCOLLECTIONs so we can correctly close them
@@ -101,7 +108,6 @@ namespace geojson {
         writer.Null();
       } else {
 
-        // Rcpp::Rcout << "downcast_geometry: " << downcast_geometry << std::endl;
         geojsonsf::writers::begin_geojson_geometry( writer, downcast_geometry );
         write_geojson( writer, sfg, geom_type, cls, geometry );
 
@@ -191,13 +197,6 @@ namespace geojson {
       Rcpp::DataFrame& sf,
       std::string geometry ) {
 
-    // std::string geom_column = sf.attr("sf_column");
-    //int n_geometries = geometries.size();
-    // if ( geometries.size() != 1) {
-    //   Rcpp::stop("Down-casting only supported for single-sfc column objects");
-    // }
-    //int geom;
-    //const char* geom_column = geometries[0];
     const char* geom_column = geometry.c_str();
 
     size_t n_cols = sf.ncol();
@@ -215,7 +214,6 @@ namespace geojson {
     for ( i = 0; i < n_cols; i++ ) {
 
       Rcpp::String this_column = column_names[i];
-      //int idx = spatialwidget::utils::where::where_is( this_column, geometries );
 
       if ( this_column.get_cstring() != geometry ) {  // i.e., it's not the geometry
         property_names[ property_counter ] = column_names[i];
@@ -233,6 +231,7 @@ namespace geojson {
       SEXP sfg = sfc[ i ];
 
       cls = geojsonsf::getSfClass(sfg);
+      cls_check( cls );
       geom_type = cls[1];
 
       if ( geom_type == "GEOMETRYCOLLECTION" ) {
@@ -298,7 +297,6 @@ namespace geojson {
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
-    //size_t property_multiplier = 0;
     std::string geom_type;
     Rcpp::CharacterVector cls;
 
@@ -332,6 +330,7 @@ namespace geojson {
         SEXP sfg = sfc[ i ];
 
         cls = geojsonsf::getSfClass(sfg);
+        cls_check( cls );
         geom_type = cls[1];
 
         if ( geom_type == "GEOMETRYCOLLECTION" ) {
@@ -341,7 +340,6 @@ namespace geojson {
         geometry_size = geojsonsf::sizes::geometry_size( sfg, geom_type, cls );
         geometry_sizes[ geometry ] = geometry_size; // keeping track of the size of each geometry
 
-        // TODO each geometry will need to be multiplied by the length of all the other geometries
         if ( geometry == 0 ) {
           row_multiplier = geometry_size;
         } else {
@@ -364,9 +362,6 @@ namespace geojson {
 
       for( geometry = 0; geometry < row_multiplier; geometry++ ) {
         // loop over all down-casted geometries for this row
-
-        //int first_geometry_idx = geometry_indeces(geometry, 0) - 1;
-        //int second_geometry_idx = geometry_indeces(geometry, 1) - 1;
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
@@ -398,6 +393,7 @@ namespace geojson {
           SEXP sfg = sfc[ i ];
 
           cls = geojsonsf::getSfClass(sfg);
+          cls_check( cls );
           geom_type = cls[1];
 
           writer.String("geometry");

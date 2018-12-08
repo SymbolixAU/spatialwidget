@@ -8,7 +8,7 @@
 #'   \item{capital}{capital name}
 #'   \item{geometry}{sfc geometry column}
 #' }
-"capitals"
+"widget_capitals"
 
 
 #' Origin Destination points between Sydney, Australia and other capitals cities
@@ -24,7 +24,7 @@
 #'   \item{origin}{sfc geometry column}
 #'   \item{destination}{sfc geometry column}
 #' }
-"arcs"
+"widget_arcs"
 
 
 #' Roads in central Melbourne
@@ -37,7 +37,7 @@
 #'
 #' @format An sf and data frame object with 18286 observations and 16 variables
 #'
-"roads"
+"widget_roads"
 
 #' Melbourne
 #'
@@ -59,4 +59,4 @@
 #'   \item{AREASQKM}{area of the SA2 polygon}
 #'   \item{geometry}{sfc geometry column}
 #' }
-"melbourne"
+"widget_melbourne"

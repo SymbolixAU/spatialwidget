@@ -57,7 +57,6 @@ namespace construction {
 
 				// returns -1 if length != 1
 				colIndex = spatialwidget::utils::where::where_is( param_value, data_names );
-				// Rcpp::Rcout << "colIndex: " << colIndex << std::endl;
 
 				if ( colIndex == -1 ) {
 				  continue;

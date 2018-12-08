@@ -57,9 +57,6 @@ namespace colour {
       std::string first_colour_str = first_colour;
       if ( spatialwidget::utils::colour::is_hex( first_colour_str ) ) {
 
-        //Rcpp::Rcout << "assuming column of hex colours is used" << std::endl;
-        // Rcpp::List hex_colours(1);
-        // hex_colours[0] = colour_vec;
         Rcpp::StringVector lvls = Rcpp::unique( colour_vec );
 
         Rcpp::List legend = Rcpp::List::create(
@@ -114,22 +111,14 @@ namespace colour {
     Rcpp::IntegerVector parameter_type = lst_params[ "parameter_type" ];
     Rcpp::StringVector param_names = params.names();
 
-    // Rcpp::Rcout << "idx: " << data_column_index << ", p_type: " << parameter_type << ", p_names: " << param_names << std::endl;
-
     Rcpp::StringVector hex_strings( data.nrows() );
 
     Rcpp::NumericVector alpha( 1, 255.0 ); // can be overwritten by user
 
-    // Rcpp::StringVector default_names = lst_defaults.names();
-    // int provided_default = spatialwidget::utils::where::where_is( colour_name, default_names );
-    // Rcpp::Rcout << "located at: " << provided_default << std::endl;
-
-    //SEXP this_colour = lst_defaults[ colour_name.c_str() ];
     SEXP this_colour;
 
     int colour_location = spatialwidget::utils::where::where_is( colour_name, param_names );
     int opacity_location = spatialwidget::utils::where::where_is( opacity_name, param_names );
-    // Rcpp::Rcout << "colour_location: " << colour_location << std::endl;
 
     // if 'colour_name' doesn't exist in the list of default, we need to make one
 
@@ -139,14 +128,7 @@ namespace colour {
     if ( colourColIndex >= 0 ) {
       this_colour = data[ colourColIndex ];
     } else {
-      //Rcpp::Rcout << "else! " << std::endl;
-      // TODO ( if it's a hex string, apply it to all rows of data )
-      // i.e., when not a column of data, but ISS a hex string
-      // so this will be
-      // } else if (is_hex_string() ) {
-      // Rcpp::StringVector hex( data_rows, hex );
-      //}
-      // otherwise, if it's not a hex string, create a vector of defaults
+
       if ( colour_location >= 0 ) {
         //Rcpp::Rcout << "colour was passed in, but it's not on the data object: " << std::endl;
 
@@ -154,20 +136,6 @@ namespace colour {
         int n = data.nrows();
         Rcpp::String col_name = colour_name;
         spatialwidget::utils::fill::fill_vector( lst_defaults, col_name, val, n );
-        //Rcpp::Rcout << "vector filled: " << std::endl;
-
-        // if( TYPEOF( params[ colour_location ] ) == STRSXP ) {
-        //   // Rcpp::Rcout << "and it's a string" << std::endl;
-        //   // Rcpp::StringVector sv = params[ colour_location ];
-        //   // Rcpp::Rcout << "sv; " << sv << std::endl;
-        //
-        //
-        // } else {
-        //   Rcpp::stop("I can't work out how to use the colour you've supplied");
-        //   // Rcpp::Rcout << "it's not a STRSXP" << std::endl;
-        //   // int thisType = TYPEOF( params[ colour_location ] );
-        //   // Rcpp::Rcout << "it's a " << thisType << std::endl;
-        // }
 
       } else {
         Rcpp::NumericVector nv( data.nrows(), 1.0 );
@@ -192,8 +160,6 @@ namespace colour {
       this_colour, alpha, colour_name, include_legend
     );
 
-    // Rcpp::Rcout << "legend done" << std::endl;
-
     // this can't be replaced with 'include_legend'
     bool make_legend = false;
 
@@ -201,18 +167,11 @@ namespace colour {
       make_legend = lst_legend[ colour_name.c_str() ];
     }
 
-    // Rcpp::Rcout << "colour_name: " << colour_name << std::endl;
-
     lst_defaults[ colour_name.c_str() ] = legend[ "colours" ];
 
     if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {
 
-      // Rcpp::Rcout << "legend contains element " << std::endl;
-
       if (  make_legend == true ) {
-
-        // Rcpp::Rcout << "make_legend: " << make_legend << std::endl;
-        // Rcpp::Rcout << "param_names: " << param_names << std::endl;
 
         SEXP t = params[ colour_name ];
         Rcpp::StringVector sv = Rcpp::as< Rcpp::StringVector >( t );
@@ -220,11 +179,7 @@ namespace colour {
         std::string title = s;
         std::string css = "";
 
-        // Rcpp::Rcout << "title: " << title << std::endl;
-
         if ( params.containsElementNamed("legend_options") ) {
-
-          // Rcpp::Rcout << "setting options: " << std::endl;
 
           Rcpp::List opts = params[ "legend_options" ];
           std::string title_string = "title";

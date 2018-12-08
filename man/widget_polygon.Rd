@@ -35,7 +35,7 @@ Converts an `sf` object with POLYGON geometriers into JSON for plotting in an ht
 }
 \examples{
 
-l <- widget_polygon( melbourne, legend = FALSE)
-l <- widget_polygon( melbourne, fill_colour = "AREASQKM16", legend = TRUE)
+l <- widget_polygon( widget_melbourne, legend = FALSE)
+l <- widget_polygon( widget_melbourne, fill_colour = "AREASQKM16", legend = TRUE)
 
 }

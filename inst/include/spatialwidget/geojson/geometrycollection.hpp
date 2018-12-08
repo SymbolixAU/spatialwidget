@@ -25,7 +25,6 @@ inline void make_gc_type(Writer& writer, Rcpp::List& sfg,
       if (!Rf_isNull(tmp.attr("class"))) {
 
         cls = tmp.attr("class");
-        // TODO: error handle (there should aways be 3 elements as we're workgin wtih sfg objects)
         geom_type = cls[1];
 
         SEXP tst = *it;

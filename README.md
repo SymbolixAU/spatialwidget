@@ -55,7 +55,7 @@ object of all the capital cities.
 library(spatialwidget)
 library(sf)
 #  Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
-sf <- spatialwidget::capitals
+sf <- spatialwidget::widget_capitals
 sf
 #  Simple feature collection with 200 features and 2 fields
 #  geometry type:  POINT
@@ -178,7 +178,7 @@ and destination columns.
 
 ``` r
 
-l <- widget_od( arcs[1:2, ], origin = "origin", destination = "destination")
+l <- widget_od( widget_arcs[1:2, ], origin = "origin", destination = "destination")
 
 jsonlite::prettify( l$data )
 #  [

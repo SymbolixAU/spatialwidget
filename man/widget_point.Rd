@@ -31,6 +31,6 @@ Converts an `sf` object with POINT geometriers into JSON for plotting in an html
 }
 \examples{
 
-l <- widget_point( data = capitals, legend = FALSE )
+l <- widget_point( data = widget_capitals, legend = FALSE )
 
 }

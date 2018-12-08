@@ -29,6 +29,6 @@ Converts an `sf` object with LINESTRING geometriers into JSON for plotting in an
 \examples{
 
 ## use default stroke options
-l <- widget_line( roads, legend = TRUE )
+l <- widget_line( widget_roads, legend = TRUE )
 
 }
