@@ -2,7 +2,6 @@
 #define R_SPATIALWIDGET_GEOJSONSF_H
 
 #include <Rcpp.h>
-//#include <boost/math/common_factor.hpp>
 
 #include "geojsonsf/geojsonsf.h"
 #include "geojsonsf/utils/utils.hpp"
@@ -204,7 +203,7 @@ namespace geojson {
     size_t n_cols = sf.ncol();
     size_t n_properties = n_cols - 1;  // single geometry column
     size_t n_rows = sf.nrows();
-    size_t i, j;
+    size_t i, j, i_geometry;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
@@ -212,8 +211,8 @@ namespace geojson {
     std::string geom_type;
     Rcpp::CharacterVector cls;
 
-    int property_counter = 0;
-    for (int i = 0; i < sf.length(); i++) {
+    size_t property_counter = 0;
+    for ( i = 0; i < n_cols; i++ ) {
 
       Rcpp::String this_column = column_names[i];
       //int idx = spatialwidget::utils::where::where_is( this_column, geometries );
@@ -242,7 +241,7 @@ namespace geojson {
 
       property_multiplier = geojsonsf::sizes::geometry_size( sfg, geom_type, cls );
 
-      for( int geometry = 0; geometry < property_multiplier; geometry++ ) {
+      for( i_geometry = 0; i_geometry < property_multiplier; i_geometry++ ) {
 
         writer.StartObject();
         geojsonsf::writers::start_features( writer );
@@ -265,7 +264,7 @@ namespace geojson {
         writer.StartObject();
 
         writer.String( geom_column );
-        write_geometry( writer, sfc, i, geometry, geom_type, cls );
+        write_geometry( writer, sfc, i, i_geometry, geom_type, cls );
 
         writer.EndObject();
         writer.EndObject();
@@ -288,14 +287,14 @@ namespace geojson {
       Rcpp::StringVector geometries )
     {
 
-    int n_geometries = geometries.size();
+    size_t n_geometries = geometries.size();
     if ( n_geometries != 2 ) {
       Rcpp::stop("Only supports 2-column sf objects");
     }
 
-    //size_t n_cols = sf.ncol();
+    size_t n_cols = sf.ncol();
     size_t n_rows = sf.nrows();
-    size_t i, j;
+    size_t i, j, geometry, geometry_column;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
@@ -303,8 +302,8 @@ namespace geojson {
     std::string geom_type;
     Rcpp::CharacterVector cls;
 
-    int property_counter = 0;
-    for (int i = 0; i < sf.length(); i++) {
+    size_t property_counter = 0;
+    for ( i = 0; i < n_cols; i++) {
 
       Rcpp::String this_column = column_names[i];
       int idx = spatialwidget::utils::where::where_is( this_column, geometries );
@@ -322,10 +321,10 @@ namespace geojson {
     for( i = 0; i < n_rows; i++ ) {
 
       int geometry_size = 0;
-      int row_multiplier = 0;
+      size_t row_multiplier = 0;
       Rcpp::IntegerVector geometry_sizes( n_geometries );
 
-      for ( int geometry = 0; geometry < n_geometries; geometry++ ) {
+      for ( geometry = 0; geometry < n_geometries; geometry++ ) {
 
         const char* geom_column = geometries[ geometry ];
 
@@ -363,7 +362,7 @@ namespace geojson {
       geometry_indeces( Rcpp::_, 0 ) = one;
       geometry_indeces( Rcpp::_, 1 ) = two;
 
-      for( int geometry = 0; geometry < row_multiplier; geometry++ ) {
+      for( geometry = 0; geometry < row_multiplier; geometry++ ) {
         // loop over all down-casted geometries for this row
 
         //int first_geometry_idx = geometry_indeces(geometry, 0) - 1;
@@ -391,7 +390,7 @@ namespace geojson {
         writer.String("geometry");
         writer.StartObject();
 
-        for ( int geometry_column = 0; geometry_column < n_geometries; geometry_column++ ) {
+        for ( geometry_column = 0; geometry_column < n_geometries; geometry_column++ ) {
 
           const char* geom_column = geometries[ geometry_column ];
 
@@ -437,7 +436,7 @@ namespace geojson {
     Rcpp::StringVector property_names(sf.size() - 1);
 
     int property_counter = 0;
-    for (int i = 0; i < n_cols; i++) {
+    for ( i = 0; i < n_cols; i++) {
       if (column_names[i] != geom_column) {
         property_names[property_counter] = column_names[i];
         property_counter++;

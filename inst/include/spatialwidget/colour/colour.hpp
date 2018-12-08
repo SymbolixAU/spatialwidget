@@ -195,7 +195,7 @@ namespace colour {
     // Rcpp::Rcout << "legend done" << std::endl;
 
     // this can't be replaced with 'include_legend'
-    bool make_legend;
+    bool make_legend = false;
 
     if ( lst_legend.containsElementNamed( colour_name.c_str() ) ) {
       make_legend = lst_legend[ colour_name.c_str() ];
