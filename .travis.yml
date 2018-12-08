@@ -2,7 +2,7 @@
 
 language: r
 r: devel
-dist: trusty
+dist:
 sudo: required
 cache: packages
 after_success:
@@ -13,7 +13,7 @@ before_install:
   - sudo add-apt-repository ppa:ubuntugis/ppa --yes
   - sudo apt-get --yes --force-yes update -qq
   - sudo apt-get install --yes libudunits2-dev libproj-dev libgeos-dev libgdal-dev
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+
 addons:
   apt:
     sources:
