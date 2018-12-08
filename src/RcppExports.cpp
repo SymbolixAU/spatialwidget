@@ -21,15 +21,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpp_geojson_sf
-Rcpp::StringVector rcpp_geojson_sf(Rcpp::DataFrame df, Rcpp::StringVector geometries);
-RcppExport SEXP _spatialwidget_rcpp_geojson_sf(SEXP dfSEXP, SEXP geometriesSEXP) {
+// rcpp_geojson
+Rcpp::StringVector rcpp_geojson(Rcpp::DataFrame sf, std::string geometry);
+RcppExport SEXP _spatialwidget_rcpp_geojson(SEXP sfSEXP, SEXP geometrySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type sf(sfSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geometry(geometrySEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_geojson(sf, geometry));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_geojson_sf
+Rcpp::StringVector rcpp_geojson_sf(Rcpp::DataFrame sf, Rcpp::StringVector geometries);
+RcppExport SEXP _spatialwidget_rcpp_geojson_sf(SEXP sfSEXP, SEXP geometriesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type sf(sfSEXP);
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type geometries(geometriesSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_geojson_sf(df, geometries));
+    rcpp_result_gen = Rcpp::wrap(rcpp_geojson_sf(sf, geometries));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -45,15 +57,39 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpp_sf_to_geojson_downcast
-Rcpp::StringVector rcpp_sf_to_geojson_downcast(Rcpp::DataFrame df, std::string geometry_column);
-RcppExport SEXP _spatialwidget_rcpp_sf_to_geojson_downcast(SEXP dfSEXP, SEXP geometry_columnSEXP) {
+// rcpp_geojson_dfz
+Rcpp::StringVector rcpp_geojson_dfz(Rcpp::DataFrame df, Rcpp::List geometries);
+RcppExport SEXP _spatialwidget_rcpp_geojson_dfz(SEXP dfSEXP, SEXP geometriesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::DataFrame >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type geometries(geometriesSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_geojson_dfz(df, geometries));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_sf_to_geojson_downcast
+Rcpp::StringVector rcpp_sf_to_geojson_downcast(Rcpp::DataFrame sf, std::string geometry_column);
+RcppExport SEXP _spatialwidget_rcpp_sf_to_geojson_downcast(SEXP sfSEXP, SEXP geometry_columnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type sf(sfSEXP);
     Rcpp::traits::input_parameter< std::string >::type geometry_column(geometry_columnSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_sf_to_geojson_downcast(df, geometry_column));
+    rcpp_result_gen = Rcpp::wrap(rcpp_sf_to_geojson_downcast(sf, geometry_column));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_sf_to_geojson_multi_column_downcast
+Rcpp::StringVector rcpp_sf_to_geojson_multi_column_downcast(Rcpp::DataFrame sf, Rcpp::StringVector geometries);
+RcppExport SEXP _spatialwidget_rcpp_sf_to_geojson_multi_column_downcast(SEXP sfSEXP, SEXP geometriesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type sf(sfSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type geometries(geometriesSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_sf_to_geojson_multi_column_downcast(sf, geometries));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -211,9 +247,12 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_construct_data", (DL_FUNC) &_spatialwidget_rcpp_construct_data, 6},
+    {"_spatialwidget_rcpp_geojson", (DL_FUNC) &_spatialwidget_rcpp_geojson, 2},
     {"_spatialwidget_rcpp_geojson_sf", (DL_FUNC) &_spatialwidget_rcpp_geojson_sf, 2},
     {"_spatialwidget_rcpp_geojson_df", (DL_FUNC) &_spatialwidget_rcpp_geojson_df, 2},
+    {"_spatialwidget_rcpp_geojson_dfz", (DL_FUNC) &_spatialwidget_rcpp_geojson_dfz, 2},
     {"_spatialwidget_rcpp_sf_to_geojson_downcast", (DL_FUNC) &_spatialwidget_rcpp_sf_to_geojson_downcast, 2},
+    {"_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast", (DL_FUNC) &_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast, 2},
     {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_rcpp_colour_str_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_str_with_palette, 5},
     {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 5},
