@@ -93,25 +93,25 @@ Where the `myGeometry` object is defined on a per-application bases. You are fre
 ### Points
 
 ```{r}
-l <- spatialwidget::widget_point( capitals[1:2, ], fill_colour = "country", legend = T )
-
-substr( l$data, 1, 200 )
+# l <- spatialwidget::widget_point( capitals[1:2, ], fill_colour = "country", legend = T )
+# 
+# substr( l$data, 1, 200 )
 ```
 
 ### Lines
 
 ```{r}
-l <- spatialwidget::widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
-
-substr( l$data, 1, 200 )
+# l <- spatialwidget::widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
+# 
+# substr( l$data, 1, 200 )
 ```
 
 ### Polygon
 
 ```{r}
-l <- spatialwidget::widget_polygon( melbourne[1:2, ], fill_colour = "AREASQKM16", legend = F)
-
-substr( l$data, 1, 200 )
+# l <- spatialwidget::widget_polygon( melbourne[1:2, ], fill_colour = "AREASQKM16", legend = F)
+# 
+# substr( l$data, 1, 200 )
 ```
 
 
