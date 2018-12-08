@@ -44,10 +44,12 @@ head( capitals )
 And convert it into pseudo-geojson ready to be parsed by javascript inside an htmlwidget
 
 ```{r}
-js <- widget_point( data = capitals, fill_colour = "country", legend = TRUE)
+js <- spatialwidget::widget_point( data = capitals, fill_colour = "country", legend = TRUE)
 
 substr( js$data, 1, 200 )
+```
 
+```{r}
 substr( js$legend, 1, 100 )
 
 ```
@@ -91,7 +93,7 @@ Where the `myGeometry` object is defined on a per-application bases. You are fre
 ### Points
 
 ```{r}
-l <- widget_point( capitals[1:2, ], fill_colour = "country", legend = T )
+l <- spatialwidget::widget_point( capitals[1:2, ], fill_colour = "country", legend = T )
 
 substr( l$data, 1, 200 )
 ```
@@ -99,7 +101,7 @@ substr( l$data, 1, 200 )
 ### Lines
 
 ```{r}
-l <- widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
+l <- spatialwidget::widget_line( roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
 
 substr( l$data, 1, 200 )
 ```
@@ -107,7 +109,7 @@ substr( l$data, 1, 200 )
 ### Polygon
 
 ```{r}
-l <- widget_polygon( melbourne[1:2, ], fill_colour = "AREASQKM16", legend = F)
+l <- spatialwidget::widget_polygon( melbourne[1:2, ], fill_colour = "AREASQKM16", legend = F)
 
 substr( l$data, 1, 200 )
 ```

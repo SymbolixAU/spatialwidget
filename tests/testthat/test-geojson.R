@@ -75,7 +75,6 @@ test_that("MULTI objects are down-casted", {
 
 test_that("MULTI OD sf objects are downcast and atomised", {
 
-
   geo1 <- '[
 {"type":"MultiPoint","coordinates":[[0,0],[1,1],[2,2]]},
 {"type":"MultiPoint","coordinates":[[0,0],[1,1],[2,2],[3,3]]}
@@ -88,10 +87,11 @@ test_that("MULTI OD sf objects are downcast and atomised", {
 
   sf1 <- geojsonsf::geojson_sf( geo1 )
   sf2 <- geojsonsf::geojson_sf( geo2 )
-
+  names(sf1) <- "origin"
+  names(sf2) <- "destination"
   sf <- cbind( sf1, sf2 )
   sf$id <- 1:nrow(sf)
-  geo_down <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast( sf, c("geometry", "geometry.1"))
+  geo_down <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast( sf, geometries = c("origin", "destination"))
   expected <- '[{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0]},"geometry":{"type":"Point","coordinates":[9.0,9.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[1.0,1.0]},"geometry":{"type":"Point","coordinates":[9.0,9.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[2.0,2.0]},"geometry":{"type":"Point","coordinates":[9.0,9.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0]},"geometry":{"type":"Point","coordinates":[8.0,8.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[1.0,1.0]},"geometry":{"type":"Point","coordinates":[8.0,8.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[2.0,2.0]},"geometry":{"type":"Point","coordinates":[8.0,8.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0]},"geometry":{"type":"Point","coordinates":[7.0,7.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[1.0,1.0]},"geometry":{"type":"Point","coordinates":[7.0,7.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[2.0,2.0]},"geometry":{"type":"Point","coordinates":[7.0,7.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0]},"geometry":{"type":"Point","coordinates":[6.0,6.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[1.0,1.0]},"geometry":{"type":"Point","coordinates":[6.0,6.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[2.0,2.0]},"geometry":{"type":"Point","coordinates":[6.0,6.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0]},"geometry":{"type":"Point","coordinates":[5.0,5.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[1.0,1.0]},"geometry":{"type":"Point","coordinates":[5.0,5.0]}}},{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[2.0,2.0]},"geometry":{"type":"Point","coordinates":[5.0,5.0]}}},{"type":"Feature","properties":{"id":2},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0]},"geometry":{"type":"Point","coordinates":[9.0,9.0]}}},{"type":"Feature","properties":{"id":2},"geometry":{"geometry":{"type":"Point","coordinates":[1.0,1.0]},"geometry":{"type":"Point","coordinates":[9.0,9.0]}}},{"type":"Feature","properties":{"id":2},"geometry":{"geometry":{"type":"Point","coordinates":[2.0,2.0]},"geometry":{"type":"Point","coordinates":[9.0,9.0]}}},{"type":"Feature","properties":{"id":2},"geometry":{"geometry":{"type":"Point","coordinates":[3.0,3.0]},"geometry":{"type":"Point","coordinates":[9.0,9.0]}}}]'
   expect_true(jsonify:::validate_json(geo_down))
   expect_equal( as.character( geo_down ), gsub("\\n| ","", expected ) )
