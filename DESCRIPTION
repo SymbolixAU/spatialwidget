@@ -19,7 +19,7 @@ LinkingTo:
     BH,
     colourvalues (>= 0.2.0),
     geojsonsf (>= 1.2.1),
-    jsonify (>= 0.1.1),
+    jsonify (>= 0.1.2),
     rapidjsonr,
     Rcpp
 RoxygenNote: 6.1.0

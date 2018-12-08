@@ -38,19 +38,19 @@ This package is designed to convert R data to JSON, ready for plotting on a map 
 The basic idea of this package is to take an `sf` object or data.frame 
 
 ```{r}
-head( capitals )
+head( spatialwidget::capitals )
 ```
 
 And convert it into pseudo-geojson ready to be parsed by javascript inside an htmlwidget
 
 ```{r}
-js <- spatialwidget::widget_point( data = capitals, fill_colour = "country", legend = TRUE)
-
-substr( js$data, 1, 200 )
+# js <- spatialwidget::widget_point( data = spatialwidget::capitals, fill_colour = "country", legend = TRUE)
+# 
+# substr( js$data, 1, 200 )
 ```
 
 ```{r}
-substr( js$legend, 1, 100 )
+# substr( js$legend, 1, 100 )
 
 ```
 
