@@ -271,9 +271,9 @@ A named vector. Each name is the columns of `data`, and the values are the `r` d
 An example is
 
 ```{r}
-df <- data.frame(id = 1:5, val = letters[1:5])
-data_types <- vapply( df, function(x) class(x)[[1]], "")
-data_types
+# df <- data.frame(id = 1:5, val = letters[1:5])
+# data_types <- vapply( df, function(x) class(x)[[1]], "")
+# data_types
 ```
 
 ### Rcpp::List params
@@ -526,25 +526,25 @@ When converting an `sf` object to GeoJSON it will typically create a FeatureColl
 For example, we can create a GeoJSON FeatureCollection, convert it to `sf` and back again
 
 ```{r}
-feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"Point","coordinates":[0,0]}}'
-feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"Point","coordinates":[1,1]}}'
-geojson <- paste0('[{"type":"FeatureCollection","features":[',feat1,',',feat2,']}]')
-sf <- geojsonsf::geojson_sf( geojson )
-sf
+# feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"Point","coordinates":[0,0]}}'
+# feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"Point","coordinates":[1,1]}}'
+# geojson <- paste0('[{"type":"FeatureCollection","features":[',feat1,',',feat2,']}]')
+# sf <- geojsonsf::geojson_sf( geojson )
+# sf
 ```
 
 and going back the other way creates a FeatureCollection.
 
 ```{r}
-geo <- geojsonsf::sf_geojson( sf )
-geo
+# geo <- geojsonsf::sf_geojson( sf )
+# geo
 ```
 
 If we set it to 'atomise' then an array of Features is returned
 
 
 ```{r}
-geojsonsf::sf_geojson( sf, atomise = TRUE )
+# geojsonsf::sf_geojson( sf, atomise = TRUE )
 ```
 
 
@@ -579,8 +579,8 @@ Here I describe how each of the functions work.
 ```
 
 ```{r}
-geojson <- spatialwidget:::rcpp_geojson_sf(sf = arcs, geometries = c("origin","destination")) 
-substr( geojson, 1, 500)
+# geojson <- spatialwidget:::rcpp_geojson_sf(sf = arcs, geometries = c("origin","destination")) 
+# substr( geojson, 1, 500)
 ```
 
 **in** - `sf` object with one `sfc` column
@@ -596,8 +596,8 @@ substr( geojson, 1, 500)
 ```
 
 ```{r}
-geojson <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf = capitals, geometry_column = "geometry" )
-substr( geojson, 1, 500)
+# geojson <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf = capitals, geometry_column = "geometry" )
+# substr( geojson, 1, 500)
 ```
 
 **in** - `sf` object with two `sfc` columns
@@ -612,15 +612,15 @@ substr( geojson, 1, 500)
 ```
 
 ```{r}
-feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"MultiPoint","coordinates":[[0,0],[2,2],[4,4]]}}'
-feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"MultiPoint","coordinates":[[1,1],[3,3],[5,5]]}}'
-sf1 <- geojsonsf::geojson_sf( feat1 )
-sf2 <- geojsonsf::geojson_sf( feat2 )
-
-sf <- cbind( sf1, sf2)
-
-geojson <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast( sf = sf, geometries = c("geometry","geometry.1"))
-geojson
+# feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"MultiPoint","coordinates":[[0,0],[2,2],[4,4]]}}'
+# feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"MultiPoint","coordinates":[[1,1],[3,3],[5,5]]}}'
+# sf1 <- geojsonsf::geojson_sf( feat1 )
+# sf2 <- geojsonsf::geojson_sf( feat2 )
+# 
+# sf <- cbind( sf1, sf2)
+# 
+# geojson <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast( sf = sf, geometries = c("geometry","geometry.1"))
+# geojson
 ```
 
 
@@ -633,8 +633,8 @@ inline Rcpp::StringVector to_geojson( Rcpp::DataFrame& sf, std::string geom_colu
 ```
 
 ```{r}
-geojson <- spatialwidget:::rcpp_geojson( sf = capitals, geometry = "geometry")
-substr( geojson, 1, 300)
+# geojson <- spatialwidget:::rcpp_geojson( sf = capitals, geometry = "geometry")
+# substr( geojson, 1, 300)
 ```
 
 
@@ -650,13 +650,13 @@ substr( geojson, 1, 300)
 ```
 
 ```{r}
-df <- as.data.frame( capitals )
-coords <- sf::st_coordinates( capitals )
-df[, c("lon","lat")] <- coords
-df$geometry <- NULL
-
-geojson <- spatialwidget:::rcpp_geojson_df(df = df, list(geometry = c("lon","lat")) )
-substr( geojson, 1, 500 )
+# df <- as.data.frame( capitals )
+# coords <- sf::st_coordinates( capitals )
+# df[, c("lon","lat")] <- coords
+# df$geometry <- NULL
+# 
+# geojson <- spatialwidget:::rcpp_geojson_df(df = df, list(geometry = c("lon","lat")) )
+# substr( geojson, 1, 500 )
 ```
 
 
@@ -673,9 +673,9 @@ substr( geojson, 1, 500 )
 ```
 
 ```{r}
-df$z <- sample(1:500, size = nrow(df), replace = TRUE )
-geojson <- spatialwidget:::rcpp_geojson_dfz( df, geometries = list(geometry = c("lon","lat","z") ) )
-substr( geojson, 1, 500 )
+# df$z <- sample(1:500, size = nrow(df), replace = TRUE )
+# geojson <- spatialwidget:::rcpp_geojson_dfz( df, geometries = list(geometry = c("lon","lat","z") ) )
+# substr( geojson, 1, 500 )
 
 ```
 
