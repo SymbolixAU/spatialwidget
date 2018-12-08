@@ -2,7 +2,7 @@
 
 language: r
 r: devel
-dist: precise
+dist: trusty
 sudo: required
 cache: packages
 after_success:
@@ -13,10 +13,11 @@ before_install:
   - sudo add-apt-repository ppa:ubuntugis/ppa --yes
   - sudo apt-get --yes --force-yes update -qq
   - sudo apt-get install --yes libudunits2-dev libproj-dev libgeos-dev libgdal-dev
-
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
+      - gcc-4.9
       - g++-4.9
