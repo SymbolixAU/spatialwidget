@@ -175,13 +175,13 @@ inline Rcpp::List create_geojson(
 
 ---
 
-**in** - `sf` object with one or many `sfc` columns
+**in** - `sf` object with one `sfc` column
 
 **out** - MULTI* geometries down-cast to simpler form, in pseudo-geojson
 
 ```c++
 /*
- * expects `data` to be an sf object, where the geometry_column is a string vector
+ * expects `data` to be an sf object, where the geometry_column is a string
  * of the sfc column names (of sf) you want to use as the geometry object inside the GeoJSON.
  * This function will down-cast MULTI* objects to their single form
  *
@@ -199,6 +199,36 @@ inline Rcpp::List create_geojson_downcast(
     bool jsonify_legend
 )
 ```
+
+---
+
+
+**in** - `sf` object with two `sfc` columns
+
+**out** - MULTI* geometries down-cast to simpler form, in pseudo-geojson
+
+
+```c++
+  /*
+   * expects `data` to be an sf object, where the geometry_column is a string vector
+   * of the sfc column name (of sf) you want to use as the geometry object inside the GeoJSON.
+   * This function will down-cast MULTI* objects to their single form
+   *
+   */
+  inline Rcpp::List create_geojson_downcast(
+      Rcpp::DataFrame& data,
+      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
+      Rcpp::List& params,
+      Rcpp::List& lst_defaults,
+      std::unordered_map< std::string, std::string >& layer_colours,
+      Rcpp::StringVector& layer_legend,
+      int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
+      Rcpp::StringVector& geometry_column,
+      bool jsonify_legend
+  )
+```
+
 
 ---
 

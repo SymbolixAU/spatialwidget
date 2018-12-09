@@ -126,8 +126,8 @@ namespace api {
   }
 
   /*
-   * expects `data` to be an sf object, where the geometry_column is a string vector
-   * of the sfc column names (of sf) you want to use as the geometry object inside the GeoJSON.
+   * expects `data` to be an sf object, where the geometry_column is a string
+   * of the sfc column name (of sf) you want to use as the geometry object inside the GeoJSON.
    * This function will down-cast MULTI* objects to their single form
    *
    */
@@ -141,6 +141,59 @@ namespace api {
       int& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       std::string& geometry_column,
+      bool jsonify_legend
+  ) {
+
+    Rcpp::List res(2);
+
+    Rcpp::StringVector data_names = data.names();
+
+    Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
+      data,
+      data_types,
+      params,
+      lst_defaults,
+      layer_colours,
+      layer_legend,
+      data_rows,
+      parameter_exclusions
+    );
+
+    Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column );
+
+    res[0] = js_data;
+
+    SEXP legend = lst[ "legend" ];
+    if ( jsonify_legend ) {
+      legend = jsonify::vectors::to_json( legend );
+      Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+      res[1] = sv_leg;
+    } else {
+      res[1] = legend;
+    }
+
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    return res;
+  }
+
+
+  /*
+   * expects `data` to be an sf object, where the geometry_column is a string vector
+   * of the sfc column name (of sf) you want to use as the geometry object inside the GeoJSON.
+   * This function will down-cast MULTI* objects to their single form
+   *
+   */
+  inline Rcpp::List create_geojson_downcast(
+      Rcpp::DataFrame& data,
+      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
+      Rcpp::List& params,
+      Rcpp::List& lst_defaults,
+      std::unordered_map< std::string, std::string >& layer_colours,
+      Rcpp::StringVector& layer_legend,
+      int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
+      Rcpp::StringVector& geometry_column,
       bool jsonify_legend
   ) {
 
