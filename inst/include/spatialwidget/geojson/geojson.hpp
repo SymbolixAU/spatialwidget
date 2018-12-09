@@ -396,10 +396,9 @@ namespace geojson {
           cls_check( cls );
           geom_type = cls[1];
 
-          writer.String("geometry");
+          writer.String( geom_column );
           int geometry_index = geometry_indeces(geometry, geometry_column) - 1;
           write_geometry( writer, sfc, i, geometry_index, geom_type, cls);
-
         }
 
         writer.EndObject();
