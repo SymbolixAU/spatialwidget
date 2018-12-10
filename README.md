@@ -54,7 +54,7 @@ object of all the capital cities.
 ``` r
 library(spatialwidget)
 library(sf)
-#  Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
+#  Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
 sf <- spatialwidget::widget_capitals
 sf
 #  Simple feature collection with 200 features and 2 fields
@@ -238,5 +238,6 @@ within the GeoJSON
 
 You can use these R functions, but they have limited scope. This package
 has been designed so you use the C++ functions directly. I’ve gone into
-more detail in the vignette, so it’s probably best you read that to
-understand how to call the C++ functions.
+more detail in the
+[vignette](https://symbolixau.github.io/spatialwidget/), so it’s
+probably best you read that to understand how to call the C++ functions.
