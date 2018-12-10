@@ -111,7 +111,7 @@ Notice now the `geometry` object has within it an `origin` and a `destination`. 
 
 ### How do I use it in my package?
 
-You can use these R functions, but they have limited scope. This package has been designed so you use the C++ functions directly. I've gone into more detail in the vignette, so it's probably best you read that to understand how to call the C++ functions. 
+You can use these R functions, but they have limited scope. This package has been designed so you use the C++ functions directly. I've gone into more detail in the [vignette](https://symbolixau.github.io/spatialwidget/), so it's probably best you read that to understand how to call the C++ functions. 
 
 
 

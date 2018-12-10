@@ -24,6 +24,7 @@ knitr::opts_chunk$set(
 )
 
 library(spatialwidget)
+library(jsonlite)
 library(sf)
 library(geojsonsf)
 
@@ -54,7 +55,9 @@ substr( js$legend, 1, 100 )
 ```
 
 
-Notice the `fill_colour` columns is now a hex colour, and the `geometry` have been converted into `Point` coordinates. 
+Notice the `fill_colour` column is now a hex colour, and the `geometry` column has been converted into `Point` coordinates. 
+
+This is basically it. The R object is now represented as JSON, having had a column of data changed into hex colours.
 
 ---
 
@@ -69,9 +72,9 @@ There are 4 R functions you can call for creating POINTs, LINEs, POLYGONs or ori
 - data : the R `data.frame` or `sf` object converted to pseudo-GeoJSON
 - legend : a summary of the values and colours suitable for a legend on the map
 
-### Pseudo-GeoJSON
+## Pseudo-GeoJSON
 
-The `data` is returned as **pseudo-GeoJSON** because some plotting libraries can use more than one geometry, such as [`mapdeck::add_arc()`](https://github.com/SymbolixAU/mapdeck/blob/master/R/map_layer_arc.R), which uses an origin and destination. So spatialwidget needs to handle multiple geometries.
+The `data` is returned as **pseudo-GeoJSON**. Some plotting libraries can use more than one geometry, such as [`mapdeck::add_arc()`](https://github.com/SymbolixAU/mapdeck/blob/master/R/map_layer_arc.R), which uses an origin and destination. So spatialwidget needs to handle multiple geometries.
 
 Typical GeoJSON will take the form
 
@@ -118,12 +121,9 @@ substr( l$data, 1, 200 )
 
 # C++ API
 
-The `spatialwidget::api::` namespace has 5 functions for converting your data into pseudo-geojson. Here are their definitions, the input data they expect and the type of output. 
+The `spatialwidget::api::` namespace has 5 functions for converting your data into pseudo-geojson. Here are their definitions, the input data they expect and the type of output they produce. 
 
-
-**in** - `sf` object with one or many `sfc` columns
-
-**out** - geometries left as-is, returned in pseudo-geojson
+### many-`sfc`-column `sf` to pseudo-geojson
 
 ```c++
 /*
@@ -147,11 +147,13 @@ inline Rcpp::List create_geojson(
   )
 ```
 
+**in** - `sf` object with one or many `sfc` columns
+
+**out** - geometries left as-is, returned in pseudo-geojson
+
 ---
 
-**in** - `sf` object with one `sfc` column
-
-**out** - returns standard geojson
+### single-`sfc`-column `sf` to standard geojson
 
 ```c++
 /*
@@ -173,11 +175,14 @@ inline Rcpp::List create_geojson(
 )
 ```
 
----
-
 **in** - `sf` object with one `sfc` column
 
-**out** - MULTI* geometries down-cast to simpler form, in pseudo-geojson
+**out** - returns standard geojson
+
+---
+
+### single-`sfc`-column `sf` to down-casted geometries in pseudo-geojson
+
 
 ```c++
 /*
@@ -200,12 +205,13 @@ inline Rcpp::List create_geojson_downcast(
 )
 ```
 
----
-
-
-**in** - `sf` object with two `sfc` columns
+**in** - `sf` object with one `sfc` column
 
 **out** - MULTI* geometries down-cast to simpler form, in pseudo-geojson
+
+---
+
+### two-`sfc`-column `sf` to down-casted psuedo-geojson
 
 
 ```c++
@@ -229,12 +235,14 @@ inline Rcpp::List create_geojson_downcast(
   )
 ```
 
+**in** - `sf` object with two `sfc` columns
+
+**out** - MULTI* geometries down-cast to simpler form, in pseudo-geojson
 
 ---
 
-**in** - `data.frame` with lon & lat columns (each row is a POINT)
+### `data.frame` with lon & lat columns to pseudo-geojson
 
-**out** - pseudo-geojson
 
 ```c++
 /*
@@ -256,11 +264,13 @@ inline Rcpp::List create_geojson(
 )
 ```
 
+**in** - `data.frame` with lon & lat columns (each row is a POINT)
+
+**out** - pseudo-geojson
+
 ---
 
-**in** - `data.frame` with lon, lat and elevation columns (each row is a POINT)
-
-**out** - pseudo-gejson
+### `data.frame` with lon, lat & elevation columns to pseudo-geojson
 
 ```c++
 /*
@@ -283,10 +293,15 @@ inline Rcpp::List create_geojson(
 )
 ```
 
+**in** - `data.frame` with lon, lat and elevation columns (each row is a POINT)
+
+**out** - pseudo-gejson
+
 ---
 
-## arguments
+## C++ arguments
 
+This set of arguments are commong to all the C++ functions
 
 ### Rcpp::DataFrame data
 
@@ -309,7 +324,7 @@ data_types
 
 A named list. The names are the arguments of the calling R function which will be supplied to the javascript widget. These are typically columns of `data`, or a single value that will be applied to all rows of `data`.
 
-For example, the R function will look like
+For example, an R function will look like
 
 ```r
 add_layer <- function(
@@ -330,10 +345,11 @@ l[["stroke_colour"]] <- force( stroke_colour )
 
 In this case, the `another_argument` is not passed to the javascript widget as part of the data, so we don't include it in our list.
 
-The javascript function will then access the `stroke_colour` and `fill_colour` properties from the data. This code is taken from the javascript binding of `mapdeck::add_polygon()`
+The javascript function inside a `htmlwidget` will then access the `stroke_colour` and `fill_colour` properties from the data. 
+
+This example code is taken from the javascript binding of `mapdeck::add_polygon()` to show you how I use it.
 
 ```js
-// this function is called when an `sf` object is used in R
 const polygonLayer = new PolygonLayer({
     getLineColor: d => hexToRGBA2( d.properties.stroke_colour ),
     getFillColor: d => hexToRGBA2( d.properties.fill_colour ),
@@ -415,7 +431,8 @@ Rcpp::StringVector parameter_exclusions = Rcpp::StringVector::create("palette","
 A logical value indicating if you want the legend data returned as JSON (TRUE) or a a list (FALSE)
 
 
-Function-dependent arguments
+## Function-dependent arguments
+
 ---
 
 ### geometry_columns
@@ -438,7 +455,7 @@ geometry_column <- c( "origin" )
 
 ### bool elevation
 
-The `elevation` argument is used to indicate the `data.frame` has a column used to specify the elevation of the geometry. When using the elevation you also need to supply this column in the `geometry_column` list. 
+The `elevation` argument is used when the `data.frame` has a column of elevation data. When using the elevation you also need to supply this column in the `geometry_column` list. 
 
 ```r
 geometry_column <- list( geometry = c("lon","lat","elevation") )
@@ -546,11 +563,11 @@ namespace widgetpoint {
 #endif
 ```
 
-## GeoJSON
+## Atomising geojson
 
 As well as creating pseudo-GeoJSON, most of the functions also **atomise** the data. 
 
-When converting an `sf` object to GeoJSON it will typically create a FeatureCollection. 'Atomising' means it treats each row of the `sf` as it's own Feature, without combining them into a Feature Collection.
+When converting an `sf` object to GeoJSON it will typically create a FeatureCollection. 'Atomising' means it treats each row of the `sf` as it's own Feature, and stores each one in a separate JSON object inside a JSON array (i.e., without combining them into a Feature Collection).
 
 For example, we can create a GeoJSON FeatureCollection, convert it to `sf` and back again
 
@@ -562,15 +579,14 @@ sf <- geojsonsf::geojson_sf( geojson )
 sf
 ```
 
-and going back the other way creates a FeatureCollection.
+and going back the other way completes the round-trip and creates a FeatureCollection.
 
 ```{r}
 geo <- geojsonsf::sf_geojson( sf )
 geo
 ```
 
-If we set it to 'atomise' then an array of Features is returned
-
+If we set it to 'atomise' when converting to geojson, an array of `Features` is returned
 
 ```{r}
 geojsonsf::sf_geojson( sf, atomise = TRUE )
@@ -581,22 +597,29 @@ This structure is useful for sending to an htmlwidget because each object in the
 
 Therefore, most of the GeoJSON functions inside spatialwidget will return the 'atomised' form. 
 
-They also return the geometry nested one level deeper, thus creating the pseudo-geojson. This is so an `sf` object with multiple `sfc` columns can be converted into a form easily parsable by javascript inside a widget.
+## Downcasting geojson
 
-**downcasting** is the process of converting MULTI objects to their simpler form. For example, an MULTIPOINT will be down-cast to POINTs (one row/value for each of the multipoints).
+**Downcasting** is the process of converting MULTI objects to their simpler form. For example, a MULTIPOINT will be down-cast to POINTs (one row/value for each of the multipoints).
 
+```{r}
+js <- '{"type":"Feature","properties":{"id":1,"val":"a"},"geometry":{"type":"MultiPoint","coordinates":[[1,4],[2,5],[3,6]]}}'
+sf <- geojsonsf::geojson_sf( js )
+geo_down <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf, "geometry" )
+jsonlite::prettify( geo_down )
+```
+
+See here we started with a single MULTIPOINT (containing three coordinates), and we are returned three POINTs. Also notice the `id` and `val` fields are repeated across the new POINTs.
 
 # GeoJSON C++ API
 
 You can by-pass the `spatialwidget::api::` namepsace and call the `spatialwidget::geojson::` api directly. However, doing so will only convert your data to pseudo-geojson, it won't create colours or legends. 
 
-Here I describe how each of the functions work.
+Here are the function definitions, the input data they expect and the type of output they produce. 
 
 ---
 
-**in** - `sf` object with one or more `sfc` columns
+### multi-`sfc`-column `sf` to atomised pseudo-geojson
 
-**out** - atomised pseudo-geojson
 
 ```
   /*
@@ -612,9 +635,13 @@ geojson <- spatialwidget:::rcpp_geojson_sf(sf = widget_arcs, geometries = c("ori
 substr( geojson, 1, 500)
 ```
 
-**in** - `sf` object with one `sfc` column
+**in** - `sf` object with one or more `sfc` columns
 
-**out** - pseudo-geojson downcast to simpler form
+**out** - atomised pseudo-geojson
+
+---
+
+### single-`sfc`-column `sf` to downcasted, atomised pseudo-geojson
 
 ```
   // down-casts MULTIGEOMETRIES to their simpler geometry
@@ -629,9 +656,14 @@ geojson <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf = widget_capitals, ge
 substr( geojson, 1, 500)
 ```
 
-**in** - `sf` object with two `sfc` columns
 
-**out** - pseudo-geojson down-cast to simpler form. It will repeat the other columns to the correct length.
+**in** - `sf` object with one `sfc` column
+
+**out** - pseudo-geojson downcast to simpler form
+
+---
+
+### two-`sfc`-column `sf` to downcasted, atomised pseudo-geojson
 
 ```
   inline Rcpp::StringVector to_geojson_downcast_atomise(
@@ -652,10 +684,13 @@ geojson <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast( sf = sf, ge
 geojson
 ```
 
+**in** - `sf` object with two `sfc` columns
 
-**in** - `sf` object with one `sfc` column
+**out** - pseudo-geojson down-cast to simpler form. It will repeat the other columns to the correct length.
 
-**out** - standard GeoJSON
+---
+
+### single-`sfc`-column `sf` to standard geojson
 
 ```
 inline Rcpp::StringVector to_geojson( Rcpp::DataFrame& sf, std::string geom_column )
@@ -667,9 +702,14 @@ substr( geojson, 1, 300)
 ```
 
 
-**in** - `data.frame` with lon & lat columns
+**in** - `sf` object with one `sfc` column
 
-**out** - pseudo-GeoJSON atomised
+**out** - standard GeoJSON
+
+---
+
+### `data.frame` with lon & lat columsn to atomised pseudo-geojson
+
 
 ```
   inline Rcpp::StringVector to_geojson_atomise(
@@ -688,10 +728,14 @@ geojson <- spatialwidget:::rcpp_geojson_df(df = df, list(geometry = c("lon","lat
 substr( geojson, 1, 500 )
 ```
 
-
-**in** - `data.frame` with lon, lat and elevation columns
+**in** - `data.frame` with lon & lat columns
 
 **out** - pseudo-GeoJSON atomised
+
+---
+
+### `data.frame` with lon, lat and elevation columns to atomised pseudo-geojson
+
 
 ```
   // list of geometries is designed for lon & lat columns of data
@@ -708,5 +752,7 @@ substr( geojson, 1, 500 )
 
 ```
 
+**in** - `data.frame` with lon, lat and elevation columns
 
+**out** - pseudo-GeoJSON atomised
 
