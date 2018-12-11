@@ -9,6 +9,7 @@ Authors@R: c(
 Description: Many packages use 'htmlwidgets' for interactive plotting of spatial data.
     This package provides functions for converting R objects, such as simple features, 
     into structures suitable for use in 'htmlwidgets' mapping libraries. 
+URL: https://symbolixau.github.io/spatialwidget/articles/spatialwidget.html
 License: GPL-3
 Depends: R (>= 3.3.0)
 Encoding: UTF-8
