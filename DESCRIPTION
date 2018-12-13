@@ -1,12 +1,13 @@
 Package: spatialwidget
 Type: Package
-Title: Converts Spatial Data to JSON for Use in Htmlwidgets
+Title: Converts Spatial Data to Javascript Object Notation (JSON) for Use in Htmlwidgets
 Version: 0.1
-Date: 2018-11-25
+Date: 2018-12-13
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
-Description: Many packages use 'htmlwidgets' for interactive plotting of spatial data.
+Description: Many packages use 'htmlwidgets' <https://CRAN.R-project.org/package=htmlwidgets>
+    for interactive plotting of spatial data.
     This package provides functions for converting R objects, such as simple features, 
     into structures suitable for use in 'htmlwidgets' mapping libraries. 
 URL: https://symbolixau.github.io/spatialwidget/articles/spatialwidget.html
