@@ -1,6 +1,6 @@
 context("geojson")
 
-test_that("to_geojson always returns a Feature, even if ther arent' any properties", {
+test_that("to_geojson always returns a Feature, even if ther aren't any properties", {
 
   sf <- structure(list(geometry = structure(list(structure(c(0, 0), class = c("XY",
   "POINT", "sfg"))), class = c("sfc_POINT", "sfc"), precision = 0, bbox = structure(c(xmin = 0,
@@ -18,6 +18,13 @@ test_that("to_geojson always returns a Feature, even if ther arent' any properti
   expect_true(jsonify::validate_json(geo))
   expect_equal( as.character(geo), '[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"geometry\":{\"type\":\"Point\",\"coordinates\":[0.0,0.0]}}}]')
 
+  df <- data.frame(lon = 0, lat = 0)
+  expect_error(
+    spatialwidget:::rcpp_geojson_df(df, list("lon", "lat"))
+    , 'Expecting a list of geometries, each element is named and contains the lon and lat columns'
+  )
+
+
 })
 
 test_that("geometry field changes with user input", {
@@ -32,7 +39,6 @@ test_that("geometry field changes with user input", {
 
 test_that("MULTI objects are down-casted", {
 
-  ## TODO( redo these tests, because spatialwidget down't return valid GeoJSON, so the geojsonsf::geojson_sf() errors)
   js <- '{"type":"Feature","properties":{},"geometry":{"type":"MultiPoint","coordinates":[[1,4],[2,5]]}}'
   sf <- geojsonsf::geojson_sf( js )
   geo_down <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf, "geometry" )
@@ -94,6 +100,27 @@ test_that("MULTI OD sf objects are downcast and atomised", {
   expected <- '[{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[0.0,0.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[9.0,9.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[1.0,1.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[9.0,9.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[2.0,2.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[9.0,9.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[0.0,0.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[8.0,8.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[1.0,1.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[8.0,8.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[2.0,2.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[8.0,8.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[0.0,0.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[7.0,7.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[1.0,1.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[7.0,7.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[2.0,2.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[7.0,7.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[0.0,0.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[6.0,6.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[1.0,1.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[6.0,6.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[2.0,2.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[6.0,6.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[0.0,0.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[5.0,5.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[1.0,1.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[5.0,5.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":1},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[2.0,2.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[5.0,5.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":2},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[0.0,0.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[9.0,9.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":2},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[1.0,1.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[9.0,9.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":2},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[2.0,2.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[9.0,9.0]}}},{\"type\":\"Feature\",\"properties\":{\"id\":2},\"geometry\":{\"origin\":{\"type\":\"Point\",\"coordinates\":[3.0,3.0]},\"destination\":{\"type\":\"Point\",\"coordinates\":[9.0,9.0]}}}]'
   expect_true(jsonify:::validate_json(geo_down))
   expect_equal( as.character( geo_down ), gsub("\\n| ","", expected ) )
+
+})
+
+test_that("data.frame with z elevation converted", {
+
+  df <- data.frame(id = 1:2, lon = c(0,0), lat = c(0,0), z = c(1,1) )
+  expected <- '[{"type":"Feature","properties":{"id":1},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0,1.0]}}},{"type":"Feature","properties":{"id":2},"geometry":{"geometry":{"type":"Point","coordinates":[0.0,0.0,1.0]}}}]'
+  res <- spatialwidget:::rcpp_geojson_dfz(df, list(geometry = c("lon","lat","z")))
+  expect_equal( expected, as.character( res ) )
+
+  df <- data.frame(id = 1:2, lon = c(0,0), lat = c(0,0), z = c(1,1) )
+  expect_error(
+    spatialwidget:::rcpp_geojson_dfz(df, c("lon","lat","z"))
+    , 'Expecting a list of geometries, each element is named and contains the lon, lat and z columns'
+  )
+
+  df <- data.frame(id = 1:2, lon = c(0,0), lat = c(0,0), z = c(1,1) )
+  expect_error(
+    spatialwidget:::rcpp_geojson_dfz(df, c(lon = "lon", lat = "lat", z = "z"))
+    , 'Expecting a list of geometries, each element is named and contains the lon, lat and z columns'
+  )
 
 })
 

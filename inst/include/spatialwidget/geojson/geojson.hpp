@@ -495,6 +495,11 @@ namespace geojson {
     size_t i, j;
     Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
     Rcpp::StringVector lats( n_lats );
+
+    if( Rf_isNull( geometries.names() ) ) {
+      Rcpp::stop("Expecting a list of geometries, each element is named and contains the lon and lat columns");
+    }
+
     Rcpp::StringVector geometry_names = geometries.names();
 
     for ( i = 0; i < n_lons; i++ ) {
@@ -572,7 +577,7 @@ namespace geojson {
   }
 
 
-  // list of geometries is designed for lon & lat columns of data
+  // list of geometries is designed for lon & lat & z columns of data
   inline Rcpp::StringVector to_geojson_z_atomise(
       Rcpp::DataFrame& df,
       Rcpp::List& geometries ) // i.e., list(origin = c("start_lon", "start_lat", destination = c("end_lon", "end_lat")))
@@ -593,10 +598,21 @@ namespace geojson {
     Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
     Rcpp::StringVector lats( n_lats );
     Rcpp::StringVector elevs( n_elevs );
+
+    if( Rf_isNull( geometries.names() ) ) {
+      Rcpp::stop("Expecting a list of geometries, each element is named and contains the lon, lat and z columns");
+    }
+
     Rcpp::StringVector geometry_names = geometries.names();
 
+    // check there are three entries in the list
+    Rcpp::StringVector this_lonlat;
+
     for ( i = 0; i < n_lons; i++ ) {
-      Rcpp::StringVector this_lonlat = geometries[i];
+      this_lonlat = geometries[i];
+      if ( this_lonlat.size() != 3 ) {
+        Rcpp::stop("Expecting a list of geometries, each element is named and contains the lon, lat and z columns");
+      }
       lons[i] = this_lonlat[0];
       lats[i] = this_lonlat[1];
       elevs[i] = this_lonlat[2];
