@@ -64,7 +64,7 @@
       <h1>spatialwidget</h1>
                         <h4 class="author">David Cooley</h4>
             
-            <h4 class="date">2018-12-11</h4>
+            <h4 class="date">2018-12-12</h4>
       
       
       <div class="hidden name"><code>spatialwidget.Rmd</code></div>
@@ -73,6 +73,7 @@
 
     
     
+<p><span class="math inline">\(\sqrt{3}\)</span></p>
 <div id="spatialwidget" class="section level1">
 <h1 class="hasAnchor">
 <a href="#spatialwidget" class="anchor"></a>Spatialwidget</h1>
@@ -716,7 +717,7 @@
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">df<span class="op">$</span>z &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>, <span class="dt">size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(df), <span class="dt">replace =</span> <span class="ot">TRUE</span> )</a>
 <a class="sourceLine" id="cb45-2" data-line-number="2">geojson &lt;-<span class="st"> </span>spatialwidget<span class="op">:::</span><span class="kw">rcpp_geojson_dfz</span>( df, <span class="dt">geometries =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">geometry =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>,<span class="st">"z"</span>) ) )</a>
 <a class="sourceLine" id="cb45-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substr">substr</a></span>( geojson, <span class="dv">1</span>, <span class="dv">500</span> )</a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="co">#  [{"type":"Feature","properties":{"country":"Afghanistan","capital":"Kabul"},"geometry":{"geometry":{"type":"Point","coordinates":[69.11,34.28,290.0]</span><span class="re">}}}</span><span class="co">,{"type":"Feature","properties":{"country":"Albania","capital":"Tirane"},"geometry":{"geometry":{"type":"Point","coordinates":[19.49,41.18,416.0]</span><span class="re">}}}</span><span class="co">,{"type":"Feature","properties":{"country":"Algeria","capital":"Algiers"},"geometry":{"geometry":{"type":"Point","coordinates":[3.08,36.42,300.0]</span><span class="re">}}}</span><span class="co">,{"type":"Feature","properties":{"country":"American</span></a></code></pre></div>
+<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="co">#  [{"type":"Feature","properties":{"country":"Afghanistan","capital":"Kabul"},"geometry":{"geometry":{"type":"Point","coordinates":[69.11,34.28,253.0]</span><span class="re">}}}</span><span class="co">,{"type":"Feature","properties":{"country":"Albania","capital":"Tirane"},"geometry":{"geometry":{"type":"Point","coordinates":[19.49,41.18,347.0]</span><span class="re">}}}</span><span class="co">,{"type":"Feature","properties":{"country":"Algeria","capital":"Algiers"},"geometry":{"geometry":{"type":"Point","coordinates":[3.08,36.42,13.0]</span><span class="re">}}}</span><span class="co">,{"type":"Feature","properties":{"country":"American S</span></a></code></pre></div>
 <p><strong>in</strong> - <code>data.frame</code> with lon, lat and elevation columns</p>
 <p><strong>out</strong> - pseudo-GeoJSON atomised</p>
 </div>
