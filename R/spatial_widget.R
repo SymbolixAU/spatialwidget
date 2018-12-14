@@ -61,8 +61,8 @@ widget_line <- function( data,
 #'
 #' @examples
 #'
-#' l <- widget_polygon( widget_melbourne, legend = FALSE)
-#' l <- widget_polygon( widget_melbourne, fill_colour = "AREASQKM16", legend = TRUE)
+#' l <- widget_polygon( widget_melbourne, legend = FALSE )
+#' l <- widget_polygon( widget_melbourne, fill_colour = "AREASQKM16", legend = TRUE )
 #'
 #' @export
 widget_polygon <- function( data,
@@ -93,9 +93,9 @@ widget_polygon <- function( data,
   }
   l[["data_type"]] <- NULL
 
-  data_types <- vapply( data, function(x) class(x)[[1]], "")
+  data_types <- vapply( data, function(x) class(x)[[1]], "" )
 
-  js_data <- rcpp_widget_polygon( data, data_types, l, c("geometry"), json_legend  )
+  js_data <- rcpp_widget_polygon( data, data_types, l, c("geometry"), json_legend )
   return( js_data )
 }
 
