@@ -55,8 +55,9 @@ namespace api {
       parameter_exclusions
     );
 
+    int digits = -1;
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
 
     res[0] = js_data;
 
@@ -108,7 +109,8 @@ namespace api {
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
 
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson( df, geometry_column);
+    int digits = -1;
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson( df, geometry_column, digits );
 
     res[0] = js_data;
 
@@ -160,7 +162,9 @@ namespace api {
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column );
+
+    int digits = -1;
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column, digits );
 
     res[0] = js_data;
 
@@ -213,7 +217,8 @@ namespace api {
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column );
+    int digits = -1;
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column, digits );
 
     res[0] = js_data;
 
@@ -264,7 +269,8 @@ namespace api {
 
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns );
+    int digits = -1;
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
 
     res[0] = js_data;
 
@@ -316,7 +322,8 @@ namespace api {
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_z_atomise( df, geometry_columns );
+    int digits = -1;
+    Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_z_atomise( df, geometry_columns, digits );
 
 
     res[0] = js_data;
