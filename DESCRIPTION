@@ -2,7 +2,7 @@ Package: spatialwidget
 Type: Package
 Title: Converts Spatial Data to Javascript Object Notation (JSON) for Use in Htmlwidgets
 Version: 0.1
-Date: 2018-12-13
+Date: 2018-12-21
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
