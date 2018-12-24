@@ -4,119 +4,15 @@
 #include <Rcpp.h>
 
 #include "geojsonsf/geojsonsf.h"
-#include "geojsonsf/utils/utils.hpp"
 #include "geojsonsf/geometries/sizes.hpp"
+#include "geojsonsf/write_geojson.hpp"
+#include "geojsonsf/geojson/write_geometry.hpp"
 
 #include "jsonify/jsonify.hpp"
 #include "jsonify/to_json/dataframe.hpp"
 
-#include "spatialwidget/geojson/write_geojson.hpp"
-
-
 namespace spatialwidget {
 namespace geojson {
-
-  inline void cls_check( Rcpp::CharacterVector& cls ) {
-    if (cls.size() != 3 ) {
-      Rcpp::stop("unknown sf class");
-    }
-  }
-
-  template< typename Writer >
-  inline void write_geometry(Writer& writer, SEXP sfg, Rcpp::CharacterVector& cls, int digits ) {
-
-    std::string geom_type;
-    geom_type = cls[1];
-
-    int sfglength = geojsonsf::utils::get_sexp_length( sfg );
-
-    if (sfglength == 0) {
-      writer.Null();
-    } else {
-
-      bool isnull = geojsonsf::utils::is_null_geometry( sfg, geom_type );
-      if ( isnull ) {
-        writer.Null();
-      } else {
-        geojsonsf::writers::begin_geojson_geometry(writer, geom_type);
-        write_geojson(writer, sfg, geom_type, cls, digits );
-        geojsonsf::writers::end_geojson_geometry( writer, geom_type );
-      }
-    }
-  }
-
-  template< typename Writer >
-  inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i, int digits) {
-
-    SEXP sfg = sfc[ i ];
-
-    std::string geom_type;
-    Rcpp::CharacterVector cls = geojsonsf::getSfClass(sfg);
-    cls_check( cls );
-    geom_type = cls[1];
-
-    // need to keep track of GEOMETRYCOLLECTIONs so we can correctly close them
-    bool isGeometryCollection = (geom_type == "GEOMETRYCOLLECTION") ? true : false;
-
-    int sfglength = geojsonsf::utils::get_sexp_length( sfg );
-
-    if (sfglength == 0) {
-      writer.Null();
-    } else {
-
-      bool isnull = geojsonsf::utils::is_null_geometry( sfg, geom_type );
-      if ( isnull ) {
-        writer.Null();
-      } else {
-        geojsonsf::writers::begin_geojson_geometry(writer, geom_type);
-        write_geojson(writer, sfg, geom_type, cls, digits );
-
-        geom_type = (isGeometryCollection) ? "GEOMETRYCOLLECTION" : geom_type;
-        geojsonsf::writers::end_geojson_geometry( writer, geom_type );
-      }
-    }
-  }
-
-  template< typename Writer >
-  inline void write_geometry(Writer& writer, Rcpp::List& sfc, int i, int geometry,
-                      std::string& geom_type, Rcpp::CharacterVector& cls, int digits ) {
-
-    SEXP sfg = sfc[ i ];
-    std::string downcast_geometry;
-
-    if ( geom_type == "MULTIPOINT") {
-      downcast_geometry = "POINT";
-    } else if ( geom_type == "MULTILINESTRING" ) {
-      downcast_geometry = "LINESTRING";
-    } else if ( geom_type == "MULTIPOLYGON" ) {
-      downcast_geometry = "POLYGON";
-    } else {
-      downcast_geometry = geom_type;
-    }
-
-    // need to keep track of GEOMETRYCOLLECTIONs so we can correctly close them
-    bool isGeometryCollection = (geom_type == "GEOMETRYCOLLECTION") ? true : false;
-
-    int sfglength = geojsonsf::utils::get_sexp_length( sfg );
-
-    if (sfglength == 0) {
-      writer.Null();
-    } else {
-
-      bool isnull = geojsonsf::utils::is_null_geometry( sfg, geom_type );
-      if ( isnull ) {
-        writer.Null();
-      } else {
-
-        geojsonsf::writers::begin_geojson_geometry( writer, downcast_geometry );
-        write_geojson( writer, sfg, geom_type, cls, geometry, digits );
-
-        geom_type = (isGeometryCollection) ? "GEOMETRYCOLLECTION" : geom_type;
-        geojsonsf::writers::end_geojson_geometry( writer, downcast_geometry );
-      }
-    }
-  }
-
 
   /*
   * a variation on the atomise function to return an array of atomised features
@@ -179,7 +75,7 @@ namespace geojson {
 
         writer.String( geom_column );
         Rcpp::List sfc = sf[ geom_column ];
-        write_geometry( writer, sfc, i, digits );
+        geojsonsf::write_geometry::write_geometry( writer, sfc, i, digits );
       }
 
       writer.EndObject();
@@ -233,7 +129,7 @@ namespace geojson {
       SEXP sfg = sfc[ i ];
 
       cls = geojsonsf::getSfClass(sfg);
-      cls_check( cls );
+      geojsonsf::write_geometry::cls_check( cls );
       geom_type = cls[1];
 
       if ( geom_type == "GEOMETRYCOLLECTION" ) {
@@ -265,7 +161,7 @@ namespace geojson {
         writer.StartObject();
 
         writer.String( geom_column );
-        write_geometry( writer, sfc, i, i_geometry, geom_type, cls, digits );
+        geojsonsf::write_geometry::write_geometry( writer, sfc, i, i_geometry, geom_type, cls, digits );
 
         writer.EndObject();
         writer.EndObject();
@@ -331,7 +227,7 @@ namespace geojson {
         SEXP sfg = sfc[ i ];
 
         cls = geojsonsf::getSfClass(sfg);
-        cls_check( cls );
+        geojsonsf::write_geometry::cls_check( cls );
         geom_type = cls[1];
 
         if ( geom_type == "GEOMETRYCOLLECTION" ) {
@@ -394,12 +290,12 @@ namespace geojson {
           SEXP sfg = sfc[ i ];
 
           cls = geojsonsf::getSfClass(sfg);
-          cls_check( cls );
+          geojsonsf::write_geometry::cls_check( cls );
           geom_type = cls[1];
 
           writer.String( geom_column );
           int geometry_index = geometry_indeces(geometry, geometry_column) - 1;
-          write_geometry( writer, sfc, i, geometry_index, geom_type, cls, digits);
+          geojsonsf::write_geometry::write_geometry( writer, sfc, i, geometry_index, geom_type, cls, digits);
         }
 
         writer.EndObject();
@@ -463,7 +359,7 @@ namespace geojson {
 
       writer.String("geometry");
       Rcpp::List sfc = sf[ geom_column ];
-      write_geometry( writer, sfc, i, digits );
+      geojsonsf::write_geometry::write_geometry( writer, sfc, i, digits );
 
       writer.EndObject();
     }
@@ -565,7 +461,7 @@ namespace geojson {
 
           writer.String( geometry_names[j] );
 
-          write_geometry( writer, sfg, cls, digits );
+          geojsonsf::write_geometry::write_geometry( writer, sfg, cls, digits );
         }
         writer.EndObject();
         writer.EndObject();
@@ -686,7 +582,7 @@ namespace geojson {
 
         writer.String( geometry_names[j] );
 
-        write_geometry( writer, sfg, cls, digits );
+        geojsonsf::write_geometry::write_geometry( writer, sfg, cls, digits );
       }
       writer.EndObject();
 
