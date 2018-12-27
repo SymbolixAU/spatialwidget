@@ -20,6 +20,8 @@
 namespace spatialwidget {
 namespace api {
 
+  //inline int x;
+
   /*
    * sf object with one or many sfc columns
    *
@@ -63,7 +65,8 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      legend = jsonify::vectors::to_json( legend );
+      //legend = jsonify::vectors::to_json( legend );
+      legend = jsonify::api::to_json( legend );
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -116,7 +119,8 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      legend = jsonify::vectors::to_json( legend );
+      //legend = jsonify::vectors::to_json( legend );
+      legend = jsonify::api::to_json( legend );
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -170,7 +174,8 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      legend = jsonify::vectors::to_json( legend );
+      //legend = jsonify::vectors::to_json( legend );
+      legend = jsonify::api::to_json( legend );
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -224,7 +229,8 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      legend = jsonify::vectors::to_json( legend );
+      //legend = jsonify::vectors::to_json( legend );
+      legend = jsonify::api::to_json( legend );
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -276,7 +282,8 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      legend = jsonify::vectors::to_json( legend );
+      //legend = jsonify::vectors::to_json( legend );
+      legend = jsonify::api::to_json( legend );
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -330,7 +337,8 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      legend = jsonify::vectors::to_json( legend );
+      //legend = jsonify::vectors::to_json( legend );
+      legend = jsonify::api::to_json( legend );
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -372,14 +380,18 @@ namespace api {
       parameter_exclusions
     );
 
-    Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-    Rcpp::StringVector js_data = jsonify::dataframe::to_json( df );
+    //Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    //Rcpp::StringVector js_data = jsonify::dataframe::to_json( df );
+    //Rcpp::StringVector js_data = jsonify::writers::write_value( df );
+    SEXP df = lst["data"];
+    Rcpp::StringVector js_data = jsonify::api::to_json( df );
 
     res[0] = js_data;
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      legend = jsonify::vectors::to_json( legend );
+      //legend = jsonify::vectors::to_json( legend );
+      legend = jsonify::api::to_json( legend );
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {

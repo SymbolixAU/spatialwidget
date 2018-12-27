@@ -1,8 +1,8 @@
 Package: spatialwidget
 Type: Package
 Title: Converts Spatial Data to Javascript Object Notation (JSON) for Use in Htmlwidgets
-Version: 0.1
-Date: 2018-12-13
+Version: 0.2
+Date: 2019-01-13
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
@@ -20,8 +20,8 @@ Imports:
 LinkingTo: 
     BH,
     colourvalues (>= 0.2.0),
-    geojsonsf (>= 1.2.1),
-    jsonify (>= 0.1.2),
+    geojsonsf (>= 1.2.2001),
+    jsonify (>= 0.1.2003),
     rapidjsonr,
     Rcpp
 RoxygenNote: 6.1.0

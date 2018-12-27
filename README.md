@@ -54,7 +54,7 @@ object of all the capital cities.
 ``` r
 library(spatialwidget)
 library(sf)
-#  Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
+#  Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
 sf <- spatialwidget::widget_capitals
 sf
 #  Simple feature collection with 200 features and 2 fields
@@ -100,7 +100,7 @@ sf[1:2, ]
 #        country capital            geometry
 #  1 Afghanistan   Kabul POINT (69.11 34.28)
 #  2     Albania  Tirane POINT (19.49 41.18)
-jsonlite::prettify( l$data )
+jsonify::pretty_json( l$data )
 #  [
 #      {
 #          "type": "Feature",
@@ -133,7 +133,6 @@ jsonlite::prettify( l$data )
 #          }
 #      }
 #  ]
-#  
 ```
 
 You can see that the coordinates are inside a `geometry` object, and the
@@ -180,7 +179,7 @@ and destination columns.
 
 l <- widget_od( widget_arcs[1:2, ], origin = "origin", destination = "destination")
 
-jsonlite::prettify( l$data )
+jsonify::pretty_json( l$data )
 #  [
 #      {
 #          "type": "Feature",
@@ -227,7 +226,6 @@ jsonlite::prettify( l$data )
 #          }
 #      }
 #  ]
-#  
 ```
 
 Notice now the `geometry` object has within it an `origin` and a
