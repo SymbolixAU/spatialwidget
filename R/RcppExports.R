@@ -57,19 +57,19 @@ is_hex <- function(hex_str) {
     .Call(`_spatialwidget_is_hex`, hex_str)
 }
 
-rcpp_widget_line <- function(data, data_types, params, geometry_columns, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_line`, data, data_types, params, geometry_columns, jsonify_legend)
+rcpp_widget_line <- function(data, params, geometry_columns, jsonify_legend) {
+    .Call(`_spatialwidget_rcpp_widget_line`, data, params, geometry_columns, jsonify_legend)
 }
 
-rcpp_widget_point <- function(data, data_types, params, geometry_columns, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_point`, data, data_types, params, geometry_columns, jsonify_legend)
+rcpp_widget_point <- function(data, params, geometry_columns, jsonify_legend) {
+    .Call(`_spatialwidget_rcpp_widget_point`, data, params, geometry_columns, jsonify_legend)
 }
 
-rcpp_widget_point_df <- function(data, data_types, params, geometries, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_point_df`, data, data_types, params, geometries, jsonify_legend)
+rcpp_widget_point_df <- function(data, params, geometries, jsonify_legend) {
+    .Call(`_spatialwidget_rcpp_widget_point_df`, data, params, geometries, jsonify_legend)
 }
 
-rcpp_widget_polygon <- function(data, data_types, params, geometry_columns, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_polygon`, data, data_types, params, geometry_columns, jsonify_legend)
+rcpp_widget_polygon <- function(data, params, geometry_columns, jsonify_legend) {
+    .Call(`_spatialwidget_rcpp_widget_polygon`, data, params, geometry_columns, jsonify_legend)
 }
 

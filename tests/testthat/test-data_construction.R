@@ -126,4 +126,27 @@ test_that("input data remains unchanged", {
 
   expect_true( all( df$col == c("a","b","d","z") ) )
 
+
+  df <- data.frame(lon = c(1,2,-5,0.3), lat = 1:4, col = seq(as.Date("2018-01-01"), as.Date("2018-01-04"), length.out = 4))
+
+  spatialwidget::widget_point(
+    data = df
+    , lon = "lon"
+    , lat = "lat"
+    , fill_colour = "col"
+  )
+
+  expect_true( all( df$col == seq(as.Date("2018-01-01"), as.Date("2018-01-04"), length.out = 4) ) )
+
+  df <- data.frame(lon = c(1,2,-5,0.3), lat = 1:4, col = seq(as.POSIXct("2018-01-01"), as.POSIXct("2018-01-04"), length.out = 4))
+
+  spatialwidget::widget_point(
+    data = df
+    , lon = "lon"
+    , lat = "lat"
+    , fill_colour = "col"
+  )
+
+  expect_true( all( df$col == seq(as.POSIXct("2018-01-01"), as.POSIXct("2018-01-04"), length.out = 4) ) )
+
 })

@@ -6,7 +6,6 @@
 // [[Rcpp::export]]
 Rcpp::List rcpp_widget_point(
     Rcpp::DataFrame data,
-    Rcpp::List data_types,
     Rcpp::List params,
     Rcpp::StringVector geometry_columns,
     bool jsonify_legend ) {
@@ -20,7 +19,6 @@ Rcpp::List rcpp_widget_point(
 
   return spatialwidget::api::create_geojson(
     data,
-    data_types,
     params,
     defaults,
     point_colours,
@@ -35,7 +33,6 @@ Rcpp::List rcpp_widget_point(
 // [[Rcpp::export]]
 Rcpp::List rcpp_widget_point_df(
     Rcpp::DataFrame data,
-    Rcpp::List data_types,
     Rcpp::List params,
     Rcpp::List geometries,
     bool jsonify_legend) {
@@ -49,7 +46,6 @@ Rcpp::List rcpp_widget_point_df(
 
   return spatialwidget::api::create_geojson(
     data,
-    data_types,
     params,
     defaults,
     point_colours,

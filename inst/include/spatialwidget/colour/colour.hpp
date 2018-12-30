@@ -12,11 +12,54 @@ namespace colour {
 
   const std::string default_na_colour = "#808080FF";
 
+  inline bool is_in( const char* x, Rcpp::CharacterVector v ) {
+    int n = v.size();
+    int i;
+    for( i = 0; i < n; i++ ) {
+      if( v[i] == x ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  template < int RTYPE >
+  inline Rcpp::CharacterVector rClass( Rcpp::Vector< RTYPE > v ) {
+    if( Rf_isNull( v.attr("class")) ) {
+      return "";
+    }
+    return v.attr("class");
+  }
+
+  inline Rcpp::CharacterVector getRClass( SEXP obj ) {
+
+    int tp = TYPEOF( obj ) ;
+    Rcpp::Rcout << "type: " <<  tp << std::endl;
+
+    switch( TYPEOF( obj ) ) {
+    case REALSXP:
+      return rClass< REALSXP >( obj );
+      //return "numeric";
+    case VECSXP:
+      return rClass< VECSXP >( obj );
+      //return "character";
+    case INTSXP:
+      return rClass< INTSXP >( obj );
+      //return "numeric";
+    case LGLSXP:
+      //return rClass< LGLSXP >( obj );
+      return "logical";
+    case STRSXP:
+      //return rClass< STRSXP >( obj );
+      return "character";
+    }
+    return "";
+  }
+
   inline Rcpp::List make_colours(
       Rcpp::List& lst_params,
       Rcpp::List& params,
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types,
       Rcpp::List& lst_defaults,
       int col_index,
       SEXP& palette_type,
@@ -36,21 +79,22 @@ namespace colour {
     if ( col_index == -1 ) {
 
       palette_type = lst_defaults[ colour_name.c_str() ];
-      format_type = "numeric";
+      //format_type = "numeric";
 
     } else {
       Rcpp::String this_colour = params[ colour_name.c_str() ];
 
-      Rcpp::StringVector sv_r_type;
-      Rcpp::String rs_format_type;
-
-      sv_r_type = data_types[ this_colour ];
-      rs_format_type = sv_r_type[0];
-      format_type = rs_format_type;
+      // Rcpp::StringVector sv_r_type;
+      // Rcpp::String rs_format_type;
+      //
+      // sv_r_type = data_types[ this_colour ];
+      // rs_format_type = sv_r_type[0];
+      // format_type = rs_format_type;
     }
 
     switch ( TYPEOF( palette_type ) ) {
-    case 16: {
+    case 16: {}
+    case 10: {
       Rcpp::StringVector colour_vec = Rcpp::as< Rcpp::StringVector >( palette_type );
       // TODO( if colour_vec is hex_strings, assume the user passed-in the colours they want to use? )
       Rcpp::String first_colour = colour_vec[0];
@@ -64,6 +108,7 @@ namespace colour {
           _["summary_values"] = lvls,
           _["summary_colours"] = lvls
         );
+
         if ( include_legend ) {
           legend[ "colour_type" ] = colour_name;
           legend[ "type" ] = "category";
@@ -83,6 +128,20 @@ namespace colour {
     }
     default: {
 
+      Rcpp::CharacterVector cls = getRClass( palette_type );
+      Rcpp::Rcout << " cls: " << cls << std::endl;
+      if( is_in( "Date", cls ) ) {
+        format_type = "Date";
+      } else if ( is_in("POSIXct", cls) ) {
+        format_type = "POSIXct";
+      } else if ( is_in("logical", cls) ) {
+        format_type = "logical";
+      } else if ( is_in("character", cls) ) {
+        format_type = "character";
+      } else {
+        format_type = "numeric";
+      }
+
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
       Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, format_type );
 
@@ -100,7 +159,6 @@ namespace colour {
       Rcpp::List& lst_params,
       Rcpp::List& params,
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types,      // the R data types (class) of `data`
       Rcpp::List& lst_defaults,
       std::string& colour_name,
       std::string& opacity_name,
@@ -156,7 +214,7 @@ namespace colour {
     }
 
     Rcpp::List legend = make_colours(
-      lst_params, params, data, data_types, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
+      lst_params, params, data, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
       this_colour, alpha, colour_name, include_legend
     );
 

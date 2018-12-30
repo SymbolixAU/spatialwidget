@@ -7,7 +7,7 @@
 #include "colourvalues/colours/colours_hex.hpp"
 
 // [[Rcpp::depends(jsonify)]]
-#include "jsonify/to_json.hpp"
+#include "jsonify/jsonify.hpp"
 
 #include "spatialwidget/colour/colour.hpp"
 #include "spatialwidget/data_construction/data_construction.hpp"
@@ -31,7 +31,6 @@ namespace api {
    */
   inline Rcpp::List create_geojson(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -48,7 +47,6 @@ namespace api {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
-      data_types,
       params,
       lst_defaults,
       layer_colours,
@@ -84,7 +82,6 @@ namespace api {
    */
   inline Rcpp::List create_geojson(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -101,7 +98,6 @@ namespace api {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
-      data_types,
       params,
       lst_defaults,
       layer_colours,
@@ -139,7 +135,6 @@ namespace api {
    */
   inline Rcpp::List create_geojson_downcast(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -156,7 +151,6 @@ namespace api {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
-      data_types,
       params,
       lst_defaults,
       layer_colours,
@@ -195,7 +189,6 @@ namespace api {
    */
   inline Rcpp::List create_geojson_downcast(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -212,7 +205,6 @@ namespace api {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
-      data_types,
       params,
       lst_defaults,
       layer_colours,
@@ -248,7 +240,6 @@ namespace api {
    */
   inline Rcpp::List create_geojson(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -264,7 +255,6 @@ namespace api {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
-      data_types,
       params,
       lst_defaults,
       layer_colours,
@@ -302,7 +292,6 @@ namespace api {
    */
   inline Rcpp::List create_geojson(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -319,7 +308,6 @@ namespace api {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
-      data_types,
       params,
       lst_defaults,
       layer_colours,
@@ -356,7 +344,6 @@ namespace api {
    */
   inline Rcpp::List create_polyline(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -371,7 +358,6 @@ namespace api {
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
-      data_types,
       params,
       lst_defaults,
       layer_colours,

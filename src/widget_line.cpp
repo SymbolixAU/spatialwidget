@@ -6,7 +6,6 @@
 // [[Rcpp::export]]
 Rcpp::List rcpp_widget_line(
     Rcpp::DataFrame data,
-    Rcpp::List data_types,
     Rcpp::List params,
     Rcpp::StringVector geometry_columns,
     bool jsonify_legend ) {
@@ -20,7 +19,6 @@ Rcpp::List rcpp_widget_line(
 
   return spatialwidget::api::create_geojson(
     data,
-    data_types,
     params,
     defaults,
     line_colours,
