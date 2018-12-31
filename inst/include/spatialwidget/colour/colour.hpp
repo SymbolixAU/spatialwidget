@@ -34,7 +34,7 @@ namespace colour {
   inline Rcpp::CharacterVector getRClass( SEXP obj ) {
 
     int tp = TYPEOF( obj ) ;
-    Rcpp::Rcout << "type: " <<  tp << std::endl;
+    // Rcpp::Rcout << "type: " <<  tp << std::endl;
 
     switch( TYPEOF( obj ) ) {
     case REALSXP:
@@ -93,8 +93,8 @@ namespace colour {
     }
 
     switch ( TYPEOF( palette_type ) ) {
-    case 16: {}
-    case 10: {
+    case STRSXP: {} // string vector
+    case LGLSXP: {  // logical vector
       Rcpp::StringVector colour_vec = Rcpp::as< Rcpp::StringVector >( palette_type );
       // TODO( if colour_vec is hex_strings, assume the user passed-in the colours they want to use? )
       Rcpp::String first_colour = colour_vec[0];
@@ -129,7 +129,7 @@ namespace colour {
     default: {
 
       Rcpp::CharacterVector cls = getRClass( palette_type );
-      Rcpp::Rcout << " cls: " << cls << std::endl;
+      // Rcpp::Rcout << " cls: " << cls << std::endl;
       if( is_in( "Date", cls ) ) {
         format_type = "Date";
       } else if ( is_in("POSIXct", cls) ) {
