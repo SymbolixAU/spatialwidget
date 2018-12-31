@@ -58,7 +58,6 @@ namespace parameters {
    */
   inline Rcpp::List parameters_to_data(
   		Rcpp::DataFrame& data,                // user-supplied data
-  		Rcpp::List& data_types,               // column data types of 'data'
   		Rcpp::List& params,                   // list of parameters from calling function
   		Rcpp::List& lst_defaults,
   		std::unordered_map< std::string, std::string > colour_columns,
@@ -96,7 +95,8 @@ namespace parameters {
 		  include_legend = spatialwidget::utils::where::where_is( colour_column, legend_names ) >= 0 ? true : false;
 
 	    spatialwidget::colour::resolve_colour(
-	      lst_params, params, data, data_types, lst_defaults,
+	      lst_params, params, data,
+	      lst_defaults,
 	      colour_column,
 	      opacity_column,
 	      lst_legend, include_legend

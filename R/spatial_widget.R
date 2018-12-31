@@ -42,9 +42,9 @@ widget_line <- function( data,
   }
   l[["data_type"]] <- NULL
 
-  data_types <- vapply( data, function(x) class(x)[[1]], "")
+  # data_types <- vapply( data, function(x) class(x)[[1]], "")
 
-  js_data <- rcpp_widget_line( data, data_types, l, c("geometry"), json_legend  )
+  js_data <- rcpp_widget_line( data, l, c("geometry"), json_legend  )
   return( js_data )
 }
 
@@ -93,9 +93,9 @@ widget_polygon <- function( data,
   }
   l[["data_type"]] <- NULL
 
-  data_types <- vapply( data, function(x) class(x)[[1]], "" )
+  # data_types <- vapply( data, function(x) class(x)[[1]], "" )
 
-  js_data <- rcpp_widget_polygon( data, data_types, l, c("geometry"), json_legend )
+  js_data <- rcpp_widget_polygon( data, l, c("geometry"), json_legend )
   return( js_data )
 }
 
@@ -140,18 +140,18 @@ widget_point <- function( data,
     l[["data"]] <- NULL
   }
 
-  data_types <- vapply( data, function(x) class(x)[[1]], "")
+  # data_types <- vapply( data, function(x) class(x)[[1]], "")
   tp <- l[["data_type"]]
   l[["data_type"]] <- NULL
 
   if( tp == "sf" ) {
-    js_data <- rcpp_widget_point( data, data_types, l, c("geometry"), json_legend )
+    js_data <- rcpp_widget_point( data, l, c("geometry"), json_legend )
   } else if (tp == "df" ) {
     if( is.null( lon ) || is.null( lat ) ) {
       stop("lon and lat are requried for data.frames")
     }
     js_data <- rcpp_widget_point_df(
-      data, data_types, l, list(myGeometry = c("lon","lat") ), json_legend
+      data, l, list(myGeometry = c("lon","lat") ), json_legend
       )
   }
   return( js_data )
@@ -192,11 +192,11 @@ widget_od <- function( data,
     l[["data"]] <- NULL
   }
 
-  data_types <- vapply( data, function(x) class(x)[[1]], "")
+  # data_types <- vapply( data, function(x) class(x)[[1]], "")
   tp <- l[["data_type"]]
   l[["data_type"]] <- NULL
 
-  js_data <- rcpp_widget_point( data, data_types, l, c("origin","destination"), json_legend )
+  js_data <- rcpp_widget_point( data, l, c("origin","destination"), json_legend )
 
   return( js_data )
 }

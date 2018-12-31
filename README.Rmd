@@ -66,7 +66,7 @@ Look, here are the first two rows of `capitals` as JSON
 
 ```{r}
 sf[1:2, ]
-jsonlite::prettify( l$data )
+jsonify::pretty_json( l$data )
 ```
 
 You can see that the coordinates are inside a `geometry` object, and the user-defined `fill_colour` is within the `properties` object. 
@@ -102,7 +102,7 @@ The `arcs` data is an `sf` object with two POINT geometry columns. So say we wan
 
 l <- widget_od( widget_arcs[1:2, ], origin = "origin", destination = "destination")
 
-jsonlite::prettify( l$data )
+jsonify::pretty_json( l$data )
 
 ```
 

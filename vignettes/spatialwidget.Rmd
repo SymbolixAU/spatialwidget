@@ -24,7 +24,6 @@ knitr::opts_chunk$set(
 )
 
 library(spatialwidget)
-library(jsonlite)
 library(sf)
 library(geojsonsf)
 
@@ -605,7 +604,7 @@ Therefore, most of the GeoJSON functions inside spatialwidget will return the 'a
 js <- '{"type":"Feature","properties":{"id":1,"val":"a"},"geometry":{"type":"MultiPoint","coordinates":[[1,4],[2,5],[3,6]]}}'
 sf <- geojsonsf::geojson_sf( js )
 geo_down <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf, "geometry" )
-jsonlite::prettify( geo_down )
+jsonify::pretty_json( geo_down )
 ```
 
 See here we started with a single MULTIPOINT (containing three coordinates), and we are returned three POINTs. Also notice the `id` and `val` fields are repeated across the new POINTs.
