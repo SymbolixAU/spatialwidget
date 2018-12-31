@@ -33,7 +33,7 @@ namespace colour {
 
   inline Rcpp::CharacterVector getRClass( SEXP obj ) {
 
-    int tp = TYPEOF( obj ) ;
+    //int tp = TYPEOF( obj ) ;
     // Rcpp::Rcout << "type: " <<  tp << std::endl;
 
     switch( TYPEOF( obj ) ) {

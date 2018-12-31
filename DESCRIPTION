@@ -19,9 +19,9 @@ Imports:
     Rcpp
 LinkingTo: 
     BH,
-    colourvalues (>= 0.2.0),
-    geojsonsf (>= 1.2.2001),
-    jsonify (>= 0.1.2003),
+    colourvalues (>= 0.2.2),
+    geojsonsf (>= 1.3.0),
+    jsonify (>= 0.2.0),
     rapidjsonr,
     Rcpp
 RoxygenNote: 6.1.0
