@@ -134,7 +134,6 @@ The `spatialwidget::api::` namespace has 5 functions for converting your data in
  */
 inline Rcpp::List create_geojson(
     Rcpp::DataFrame& data,
-    Rcpp::List& data_types,
     Rcpp::List& params,
     Rcpp::List& lst_defaults,
     std::unordered_map< std::string, std::string >& layer_colours,
@@ -162,7 +161,6 @@ inline Rcpp::List create_geojson(
  */
 inline Rcpp::List create_geojson(
     Rcpp::DataFrame& data,
-    Rcpp::List& data_types,
     Rcpp::List& params,
     Rcpp::List& lst_defaults,
     std::unordered_map< std::string, std::string >& layer_colours,
@@ -192,7 +190,6 @@ inline Rcpp::List create_geojson(
  */
 inline Rcpp::List create_geojson_downcast(
     Rcpp::DataFrame& data,
-    Rcpp::List& data_types,
     Rcpp::List& params,
     Rcpp::List& lst_defaults,
     std::unordered_map< std::string, std::string >& layer_colours,
@@ -222,7 +219,6 @@ inline Rcpp::List create_geojson_downcast(
    */
   inline Rcpp::List create_geojson_downcast(
       Rcpp::DataFrame& data,
-      Rcpp::List& data_types, // named list, names == data.names(), values == data.class[[1]] ?
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
@@ -251,7 +247,6 @@ inline Rcpp::List create_geojson_downcast(
  */
 inline Rcpp::List create_geojson(
     Rcpp::DataFrame& data,
-    Rcpp::List& data_types,
     Rcpp::List& params,
     Rcpp::List& lst_defaults,
     std::unordered_map< std::string, std::string >& layer_colours,
@@ -279,7 +274,6 @@ inline Rcpp::List create_geojson(
  */
 inline Rcpp::List create_geojson(
     Rcpp::DataFrame& data,
-    Rcpp::List& data_types,
     Rcpp::List& params,
     Rcpp::List& lst_defaults,
     std::unordered_map< std::string, std::string >& layer_colours,
@@ -305,19 +299,6 @@ This set of arguments are commong to all the C++ functions
 ### Rcpp::DataFrame data
 
 This will either be a data.frame with lon & lat columns, or an `sf` object.
-
-
-### Rcpp::List data_types
-
-A named vector. Each name is the columns of `data`, and the values are the `r` data types of the column. Only one value per name is accepted. This is used to help determine how the legend values should be formatted. 
-
-An example is
-
-```{r}
-df <- data.frame(id = 1:5, val = letters[1:5])
-data_types <- vapply( df, function(x) class(x)[[1]], "")
-data_types
-```
 
 ### Rcpp::List params
 
@@ -490,9 +471,7 @@ widget_point <- function( data,
   l[["fill_colour"]] <- force( fill_colour )
   l[["legend"]] <- legend
 
-  data_types <- vapply( data, function(x) class(x)[[1]], "")
-
-  js_data <- rcpp_widget_point( data, data_types, l, c("geometry"), json_legend )
+  js_data <- rcpp_widget_point( data, l, c("geometry"), json_legend )
 
   return( js_data )
 }
@@ -509,7 +488,6 @@ widget_point <- function( data,
 // [[Rcpp::export]]
 Rcpp::List rcpp_widget_point(
     Rcpp::DataFrame data,
-    Rcpp::List data_types,
     Rcpp::List params,
     Rcpp::StringVector geometry_columns,
     bool jsonify_legend ) {
@@ -523,7 +501,6 @@ Rcpp::List rcpp_widget_point(
 
   return spatialwidget::api::create_geojson(
     data,
-    data_types,
     params,
     defaults,
     point_colours,
