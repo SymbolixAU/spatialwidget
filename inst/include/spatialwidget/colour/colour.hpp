@@ -116,7 +116,7 @@ namespace colour {
         return legend;
 
       } else {
-        Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha );
+        Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, colour_name );
 
         if ( include_legend ) {
           legend[ "colour_type" ] = colour_name;

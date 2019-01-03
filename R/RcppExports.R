@@ -33,8 +33,8 @@ rcpp_resolve_palette <- function(lst_params, params) {
     .Call(`_spatialwidget_rcpp_resolve_palette`, lst_params, params)
 }
 
-rcpp_colour_str_with_palette <- function(palette, fill_colour_vec, alpha, na_colour, include_alpha) {
-    .Call(`_spatialwidget_rcpp_colour_str_with_palette`, palette, fill_colour_vec, alpha, na_colour, include_alpha)
+rcpp_colour_str_with_palette <- function(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name) {
+    .Call(`_spatialwidget_rcpp_colour_str_with_palette`, palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name)
 }
 
 rcpp_colour_num_with_palette <- function(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name) {

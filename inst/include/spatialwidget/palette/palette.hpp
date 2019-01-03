@@ -39,7 +39,8 @@ namespace palette {
   		Rcpp::StringVector& fill_colour_vec,
   		Rcpp::NumericVector& alpha,
   		std::string& na_colour,
-  		bool& include_alpha ) {
+  		bool& include_alpha,
+  		std::string& colour_name ) {
 
     Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
 
@@ -57,6 +58,13 @@ namespace palette {
   		std::string thispal = Rcpp::as< std::string>( palette );
   		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
   		break;
+  	}
+  	case VECSXP: {
+  	  // extract the list elemetn for either 'fill' or 'stroke'
+  	  Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
+  	  SEXP pal = lst[ colour_name.c_str() ];
+  	  return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name );
+  	  break;
   	}
   	default: {
   		Rcpp::stop("Unsupported palette type");
@@ -103,15 +111,12 @@ namespace palette {
 		case VECSXP: {
 		  // extract the list elemetn for either 'fill' or 'stroke'
 		  Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
-		  Rcpp::StringVector nms = lst.names();
-		  Rcpp::Rcout << "palette names: " << nms << std::endl;
-		  Rcpp::Rcout << "extracting colour: " << colour_name.c_str() << std::endl;
 		  SEXP pal = lst[ colour_name.c_str() ];
 		  return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type );
 		  break;
 		}
 		default: {
-		  Rcpp::Rcout << "type: " << TYPEOF( palette ) << std::endl;
+		  //Rcpp::Rcout << "type: " << TYPEOF( palette ) << std::endl;
 			Rcpp::stop("Unsupported palette type");
 		}
 		}
