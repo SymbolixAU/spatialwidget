@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">spatialwidget</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -50,6 +50,9 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -106,7 +109,7 @@
 <p>Sure. In this example I’m using the <code>capitals</code> data, which is an <code>sf</code> object of all the capital cities.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spatialwidget)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#  Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#  Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3</span></a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">sf &lt;-<span class="st"> </span>spatialwidget<span class="op">::</span>widget_capitals</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">sf</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#  Simple feature collection with 200 features and 2 fields</span></a>
@@ -141,7 +144,7 @@
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#        country capital            geometry</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#  1 Afghanistan   Kabul POINT (69.11 34.28)</span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#  2     Albania  Tirane POINT (19.49 41.18)</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">jsonlite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/prettify">prettify</a></span>( l<span class="op">$</span>data )</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">jsonify<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/jsonify/topics/pretty_json">pretty_json</a></span>( l<span class="op">$</span>data )</a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#  [</span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#      {</span></a>
 <a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#          "type": "Feature",</span></a>
@@ -173,8 +176,7 @@
 <a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">#              }</span></a>
 <a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">#          }</span></a>
 <a class="sourceLine" id="cb3-42" data-line-number="42"><span class="co">#      }</span></a>
-<a class="sourceLine" id="cb3-43" data-line-number="43"><span class="co">#  ]</span></a>
-<a class="sourceLine" id="cb3-44" data-line-number="44"><span class="co">#  </span></a></code></pre></div>
+<a class="sourceLine" id="cb3-43" data-line-number="43"><span class="co">#  ]</span></a></code></pre></div>
 <p>You can see that the coordinates are inside a <code>geometry</code> object, and the user-defined <code>fill_colour</code> is within the <code>properties</code> object.</p>
 </div>
 <div id="that-looks-a-lot-like-geojson" class="section level3">
@@ -196,7 +198,7 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">l &lt;-<span class="st"> </span><span class="kw"><a href="reference/widget_od.html">widget_od</a></span>( widget_arcs[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, ], <span class="dt">origin =</span> <span class="st">"origin"</span>, <span class="dt">destination =</span> <span class="st">"destination"</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">jsonlite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/jsonlite/topics/prettify">prettify</a></span>( l<span class="op">$</span>data )</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">jsonify<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/jsonify/topics/pretty_json">pretty_json</a></span>( l<span class="op">$</span>data )</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#  [</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#      {</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#          "type": "Feature",</span></a>
@@ -242,8 +244,7 @@
 <a class="sourceLine" id="cb6-47" data-line-number="47"><span class="co">#              }</span></a>
 <a class="sourceLine" id="cb6-48" data-line-number="48"><span class="co">#          }</span></a>
 <a class="sourceLine" id="cb6-49" data-line-number="49"><span class="co">#      }</span></a>
-<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="co">#  ]</span></a>
-<a class="sourceLine" id="cb6-51" data-line-number="51"><span class="co">#  </span></a></code></pre></div>
+<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="co">#  ]</span></a></code></pre></div>
 <p>Notice now the <code>geometry</code> object has within it an <code>origin</code> and a <code>destination</code>. This is why I’ve nested the geometries one level deeper within the GeoJSON</p>
 </div>
 <div id="how-do-i-use-it-in-my-package" class="section level3">
@@ -255,7 +256,14 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=spatialwidget">https://​cloud.r-project.org/​package=spatialwidget</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>

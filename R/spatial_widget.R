@@ -42,8 +42,6 @@ widget_line <- function( data,
   }
   l[["data_type"]] <- NULL
 
-  # data_types <- vapply( data, function(x) class(x)[[1]], "")
-
   js_data <- rcpp_widget_line( data, l, c("geometry"), json_legend  )
   return( js_data )
 }
@@ -93,8 +91,6 @@ widget_polygon <- function( data,
   }
   l[["data_type"]] <- NULL
 
-  # data_types <- vapply( data, function(x) class(x)[[1]], "" )
-
   js_data <- rcpp_widget_polygon( data, l, c("geometry"), json_legend )
   return( js_data )
 }
@@ -140,7 +136,6 @@ widget_point <- function( data,
     l[["data"]] <- NULL
   }
 
-  # data_types <- vapply( data, function(x) class(x)[[1]], "")
   tp <- l[["data_type"]]
   l[["data_type"]] <- NULL
 
@@ -192,7 +187,6 @@ widget_od <- function( data,
     l[["data"]] <- NULL
   }
 
-  # data_types <- vapply( data, function(x) class(x)[[1]], "")
   tp <- l[["data_type"]]
   l[["data_type"]] <- NULL
 
