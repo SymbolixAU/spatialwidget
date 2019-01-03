@@ -39,21 +39,21 @@ namespace palette {
   		Rcpp::StringVector& fill_colour_vec,
   		Rcpp::NumericVector& alpha,
   		std::string& na_colour,
-  		bool& include_alpha) {
+  		bool& include_alpha ) {
 
     Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
 
   	switch ( TYPEOF( palette ) ) {
-  	case 1: { // SYMSXP
-  	Rcpp::stop("Unsupported palette type");
-  	break;
-  }
-  	case 14: { // REALSXP (i.e, matrix)
+    	case SYMSXP: { // SYMSXP
+    	Rcpp::stop("Unsupported palette type");
+    	break;
+    }
+  	case REALSXP: { // REALSXP (i.e, matrix)
   		Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
   		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
   		break;
   	}
-  	case 16: {
+  	case STRSXP: {
   		std::string thispal = Rcpp::as< std::string>( palette );
   		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
   		break;
@@ -72,7 +72,8 @@ namespace palette {
 			Rcpp::NumericVector& alpha,
 			std::string& na_colour,
 			bool& include_alpha,
-			std::string format_type = "numeric") {
+			std::string& colour_name,
+			std::string format_type = "numeric" ) {
 
 	  Rcpp::NumericVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
 
@@ -85,21 +86,29 @@ namespace palette {
 	  int digits = 2;
 
 		switch ( TYPEOF( palette ) ) {
-		case 1: { // SYMSXP
-		Rcpp::stop("Unsupported palette type");
-		break;
-	}
-		case 14: { // REALSXP (i.e, matrix)
+		case SYMSXP: { // SYMSXP
+  		Rcpp::stop("Unsupported palette type");
+  		break;
+  	}
+		case REALSXP: { // REALSXP (i.e, matrix)
 			Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
 			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, digits );
 			break;
 		}
-		case 16: {
+		case STRSXP: {
 			std::string thispal = Rcpp::as< std::string>( palette );
 			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, digits );
 			break;
 		}
+		case VECSXP: {
+		  // extract the list elemetn for either 'fill' or 'stroke'
+		  Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
+		  SEXP pal = lst[ colour_name.c_str() ];
+		  colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type );
+		  break;
+		}
 		default: {
+		  Rcpp::Rcout << "type: " << TYPEOF( palette ) << std::endl;
 			Rcpp::stop("Unsupported palette type");
 		}
 		}
