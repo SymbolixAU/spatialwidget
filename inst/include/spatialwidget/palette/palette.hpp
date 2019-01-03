@@ -103,8 +103,11 @@ namespace palette {
 		case VECSXP: {
 		  // extract the list elemetn for either 'fill' or 'stroke'
 		  Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
+		  Rcpp::StringVector nms = lst.names();
+		  Rcpp::Rcout << "palette names: " << nms << std::endl;
+		  Rcpp::Rcout << "extracting colour: " << colour_name.c_str() << std::endl;
 		  SEXP pal = lst[ colour_name.c_str() ];
-		  colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type );
+		  return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type );
 		  break;
 		}
 		default: {
