@@ -9,14 +9,15 @@
 #include "geojsonsf/geojson/write_geometry.hpp"
 
 #include "jsonify/jsonify.hpp"
-#include "jsonify/to_json/dataframe.hpp"
+#include "jsonify/to_json/writers/simple.hpp"
+//#include "jsonify/to_json/dataframe.hpp"
 
 namespace spatialwidget {
 namespace geojson {
 
   /*
-  * a variation on the atomise function to return an array of atomised features
-  */
+   * a variation on the atomise function to return an array of atomised features
+   */
   inline Rcpp::StringVector to_geojson_atomise(
       Rcpp::DataFrame& sf,
       Rcpp::StringVector& geometries,
@@ -62,8 +63,9 @@ namespace geojson {
 
         SEXP this_vec = sf[ h ];
 
-        jsonify::writers::write_value( writer, h );
-        jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+        jsonify::writers::simple::write_value( writer, h );
+        // jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+        jsonify::writers::simple::write_value( writer, this_vec, i);
       }
       writer.EndObject();
 
@@ -94,6 +96,7 @@ namespace geojson {
       Rcpp::DataFrame& sf,
       std::string geometry,
       int digits ) {
+
 
     const char* geom_column = geometry.c_str();
 
@@ -152,8 +155,8 @@ namespace geojson {
 
           SEXP this_vec = sf[ h ];
 
-          jsonify::writers::write_value( writer, h );
-          jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+          jsonify::writers::simple::write_value( writer, h );
+          jsonify::writers::simple::write_value( writer, this_vec, i );
         }
         writer.EndObject();
 
@@ -181,7 +184,7 @@ namespace geojson {
       Rcpp::DataFrame& sf,
       Rcpp::StringVector geometries,
       int digits)
-    {
+  {
 
     size_t n_geometries = geometries.size();
     if ( n_geometries != 2 ) {
@@ -272,8 +275,9 @@ namespace geojson {
 
           SEXP this_vec = sf[ h ];
 
-          jsonify::writers::write_value( writer, h );
-          jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+          jsonify::writers::simple::write_value( writer, h );
+          //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+          jsonify::writers::simple::write_value( writer, this_vec, i );
         }
         writer.EndObject();
 
@@ -351,9 +355,9 @@ namespace geojson {
         const char *h = property_names[ j ];
 
         SEXP this_vec = sf[ h ];
-
-        jsonify::writers::write_value( writer, h );
-        jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+        jsonify::writers::simple::write_value( writer, h );
+        //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+        jsonify::writers::simple::write_value( writer, this_vec, i );
       }
       writer.EndObject();
 
@@ -432,39 +436,40 @@ namespace geojson {
 
     for( i = 0; i < n_rows; i++ ) {
 
-        writer.StartObject();
-        geojsonsf::writers::start_features( writer );
-        geojsonsf::writers::start_properties( writer );
+      writer.StartObject();
+      geojsonsf::writers::start_features( writer );
+      geojsonsf::writers::start_properties( writer );
 
-        writer.StartObject();
+      writer.StartObject();
 
-        // properties first, then sfc
-        for( j = 0; j < n_properties; j++ ) {
-          const char *h = property_names[ j ];
-          SEXP this_vec = df[ h ];
+      // properties first, then sfc
+      for( j = 0; j < n_properties; j++ ) {
+        const char *h = property_names[ j ];
+        SEXP this_vec = df[ h ];
 
-          jsonify::writers::write_value( writer, h );
-          jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        }
+        jsonify::writers::simple::write_value( writer, h );
+        //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+        jsonify::writers::simple::write_value( writer, this_vec, i );
+      }
 
-        writer.EndObject();
+      writer.EndObject();
 
-        writer.String("geometry");
+      writer.String("geometry");
 
-        writer.StartObject();
-        for ( j = 0; j < n_lons; j++ ) {
-          const char* this_lon = lons[j];
-          const char* this_lat = lats[j];
-          Rcpp::NumericVector nv_lon = df[this_lon];
-          Rcpp::NumericVector nv_lat = df[this_lat];
-          SEXP sfg = Rcpp::NumericVector::create( nv_lon[i], nv_lat[i] );
+      writer.StartObject();
+      for ( j = 0; j < n_lons; j++ ) {
+        const char* this_lon = lons[j];
+        const char* this_lat = lats[j];
+        Rcpp::NumericVector nv_lon = df[this_lon];
+        Rcpp::NumericVector nv_lat = df[this_lat];
+        SEXP sfg = Rcpp::NumericVector::create( nv_lon[i], nv_lat[i] );
 
-          writer.String( geometry_names[j] );
+        writer.String( geometry_names[j] );
 
-          geojsonsf::write_geometry::write_geometry( writer, sfg, cls, digits );
-        }
-        writer.EndObject();
-        writer.EndObject();
+        geojsonsf::write_geometry::write_geometry( writer, sfg, cls, digits );
+      }
+      writer.EndObject();
+      writer.EndObject();
     }
     writer.EndArray();
 
@@ -558,8 +563,9 @@ namespace geojson {
 
           SEXP this_vec = df[ h ];
 
-          jsonify::writers::write_value( writer, h );
-          jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+          jsonify::writers::simple::write_value( writer, h );
+          //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
+          jsonify::writers::simple::write_value( writer, this_vec, i );
         }
         writer.EndObject();
       }
