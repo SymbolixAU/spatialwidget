@@ -63,9 +63,9 @@ namespace geojson {
 
         SEXP this_vec = sf[ h ];
 
-        jsonify::writers::simple::write_value( writer, h );
+        writer.String( h );
         // jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        jsonify::writers::simple::write_value( writer, this_vec, i);
+        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true );
       }
       writer.EndObject();
 
@@ -155,8 +155,8 @@ namespace geojson {
 
           SEXP this_vec = sf[ h ];
 
-          jsonify::writers::simple::write_value( writer, h );
-          jsonify::writers::simple::write_value( writer, this_vec, i );
+          writer.String( h );
+          jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
         }
         writer.EndObject();
 
@@ -275,9 +275,9 @@ namespace geojson {
 
           SEXP this_vec = sf[ h ];
 
-          jsonify::writers::simple::write_value( writer, h );
+          writer.String( h );
           //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-          jsonify::writers::simple::write_value( writer, this_vec, i );
+          jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true );
         }
         writer.EndObject();
 
@@ -355,9 +355,10 @@ namespace geojson {
         const char *h = property_names[ j ];
 
         SEXP this_vec = sf[ h ];
-        jsonify::writers::simple::write_value( writer, h );
+
+        writer.String( h );
         //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        jsonify::writers::simple::write_value( writer, this_vec, i );
+        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
       }
       writer.EndObject();
 
@@ -447,9 +448,9 @@ namespace geojson {
         const char *h = property_names[ j ];
         SEXP this_vec = df[ h ];
 
-        jsonify::writers::simple::write_value( writer, h );
+        writer.String( h );
         //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        jsonify::writers::simple::write_value( writer, this_vec, i );
+        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
       }
 
       writer.EndObject();
@@ -563,9 +564,9 @@ namespace geojson {
 
           SEXP this_vec = df[ h ];
 
-          jsonify::writers::simple::write_value( writer, h );
+          writer.String( h );
           //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-          jsonify::writers::simple::write_value( writer, this_vec, i );
+          jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
         }
         writer.EndObject();
       }
