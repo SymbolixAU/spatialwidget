@@ -99,7 +99,8 @@ namespace parameters {
 	      lst_defaults,
 	      colour_column,
 	      opacity_column,
-	      lst_legend, include_legend
+	      lst_legend,
+	      include_legend
 	      );
 		}
 

@@ -29,13 +29,13 @@ namespace geojson {
     size_t n_cols = sf.ncol();
     size_t n_properties = n_cols - n_geometries;
     size_t n_rows = sf.nrows();
-    size_t i, j;
+    int i, j;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names( n_properties );
 
     int property_counter = 0;
 
-    for (int i = 0; i < sf.length(); i++) {
+    for ( i = 0; i < sf.length(); i++) {
       Rcpp::String this_column = column_names[i];
       int idx = spatialwidget::utils::where::where_is( this_column, geometries );
 
@@ -65,7 +65,7 @@ namespace geojson {
 
         writer.String( h );
         // jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true );
+        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
       }
       writer.EndObject();
 
@@ -103,7 +103,7 @@ namespace geojson {
     size_t n_cols = sf.ncol();
     size_t n_properties = n_cols - 1;  // single geometry column
     size_t n_rows = sf.nrows();
-    size_t i, j, i_geometry;
+    int i, j, i_geometry;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
@@ -156,7 +156,7 @@ namespace geojson {
           SEXP this_vec = sf[ h ];
 
           writer.String( h );
-          jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
+          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
         }
         writer.EndObject();
 
@@ -193,7 +193,8 @@ namespace geojson {
 
     size_t n_cols = sf.ncol();
     size_t n_rows = sf.nrows();
-    size_t i, j, geometry, geometry_column;
+    int i, j;
+    size_t geometry, geometry_column;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
@@ -277,7 +278,7 @@ namespace geojson {
 
           writer.String( h );
           //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-          jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true );
+          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
         }
         writer.EndObject();
 
@@ -326,7 +327,7 @@ namespace geojson {
     size_t n_cols = sf.ncol();
     size_t n_properties = n_cols - 1;
     size_t n_rows = sf.nrows();
-    size_t i, j;
+    int i, j;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
@@ -358,7 +359,7 @@ namespace geojson {
 
         writer.String( h );
         //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
+        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
       }
       writer.EndObject();
 
@@ -394,7 +395,7 @@ namespace geojson {
     size_t n_properties = n_cols - n_lonlat; // LON & LAT columns
 
     // it comes as columns on a data.frame
-    size_t i, j;
+    int i, j;
     Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
     Rcpp::StringVector lats( n_lats );
 
@@ -450,7 +451,7 @@ namespace geojson {
 
         writer.String( h );
         //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true );
+        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
       }
 
       writer.EndObject();
@@ -498,7 +499,7 @@ namespace geojson {
     size_t n_properties = n_cols - n_lonlat; // LON & LAT & ELEV columns
 
     // it comes as columns on a data.frame
-    size_t i, j;
+    int i, j;
     Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
     Rcpp::StringVector lats( n_lats );
     Rcpp::StringVector elevs( n_elevs );
@@ -529,7 +530,7 @@ namespace geojson {
 
     int property_counter = 0;
 
-    for (int i = 0; i < df.length(); i++) {
+    for ( i = 0; i < df.length(); i++) {
 
       Rcpp::String this_column = column_names[i];
 
@@ -566,7 +567,7 @@ namespace geojson {
 
           writer.String( h );
           //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-          jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
+          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
         }
         writer.EndObject();
       }
