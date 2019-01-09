@@ -450,7 +450,7 @@ namespace geojson {
 
         writer.String( h );
         //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
-        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true  );
+        jsonify::writers::simple::write_value( writer, this_vec, i, false, -1, false, true );
       }
 
       writer.EndObject();
