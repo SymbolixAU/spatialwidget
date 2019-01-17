@@ -33,9 +33,6 @@ namespace colour {
 
   inline Rcpp::CharacterVector getRClass( SEXP obj ) {
 
-    //int tp = TYPEOF( obj ) ;
-    // Rcpp::Rcout << "type: " <<  tp << std::endl;
-
     switch( TYPEOF( obj ) ) {
     case REALSXP:
       return rClass< REALSXP >( obj );
@@ -129,7 +126,6 @@ namespace colour {
     default: {
 
       Rcpp::CharacterVector cls = getRClass( palette_type );
-      // Rcpp::Rcout << " cls: " << cls << std::endl;
       if( is_in( "Date", cls ) ) {
         format_type = "Date";
       } else if ( is_in("POSIXct", cls) ) {
@@ -188,7 +184,6 @@ namespace colour {
     } else {
 
       if ( colour_location >= 0 ) {
-        //Rcpp::Rcout << "colour was passed in, but it's not on the data object: " << std::endl;
 
         SEXP val = params[ colour_location ];
         int n = data.nrows();

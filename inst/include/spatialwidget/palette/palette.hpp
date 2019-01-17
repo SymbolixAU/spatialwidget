@@ -116,7 +116,6 @@ namespace palette {
 		  break;
 		}
 		default: {
-		  //Rcpp::Rcout << "type: " << TYPEOF( palette ) << std::endl;
 			Rcpp::stop("Unsupported palette type");
 		}
 		}
