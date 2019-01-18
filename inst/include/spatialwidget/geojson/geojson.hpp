@@ -26,9 +26,9 @@ namespace geojson {
     int n_geometries = geometries.size();
     int geom;
 
-    size_t n_cols = sf.ncol();
-    size_t n_properties = n_cols - n_geometries;
-    size_t n_rows = sf.nrows();
+    int n_cols = sf.ncol();
+    int n_properties = n_cols - n_geometries;
+    int n_rows = sf.nrows();
     int i, j;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names( n_properties );
@@ -100,18 +100,18 @@ namespace geojson {
 
     const char* geom_column = geometry.c_str();
 
-    size_t n_cols = sf.ncol();
-    size_t n_properties = n_cols - 1;  // single geometry column
-    size_t n_rows = sf.nrows();
+    int n_cols = sf.ncol();
+    int n_properties = n_cols - 1;  // single geometry column
+    int n_rows = sf.nrows();
     int i, j, i_geometry;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
-    size_t property_multiplier = 0;
+    int property_multiplier = 0;
     std::string geom_type;
     Rcpp::CharacterVector cls;
 
-    size_t property_counter = 0;
+    int property_counter = 0;
     for ( i = 0; i < n_cols; i++ ) {
 
       Rcpp::String this_column = column_names[i];
@@ -186,22 +186,22 @@ namespace geojson {
       int digits)
   {
 
-    size_t n_geometries = geometries.size();
+    int n_geometries = geometries.size();
     if ( n_geometries != 2 ) {
       Rcpp::stop("Only supports 2-column sf objects");
     }
 
-    size_t n_cols = sf.ncol();
-    size_t n_rows = sf.nrows();
+    int n_cols = sf.ncol();
+    int n_rows = sf.nrows();
     int i, j;
-    size_t geometry, geometry_column;
+    int geometry, geometry_column;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
     std::string geom_type;
     Rcpp::CharacterVector cls;
 
-    size_t property_counter = 0;
+    int property_counter = 0;
     for ( i = 0; i < n_cols; i++) {
 
       Rcpp::String this_column = column_names[i];
@@ -220,7 +220,7 @@ namespace geojson {
     for( i = 0; i < n_rows; i++ ) {
 
       int geometry_size = 0;
-      size_t row_multiplier = 0;
+      int row_multiplier = 0;
       Rcpp::IntegerVector geometry_sizes( n_geometries );
 
       for ( geometry = 0; geometry < n_geometries; geometry++ ) {
@@ -324,9 +324,9 @@ namespace geojson {
     rapidjson::StringBuffer sb;
     rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
 
-    size_t n_cols = sf.ncol();
-    size_t n_properties = n_cols - 1;
-    size_t n_rows = sf.nrows();
+    int n_cols = sf.ncol();
+    int n_properties = n_cols - 1;
+    int n_rows = sf.nrows();
     int i, j;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
@@ -385,14 +385,14 @@ namespace geojson {
       int digits )
   {
 
-    size_t n_cols = df.ncol();
-    size_t n_rows = df.nrows();
+    int n_cols = df.ncol();
+    int n_rows = df.nrows();
 
-    size_t n_lons = geometries.size();
-    size_t n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
+    int n_lons = geometries.size();
+    int n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
 
-    size_t n_lonlat = n_lons + n_lats;
-    size_t n_properties = n_cols - n_lonlat; // LON & LAT columns
+    int n_lonlat = n_lons + n_lats;
+    int n_properties = n_cols - n_lonlat; // LON & LAT columns
 
     // it comes as columns on a data.frame
     int i, j;
@@ -488,15 +488,15 @@ namespace geojson {
       int digits )
   {
 
-    size_t n_cols = df.ncol();
-    size_t n_rows = df.nrows();
+    int n_cols = df.ncol();
+    int n_rows = df.nrows();
 
-    size_t n_lons = geometries.size();
-    size_t n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
-    size_t n_elevs = geometries.size();
+    int n_lons = geometries.size();
+    int n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
+    int n_elevs = geometries.size();
 
-    size_t n_lonlat = n_lons + n_lats + n_elevs;
-    size_t n_properties = n_cols - n_lonlat; // LON & LAT & ELEV columns
+    int n_lonlat = n_lons + n_lats + n_elevs;
+    int n_properties = n_cols - n_lonlat; // LON & LAT & ELEV columns
 
     // it comes as columns on a data.frame
     int i, j;
