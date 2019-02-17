@@ -435,7 +435,6 @@ namespace geojson {
     rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
     writer.StartArray();
 
-
     for( i = 0; i < n_rows; i++ ) {
 
       writer.StartObject();

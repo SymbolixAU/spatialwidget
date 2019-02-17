@@ -65,6 +65,8 @@ namespace api {
     if ( jsonify_legend ) {
       //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
+      // Rcpp::Rcout << "legend: " << legend << std::endl;
+
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -116,6 +118,8 @@ namespace api {
     if ( jsonify_legend ) {
       //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
+      // Rcpp::Rcout << "legend: " << legend << std::endl;
+
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -168,6 +172,8 @@ namespace api {
     if ( jsonify_legend ) {
       //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
+      //Rcpp::Rcout << "legend: " << legend << std::endl;
+
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -221,6 +227,8 @@ namespace api {
     if ( jsonify_legend ) {
       //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
+      //Rcpp::Rcout << "legend: " << legend << std::endl;
+
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -272,7 +280,9 @@ namespace api {
     if ( jsonify_legend ) {
       //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
+
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+      // Rcpp::Rcout << "legend: " << sv_leg << std::endl;
       res[1] = sv_leg;
     } else {
       res[1] = legend;
@@ -325,6 +335,8 @@ namespace api {
     if ( jsonify_legend ) {
       //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
+      // Rcpp::Rcout << "legend: " << legend << std::endl;
+
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
@@ -376,6 +388,8 @@ namespace api {
     if ( jsonify_legend ) {
       //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
+      // Rcpp::Rcout << "legend: " << legend << std::endl;
+
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
     } else {
