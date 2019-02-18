@@ -41,7 +41,6 @@ namespace legend {
     }
     legend.names() = legend_types;
 
-
     // find the 'legend' argument
     int legend_location = spatialwidget::utils::where::where_is( "legend", param_names );
 

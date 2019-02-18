@@ -10,7 +10,6 @@
 
 #include "jsonify/jsonify.hpp"
 #include "jsonify/to_json/writers/simple.hpp"
-//#include "jsonify/to_json/dataframe.hpp"
 
 namespace spatialwidget {
 namespace geojson {
@@ -64,7 +63,6 @@ namespace geojson {
         SEXP this_vec = sf[ h ];
 
         writer.String( h );
-        // jsonify::dataframe::dataframe_cell( writer, this_vec, i );
         jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
       }
       writer.EndObject();
@@ -277,7 +275,6 @@ namespace geojson {
           SEXP this_vec = sf[ h ];
 
           writer.String( h );
-          //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
           jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
         }
         writer.EndObject();
@@ -358,7 +355,6 @@ namespace geojson {
         SEXP this_vec = sf[ h ];
 
         writer.String( h );
-        //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
         jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
       }
       writer.EndObject();
@@ -449,7 +445,6 @@ namespace geojson {
         SEXP this_vec = df[ h ];
 
         writer.String( h );
-        //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
         jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
       }
 
@@ -565,7 +560,6 @@ namespace geojson {
           SEXP this_vec = df[ h ];
 
           writer.String( h );
-          //jsonify::dataframe::dataframe_cell( writer, this_vec, i );
           jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
         }
         writer.EndObject();

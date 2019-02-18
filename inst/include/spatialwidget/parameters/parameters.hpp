@@ -65,6 +65,9 @@ namespace parameters {
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions) {
 
+    // Turn factors to strings
+    spatialwidget::utils::factors::factors_to_string( data );
+
 
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();

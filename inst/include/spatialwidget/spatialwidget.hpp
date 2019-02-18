@@ -42,6 +42,8 @@ namespace api {
       int digits = -1
     ) {
 
+    // Rcpp::Rcout << "create_geojson1" << std::endl;
+
     Rcpp::List res(2);
 
     Rcpp::StringVector data_names = data.names();
@@ -63,9 +65,7 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
-      // Rcpp::Rcout << "legend: " << legend << std::endl;
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
@@ -95,6 +95,8 @@ namespace api {
       int digits = -1
   ) {
 
+    // Rcpp::Rcout << "create_geojson2" << std::endl;
+
     Rcpp::List res(2);
 
     Rcpp::StringVector data_names = data.names();
@@ -116,9 +118,7 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
-      // Rcpp::Rcout << "legend: " << legend << std::endl;
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
@@ -170,9 +170,7 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
-      //Rcpp::Rcout << "legend: " << legend << std::endl;
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
@@ -225,9 +223,7 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
-      //Rcpp::Rcout << "legend: " << legend << std::endl;
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
@@ -257,6 +253,8 @@ namespace api {
       int digits = -1
   ) {
 
+    // Rcpp::Rcout << "create_geojson3" << std::endl;
+
     Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
 
@@ -278,11 +276,11 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       // Rcpp::Rcout << "legend: " << sv_leg << std::endl;
+
       res[1] = sv_leg;
     } else {
       res[1] = legend;
@@ -312,6 +310,8 @@ namespace api {
       int digits = -1
   ) {
 
+    // Rcpp::Rcout << "create_geojson4" << std::endl;
+
     Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
 
@@ -333,9 +333,7 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
-      // Rcpp::Rcout << "legend: " << legend << std::endl;
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;
@@ -376,9 +374,6 @@ namespace api {
       parameter_exclusions
     );
 
-    //Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-    //Rcpp::StringVector js_data = jsonify::dataframe::to_json( df );
-    //Rcpp::StringVector js_data = jsonify::writers::write_value( df );
     SEXP df = lst["data"];
     Rcpp::StringVector js_data = jsonify::api::to_json( df );
 
@@ -386,9 +381,7 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
     if ( jsonify_legend ) {
-      //legend = jsonify::vectors::to_json( legend );
       legend = jsonify::api::to_json( legend );
-      // Rcpp::Rcout << "legend: " << legend << std::endl;
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
       res[1] = sv_leg;

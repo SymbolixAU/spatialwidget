@@ -150,3 +150,24 @@ test_that("input data remains unchanged", {
   expect_true( all( df$col == seq(as.POSIXct("2018-01-01"), as.POSIXct("2018-01-04"), length.out = 4) ) )
 
 })
+
+
+# test_that("factors are converted to strings", {
+#
+#   n <- 5
+#   lst_params <- list(parameter = c("stroke_colour", "stroke_width"), parameter_type = c(), data_column_index = c() )
+#   params <- list(stroke_colour = "col1", stroke_width = 3)
+#   param_names <- lst_params[[ "parameter" ]]
+#   df <- data.frame(col1 = letters[1:n])
+#   data_names <- names( df )
+#   data <- df
+#   data_rows <- nrow( df )
+#   lst_defaults <- list(stroke_opacity = rep(100, n))
+#
+#   ## when entering the 'construct_data' function, all the colours and palettes will have been sorted out
+#   res <- spatialwidget:::rcpp_construct_data( param_names, params, data_names, lst_defaults, data, data_rows )
+#
+#   expect_true( nrow(res) == 5)
+#   ## names will be the 'params' + defaults
+#   expect_true( all(names(res) %in% c("stroke_opacity", "stroke_colour", "stroke_width")  ) )
+# })
