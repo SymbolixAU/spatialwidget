@@ -63,10 +63,13 @@ namespace parameters {
   		std::unordered_map< std::string, std::string > colour_columns,
   		Rcpp::StringVector& layer_legend,     // vector of colours to use in the legend
   		int& data_rows,
-  		Rcpp::StringVector& parameter_exclusions) {
+  		Rcpp::StringVector& parameter_exclusions,
+  		bool factors_as_string = true) {
 
     // Turn factors to strings
-    spatialwidget::utils::factors::factors_to_string( data );
+    if (factors_as_string ) {
+      spatialwidget::utils::factors::factors_to_string( data );
+    }
 
 
   	Rcpp::StringVector param_names = params.names();

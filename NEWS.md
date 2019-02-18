@@ -1,4 +1,8 @@
-# spatialwidget 0.2
+# v0.2.1
+
+* factors now converted to strings by default
+
+# v0.2
 
 * Allow list palettes
 * Removed `data_types` parameter
