@@ -1,3 +1,7 @@
+# v0.2.2
+
+* integer matrix palettes supported
+
 # v0.2.1
 
 * factors now converted to strings by default

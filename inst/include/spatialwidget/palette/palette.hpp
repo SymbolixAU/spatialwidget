@@ -49,6 +49,7 @@ namespace palette {
     	Rcpp::stop("Unsupported palette type");
     	break;
     }
+  	case INTSXP: {} // go to REALSXP
   	case REALSXP: { // REALSXP (i.e, matrix)
   		Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
   		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
@@ -98,6 +99,7 @@ namespace palette {
   		Rcpp::stop("Unsupported palette type");
   		break;
   	}
+		case INTSXP: {} // go to REALSXP
 		case REALSXP: { // REALSXP (i.e, matrix)
 			Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
 			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, digits );
