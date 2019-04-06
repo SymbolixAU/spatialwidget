@@ -11,7 +11,8 @@ namespace legend {
       Rcpp::List& opts,
       std::string& option,
       std::string& value,
-      std::string& colour_name ) {
+      std::string& colour_name
+  ) {
 
     if ( opts.containsElementNamed( option.c_str() ) ) {
       Rcpp::String s_value = opts[ option ];
@@ -22,10 +23,12 @@ namespace legend {
     }
   }
 
-  inline Rcpp::List construct_legend_list( Rcpp::List& lst_params,
-                                    Rcpp::List& params,
-                                    Rcpp::StringVector& param_names,
-                                    Rcpp::StringVector& legend_types ) {
+  inline Rcpp::List construct_legend_list(
+      Rcpp::List& lst_params,
+      Rcpp::List& params,
+      Rcpp::StringVector& param_names,
+      Rcpp::StringVector& legend_types
+  ) {
 
     legend_types = Rcpp::intersect( legend_types, param_names );
 

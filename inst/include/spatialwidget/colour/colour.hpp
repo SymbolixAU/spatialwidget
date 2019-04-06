@@ -74,26 +74,15 @@ namespace colour {
     std::string format_type;
 
     if ( col_index == -1 ) {
-
       palette_type = lst_defaults[ colour_name.c_str() ];
-      //format_type = "numeric";
-
     } else {
       Rcpp::String this_colour = params[ colour_name.c_str() ];
-
-      // Rcpp::StringVector sv_r_type;
-      // Rcpp::String rs_format_type;
-      //
-      // sv_r_type = data_types[ this_colour ];
-      // rs_format_type = sv_r_type[0];
-      // format_type = rs_format_type;
     }
 
     switch ( TYPEOF( palette_type ) ) {
     case STRSXP: {} // string vector
     case LGLSXP: {  // logical vector
       Rcpp::StringVector colour_vec = Rcpp::as< Rcpp::StringVector >( palette_type );
-      // TODO( if colour_vec is hex_strings, assume the user passed-in the colours they want to use? )
       Rcpp::String first_colour = colour_vec[0];
       std::string first_colour_str = first_colour;
       if ( spatialwidget::utils::colour::is_hex( first_colour_str ) ) {
