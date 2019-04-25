@@ -1,6 +1,7 @@
 # v0.2.2
 
 * integer matrix palettes supported
+* BH -DBOOST_NO_AUTO_PTR flag
 
 # v0.2.1
 
