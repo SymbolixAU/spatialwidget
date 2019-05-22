@@ -3,6 +3,11 @@
 
 
 // [[Rcpp::export]]
+Rcpp::StringVector rcpp_geojson_mesh( Rcpp::List mesh ) {
+  return spatialwidget::geojson::to_geojson_mesh( mesh );
+}
+
+// [[Rcpp::export]]
 Rcpp::StringVector rcpp_geojson( Rcpp::DataFrame sf, std::string geometry ) {
   return spatialwidget::geojson::to_geojson( sf, geometry, -1 );
 }

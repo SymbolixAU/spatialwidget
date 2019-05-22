@@ -5,6 +5,10 @@ rcpp_construct_data <- function(param_names, params, data_names, lst_defaults, d
     .Call(`_spatialwidget_rcpp_construct_data`, param_names, params, data_names, lst_defaults, data, data_rows)
 }
 
+rcpp_geojson_mesh <- function(mesh) {
+    .Call(`_spatialwidget_rcpp_geojson_mesh`, mesh)
+}
+
 rcpp_geojson <- function(sf, geometry) {
     .Call(`_spatialwidget_rcpp_geojson`, sf, geometry)
 }

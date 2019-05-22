@@ -21,6 +21,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_geojson_mesh
+Rcpp::StringVector rcpp_geojson_mesh(Rcpp::List mesh);
+RcppExport SEXP _spatialwidget_rcpp_geojson_mesh(SEXP meshSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type mesh(meshSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_geojson_mesh(mesh));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_geojson
 Rcpp::StringVector rcpp_geojson(Rcpp::DataFrame sf, std::string geometry);
 RcppExport SEXP _spatialwidget_rcpp_geojson(SEXP sfSEXP, SEXP geometrySEXP) {
@@ -245,6 +256,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_construct_data", (DL_FUNC) &_spatialwidget_rcpp_construct_data, 6},
+    {"_spatialwidget_rcpp_geojson_mesh", (DL_FUNC) &_spatialwidget_rcpp_geojson_mesh, 1},
     {"_spatialwidget_rcpp_geojson", (DL_FUNC) &_spatialwidget_rcpp_geojson, 2},
     {"_spatialwidget_rcpp_geojson_sf", (DL_FUNC) &_spatialwidget_rcpp_geojson_sf, 2},
     {"_spatialwidget_rcpp_geojson_df", (DL_FUNC) &_spatialwidget_rcpp_geojson_df, 2},
