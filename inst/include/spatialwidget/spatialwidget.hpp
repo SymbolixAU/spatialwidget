@@ -21,7 +21,6 @@ namespace spatialwidget {
 namespace api {
 
   //inline int x;
-
   /*
    * sf object with one or many sfc columns
    *

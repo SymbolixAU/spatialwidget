@@ -70,27 +70,18 @@ inline Rcpp::StringVector to_geojson_mesh(
     writer.StartArray();
     writer.StartArray();
 
+    // TODO
+    // get fill colours
+
     for( j = 0; j < 4; j ++ ) {
       int this_idx = these_cols[ j ];
       this_idx -= 1;
-
-      //writer.StartArray();
       Rcpp::NumericVector coords = vb(_, this_idx );
       jsonify::writers::simple::write_value(writer, coords, false, -1, false);
-      //writer.EndArray();
     }
 
     writer.EndArray();
     writer.EndArray();
-
-    //
-    // for ( geom = 0; geom < n_geometries; geom++ ) {
-    //   const char* geom_column = geometries[ geom ];
-    //
-    //   writer.String( geom_column );
-    //   Rcpp::List sfc = sf[ geom_column ];
-    //   geojsonsf::write_geometry::write_geometry( writer, sfc, i, digits );
-    // }
 
     writer.EndObject();
     writer.EndObject();
