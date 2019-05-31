@@ -92,7 +92,7 @@ namespace palette {
 		//int x = fill_colour_vec.size();
 		int n_summaries = 5;
 	  bool format = true;
-	  int digits = 2;
+	  int digits = 12;
 
 		switch ( TYPEOF( palette ) ) {
 		case SYMSXP: { // SYMSXP
