@@ -62,7 +62,9 @@ namespace colour {
       SEXP& palette_type,
       Rcpp::NumericVector& alpha,
       std::string& colour_name,
-      bool& include_legend) {
+      bool& include_legend,
+      int palette_digits = 2
+    ) {
 
     std::string na_colour = params.containsElementNamed( "na_colour" ) ?
     params["na_colour"] : default_na_colour;
@@ -102,7 +104,9 @@ namespace colour {
         return legend;
 
       } else {
-        Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, colour_name );
+        Rcpp::List legend = spatialwidget::palette::colour_with_palette(
+          pal, colour_vec, alpha, na_colour, include_alpha, colour_name
+        );
 
         if ( include_legend ) {
           legend[ "colour_type" ] = colour_name;
@@ -128,7 +132,10 @@ namespace colour {
       }
 
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
-      Rcpp::List legend = spatialwidget::palette::colour_with_palette( pal, colour_vec, alpha, na_colour, include_alpha, colour_name, format_type );
+      Rcpp::List legend = spatialwidget::palette::colour_with_palette(
+        pal, colour_vec, alpha, na_colour, include_alpha, colour_name,
+        format_type, palette_digits
+        );
 
       if ( include_legend ) {
         legend[ "colour_type" ] = colour_name;
@@ -148,7 +155,9 @@ namespace colour {
       std::string& colour_name,
       std::string& opacity_name,
       Rcpp::List& lst_legend,
-      bool& include_legend ) {
+      bool& include_legend,
+      int palette_digits = 2
+    ) {
 
     Rcpp::IntegerVector data_column_index = lst_params[ "data_column_index" ];
     Rcpp::IntegerVector parameter_type = lst_params[ "parameter_type" ];
@@ -199,7 +208,7 @@ namespace colour {
 
     Rcpp::List legend = make_colours(
       lst_params, params, data, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
-      this_colour, alpha, colour_name, include_legend
+      this_colour, alpha, colour_name, include_legend, palette_digits
     );
 
     // this can't be replaced with 'include_legend'
