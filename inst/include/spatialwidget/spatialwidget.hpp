@@ -40,10 +40,12 @@ namespace api {
       Rcpp::StringVector& geometry_columns,
       bool jsonify_legend,
       int digits = -1,
-      int palette_digits = 2
+      int legend_digits = 2
     ) {
 
     // Rcpp::Rcout << "create_geojson1" << std::endl;
+
+    //Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
 
@@ -58,7 +60,7 @@ namespace api {
       data_rows,
       parameter_exclusions,
       true,   // factors as strings
-      palette_digits
+      legend_digits
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -96,7 +98,7 @@ namespace api {
       std::string& geometry_column,              // single geometry column from sf object
       bool jsonify_legend,
       int digits = -1,
-      int palette_digits = 2
+      int legend_digits = 2
   ) {
 
     // Rcpp::Rcout << "create_geojson2" << std::endl;
@@ -114,7 +116,7 @@ namespace api {
       data_rows,
       parameter_exclusions,
       true,  // factors as strings
-      palette_digits
+      legend_digits
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -153,7 +155,7 @@ namespace api {
       std::string& geometry_column,
       bool jsonify_legend,
       int digits = -1,
-      int palette_digits = 2
+      int legend_digits = 2
   ) {
 
     Rcpp::List res(2);
@@ -169,7 +171,7 @@ namespace api {
       data_rows,
       parameter_exclusions,
       true,
-      palette_digits
+      legend_digits
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -209,7 +211,7 @@ namespace api {
       Rcpp::StringVector& geometry_column,
       bool jsonify_legend,
       int digits = -1,
-      int palette_digits = 2
+      int legend_digits = 2
   ) {
 
     Rcpp::List res(2);
@@ -225,7 +227,7 @@ namespace api {
       data_rows,
       parameter_exclusions,
       true, // factors as strings
-      palette_digits
+      legend_digits
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -263,7 +265,7 @@ namespace api {
       Rcpp::List& geometry_columns,
       bool jsonify_legend,
       int digits = -1,
-      int palette_digits = 2
+      int legend_digits = 2
   ) {
 
     // Rcpp::Rcout << "create_geojson3" << std::endl;
@@ -280,7 +282,7 @@ namespace api {
       data_rows,
       parameter_exclusions,
       true, // factors as string
-      palette_digits
+      legend_digits
     );
 
 
@@ -323,7 +325,7 @@ namespace api {
       bool jsonify_legend,
       bool elevation,
       int digits = -1,
-      int palette_digits = 2
+      int legend_digits = 2
   ) {
 
     // Rcpp::Rcout << "create_geojson4" << std::endl;
@@ -340,7 +342,7 @@ namespace api {
       data_rows,
       parameter_exclusions,
       true, // factors as string
-      palette_digits
+      legend_digits
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -378,7 +380,7 @@ namespace api {
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector geometry_columns,
       bool jsonify_legend,
-      int palette_digits
+      int legend_digits = 2
   ) {
 
     Rcpp::List res(2);
@@ -392,7 +394,7 @@ namespace api {
       data_rows,
       parameter_exclusions,
       true, // factors as string
-      palette_digits
+      legend_digits
     );
 
     SEXP df = lst["data"];

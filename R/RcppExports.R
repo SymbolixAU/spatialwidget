@@ -61,12 +61,12 @@ rcpp_widget_line <- function(data, params, geometry_columns, jsonify_legend) {
     .Call(`_spatialwidget_rcpp_widget_line`, data, params, geometry_columns, jsonify_legend)
 }
 
-rcpp_widget_point <- function(data, params, geometry_columns, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_point`, data, params, geometry_columns, jsonify_legend)
+rcpp_widget_point <- function(data, params, geometry_columns, jsonify_legend, digits, legend_digits) {
+    .Call(`_spatialwidget_rcpp_widget_point`, data, params, geometry_columns, jsonify_legend, digits, legend_digits)
 }
 
-rcpp_widget_point_df <- function(data, params, geometries, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_point_df`, data, params, geometries, jsonify_legend)
+rcpp_widget_point_df <- function(data, params, geometries, jsonify_legend, digits, legend_digits) {
+    .Call(`_spatialwidget_rcpp_widget_point_df`, data, params, geometries, jsonify_legend, digits, legend_digits)
 }
 
 rcpp_widget_polygon <- function(data, params, geometry_columns, jsonify_legend) {

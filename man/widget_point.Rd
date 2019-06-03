@@ -5,7 +5,8 @@
 \title{Widget Point}
 \usage{
 widget_point(data, fill_colour = NULL, fill_opacity = NULL,
-  lon = NULL, lat = NULL, legend = TRUE, json_legend = TRUE)
+  lon = NULL, lat = NULL, legend = TRUE, json_legend = TRUE,
+  digits = 6, legend_digits = 2)
 }
 \arguments{
 \item{data}{\code{sf} object}

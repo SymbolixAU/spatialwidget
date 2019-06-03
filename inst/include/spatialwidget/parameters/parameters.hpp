@@ -65,7 +65,7 @@ namespace parameters {
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions,
   		bool factors_as_string = true,
-  		int palette_digits = 2
+  		int legend_digits = 2
   ) {
 
     // Turn factors to strings
@@ -109,7 +109,7 @@ namespace parameters {
 	      opacity_column,
 	      lst_legend,
 	      include_legend,
-	      palette_digits
+	      legend_digits
 	      );
 		}
 

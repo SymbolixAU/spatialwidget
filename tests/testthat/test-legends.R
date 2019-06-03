@@ -98,5 +98,35 @@ test_that("legends are formatted", {
 
   expect_equal( as.character( res$legend ), '{"fill_colour":{"colour":["#440154FF","#31688EFF","#35B779FF","#FDE725FF"],"variable":["2018-01-01T00:00:00","2018-01-02T00:00:00","2018-01-03T00:00:00","2018-01-04T00:00:00"],"colourType":["fill_colour"],"type":["gradient"],"title":["col"],"css":[""]}}')
 
+})
+
+test_that("legend_digts used and formats legend", {
+
+  ## Numeric
+  df <- data.frame(lon = c(1,2,-5,0.3), lat = 1:4, col = c(1.23456789,2.34567891,3.45678912,4.56789123))
+
+  res <- spatialwidget::widget_point(
+    data = df
+    , lon = "lon"
+    , lat = "lat"
+    , fill_colour = "col"
+    , legend_digits = 2
+  )
+
+  expect_equal( as.character( res$legend ), '{"fill_colour":{"colour":["#440154FF","#31688EFF","#35B779FF","#FDE725FF"],"variable":["1.23","2.35","3.46","4.57"],"colourType":["fill_colour"],"type":["gradient"],"title":["col"],"css":[""]}}')
+
+  df <- data.frame(lon = c(1,2,-5,0.3), lat = 1:4, col = c(1.23456789,2.34567891,3.45678912,4.56789123))
+
+  res <- spatialwidget::widget_point(
+    data = df
+    , lon = "lon"
+    , lat = "lat"
+    , fill_colour = "col"
+    , legend_digits = 5
+  )
+
+  expect_equal( as.character( res$legend ), '{"fill_colour":{"colour":["#440154FF","#31688EFF","#35B779FF","#FDE725FF"],"variable":["1.23457","2.34568","3.45678","4.56789"],"colourType":["fill_colour"],"type":["gradient"],"title":["col"],"css":[""]}}')
+
 
 })
+
