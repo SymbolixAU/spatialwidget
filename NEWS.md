@@ -1,5 +1,6 @@
 # v0.2.2
 
+* `digits` argument exposed through api
 * integer matrix palettes supported
 * BH -DBOOST_NO_AUTO_PTR flag
 
