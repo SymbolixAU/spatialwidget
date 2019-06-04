@@ -128,5 +128,10 @@ test_that("legend_digts used and formats legend", {
   expect_equal( as.character( res$legend ), '{"fill_colour":{"colour":["#440154FF","#31688EFF","#35B779FF","#FDE725FF"],"variable":["1.23457","2.34568","3.45678","4.56789"],"colourType":["fill_colour"],"type":["gradient"],"title":["col"],"css":[""]}}')
 
 
+  x <- widget_roads[1:10, ]
+  x$var <- 0:9
+  l <- widget_line(x, stroke_colour = "var", legend = T, json_legend = FALSE, legend_digits = 5)
+  expect_true( all( nchar( l$legend$stroke_colour$variable ) == ( 5 + 1 + 1) ) ) # 5 digits + 1 before decimal, + 1 decimal
+
 })
 

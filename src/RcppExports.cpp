@@ -122,8 +122,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_colour_num_with_palette
-Rcpp::List rcpp_colour_num_with_palette(SEXP palette, Rcpp::NumericVector fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name);
-RcppExport SEXP _spatialwidget_rcpp_colour_num_with_palette(SEXP paletteSEXP, SEXP fill_colour_vecSEXP, SEXP alphaSEXP, SEXP na_colourSEXP, SEXP include_alphaSEXP, SEXP colour_nameSEXP) {
+Rcpp::List rcpp_colour_num_with_palette(SEXP palette, Rcpp::NumericVector fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name, std::string format_type, int legend_digits);
+RcppExport SEXP _spatialwidget_rcpp_colour_num_with_palette(SEXP paletteSEXP, SEXP fill_colour_vecSEXP, SEXP alphaSEXP, SEXP na_colourSEXP, SEXP include_alphaSEXP, SEXP colour_nameSEXP, SEXP format_typeSEXP, SEXP legend_digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -133,7 +133,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string >::type na_colour(na_colourSEXP);
     Rcpp::traits::input_parameter< bool >::type include_alpha(include_alphaSEXP);
     Rcpp::traits::input_parameter< std::string >::type colour_name(colour_nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_colour_num_with_palette(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name));
+    Rcpp::traits::input_parameter< std::string >::type format_type(format_typeSEXP);
+    Rcpp::traits::input_parameter< int >::type legend_digits(legend_digitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_colour_num_with_palette(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type, legend_digits));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -187,8 +189,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_widget_line
-Rcpp::List rcpp_widget_line(Rcpp::DataFrame data, Rcpp::List params, Rcpp::StringVector geometry_columns, bool jsonify_legend);
-RcppExport SEXP _spatialwidget_rcpp_widget_line(SEXP dataSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP, SEXP jsonify_legendSEXP) {
+Rcpp::List rcpp_widget_line(Rcpp::DataFrame data, Rcpp::List params, Rcpp::StringVector geometry_columns, bool jsonify_legend, int digits, int legend_digits);
+RcppExport SEXP _spatialwidget_rcpp_widget_line(SEXP dataSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP, SEXP jsonify_legendSEXP, SEXP digitsSEXP, SEXP legend_digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -196,7 +198,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::List >::type params(paramsSEXP);
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type geometry_columns(geometry_columnsSEXP);
     Rcpp::traits::input_parameter< bool >::type jsonify_legend(jsonify_legendSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_widget_line(data, params, geometry_columns, jsonify_legend));
+    Rcpp::traits::input_parameter< int >::type digits(digitsSEXP);
+    Rcpp::traits::input_parameter< int >::type legend_digits(legend_digitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_widget_line(data, params, geometry_columns, jsonify_legend, digits, legend_digits));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -233,8 +237,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_widget_polygon
-Rcpp::List rcpp_widget_polygon(Rcpp::DataFrame data, Rcpp::List params, Rcpp::StringVector geometry_columns, bool jsonify_legend);
-RcppExport SEXP _spatialwidget_rcpp_widget_polygon(SEXP dataSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP, SEXP jsonify_legendSEXP) {
+Rcpp::List rcpp_widget_polygon(Rcpp::DataFrame data, Rcpp::List params, Rcpp::StringVector geometry_columns, bool jsonify_legend, int digits, int legend_digits);
+RcppExport SEXP _spatialwidget_rcpp_widget_polygon(SEXP dataSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP, SEXP jsonify_legendSEXP, SEXP digitsSEXP, SEXP legend_digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -242,7 +246,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::List >::type params(paramsSEXP);
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type geometry_columns(geometry_columnsSEXP);
     Rcpp::traits::input_parameter< bool >::type jsonify_legend(jsonify_legendSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_widget_polygon(data, params, geometry_columns, jsonify_legend));
+    Rcpp::traits::input_parameter< int >::type digits(digitsSEXP);
+    Rcpp::traits::input_parameter< int >::type legend_digits(legend_digitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_widget_polygon(data, params, geometry_columns, jsonify_legend, digits, legend_digits));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -257,15 +263,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast", (DL_FUNC) &_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast, 2},
     {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_rcpp_colour_str_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_str_with_palette, 6},
-    {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 6},
+    {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 8},
     {"_spatialwidget_rcpp_fill_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_vector, 4},
     {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
     {"_spatialwidget_rcpp_remove_list_elements", (DL_FUNC) &_spatialwidget_rcpp_remove_list_elements, 2},
     {"_spatialwidget_is_hex", (DL_FUNC) &_spatialwidget_is_hex, 1},
-    {"_spatialwidget_rcpp_widget_line", (DL_FUNC) &_spatialwidget_rcpp_widget_line, 4},
+    {"_spatialwidget_rcpp_widget_line", (DL_FUNC) &_spatialwidget_rcpp_widget_line, 6},
     {"_spatialwidget_rcpp_widget_point", (DL_FUNC) &_spatialwidget_rcpp_widget_point, 6},
     {"_spatialwidget_rcpp_widget_point_df", (DL_FUNC) &_spatialwidget_rcpp_widget_point_df, 6},
-    {"_spatialwidget_rcpp_widget_polygon", (DL_FUNC) &_spatialwidget_rcpp_widget_polygon, 4},
+    {"_spatialwidget_rcpp_widget_polygon", (DL_FUNC) &_spatialwidget_rcpp_widget_polygon, 6},
     {NULL, NULL, 0}
 };
 

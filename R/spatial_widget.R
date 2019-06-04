@@ -11,7 +11,8 @@
 #' or a single value to apply to all rows of data
 #' @param legend logical indicating if legend data will be returned
 #' @param json_legend logical indicating if the legend will be returned as json
-#'
+#' @param digits number of decimal places for rounding lon o& lat coordinates. Default 6
+#' @param legend_digits number of decimal places to show in the legend. Default 2
 #' @examples
 #'
 #' ## use default stroke options
@@ -24,7 +25,9 @@ widget_line <- function(
   stroke_opacity = NULL,
   stroke_width = NULL,
   legend = TRUE,
-  json_legend = TRUE
+  json_legend = TRUE,
+  digits = 6,
+  legend_digits = 2
   ) {
 
   l <- as.list( match.call( expand.dots = F) )
@@ -44,7 +47,7 @@ widget_line <- function(
   }
   l[["data_type"]] <- NULL
 
-  js_data <- rcpp_widget_line( data, l, c("geometry"), json_legend  )
+  js_data <- rcpp_widget_line( data, l, c("geometry"), json_legend, digits, legend_digits  )
   return( js_data )
 }
 
@@ -73,7 +76,9 @@ widget_polygon <- function(
   fill_colour = NULL,
   fill_opacity = NULL,
   legend = TRUE,
-  json_legend = TRUE
+  json_legend = TRUE,
+  digits = 6,
+  legend_digits = 2
   ) {
 
   l <- as.list( match.call( expand.dots = F ) )
@@ -95,7 +100,7 @@ widget_polygon <- function(
   }
   l[["data_type"]] <- NULL
 
-  js_data <- rcpp_widget_polygon( data, l, c("geometry"), json_legend )
+  js_data <- rcpp_widget_polygon( data, l, c("geometry"), json_legend, digits, legend_digits )
   return( js_data )
 }
 

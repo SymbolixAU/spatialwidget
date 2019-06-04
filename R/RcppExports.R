@@ -37,8 +37,8 @@ rcpp_colour_str_with_palette <- function(palette, fill_colour_vec, alpha, na_col
     .Call(`_spatialwidget_rcpp_colour_str_with_palette`, palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name)
 }
 
-rcpp_colour_num_with_palette <- function(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name) {
-    .Call(`_spatialwidget_rcpp_colour_num_with_palette`, palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name)
+rcpp_colour_num_with_palette <- function(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type = "numeric", legend_digits = 2L) {
+    .Call(`_spatialwidget_rcpp_colour_num_with_palette`, palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type, legend_digits)
 }
 
 rcpp_fill_vector <- function(lst_defaults, param_name, value, n_rows) {
@@ -57,8 +57,8 @@ is_hex <- function(hex_str) {
     .Call(`_spatialwidget_is_hex`, hex_str)
 }
 
-rcpp_widget_line <- function(data, params, geometry_columns, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_line`, data, params, geometry_columns, jsonify_legend)
+rcpp_widget_line <- function(data, params, geometry_columns, jsonify_legend, digits, legend_digits) {
+    .Call(`_spatialwidget_rcpp_widget_line`, data, params, geometry_columns, jsonify_legend, digits, legend_digits)
 }
 
 rcpp_widget_point <- function(data, params, geometry_columns, jsonify_legend, digits, legend_digits) {
@@ -69,7 +69,7 @@ rcpp_widget_point_df <- function(data, params, geometries, jsonify_legend, digit
     .Call(`_spatialwidget_rcpp_widget_point_df`, data, params, geometries, jsonify_legend, digits, legend_digits)
 }
 
-rcpp_widget_polygon <- function(data, params, geometry_columns, jsonify_legend) {
-    .Call(`_spatialwidget_rcpp_widget_polygon`, data, params, geometry_columns, jsonify_legend)
+rcpp_widget_polygon <- function(data, params, geometry_columns, jsonify_legend, digits, legend_digits) {
+    .Call(`_spatialwidget_rcpp_widget_polygon`, data, params, geometry_columns, jsonify_legend, digits, legend_digits)
 }
 
