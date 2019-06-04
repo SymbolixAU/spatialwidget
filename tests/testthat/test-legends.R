@@ -1,5 +1,6 @@
 context("legends")
 
+
 test_that("legends are formatted", {
 
   ## Numeric

@@ -139,6 +139,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_construct_params
+Rcpp::List rcpp_construct_params(Rcpp::DataFrame& data, Rcpp::List& params);
+RcppExport SEXP _spatialwidget_rcpp_construct_params(SEXP dataSEXP, SEXP paramsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type params(paramsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_construct_params(data, params));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_params_to_data
+Rcpp::List rcpp_params_to_data(Rcpp::DataFrame& data, Rcpp::List& params, Rcpp::List& lst_defaults, Rcpp::StringVector layer_legend, int data_rows, Rcpp::StringVector parameter_exclusions, bool factors_as_string, int legend_digits);
+RcppExport SEXP _spatialwidget_rcpp_params_to_data(SEXP dataSEXP, SEXP paramsSEXP, SEXP lst_defaultsSEXP, SEXP layer_legendSEXP, SEXP data_rowsSEXP, SEXP parameter_exclusionsSEXP, SEXP factors_as_stringSEXP, SEXP legend_digitsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type params(paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type lst_defaults(lst_defaultsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type layer_legend(layer_legendSEXP);
+    Rcpp::traits::input_parameter< int >::type data_rows(data_rowsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type parameter_exclusions(parameter_exclusionsSEXP);
+    Rcpp::traits::input_parameter< bool >::type factors_as_string(factors_as_stringSEXP);
+    Rcpp::traits::input_parameter< int >::type legend_digits(legend_digitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_params_to_data(data, params, lst_defaults, layer_legend, data_rows, parameter_exclusions, factors_as_string, legend_digits));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_fill_vector
 Rcpp::List rcpp_fill_vector(Rcpp::List lst_defaults, Rcpp::String param_name, SEXP value, int n_rows);
 RcppExport SEXP _spatialwidget_rcpp_fill_vector(SEXP lst_defaultsSEXP, SEXP param_nameSEXP, SEXP valueSEXP, SEXP n_rowsSEXP) {
@@ -264,6 +294,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_rcpp_colour_str_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_str_with_palette, 6},
     {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 8},
+    {"_spatialwidget_rcpp_construct_params", (DL_FUNC) &_spatialwidget_rcpp_construct_params, 2},
+    {"_spatialwidget_rcpp_params_to_data", (DL_FUNC) &_spatialwidget_rcpp_params_to_data, 8},
     {"_spatialwidget_rcpp_fill_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_vector, 4},
     {"_spatialwidget_rcpp_where_is", (DL_FUNC) &_spatialwidget_rcpp_where_is, 2},
     {"_spatialwidget_rcpp_remove_list_elements", (DL_FUNC) &_spatialwidget_rcpp_remove_list_elements, 2},

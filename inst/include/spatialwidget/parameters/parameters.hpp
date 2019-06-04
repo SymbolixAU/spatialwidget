@@ -26,7 +26,8 @@ namespace parameters {
    */
   inline Rcpp::List construct_params(
       Rcpp::DataFrame& data,
-      Rcpp::List& params) {
+      Rcpp::List& params
+  ) {
 
     int n_params = params.size();
     Rcpp::StringVector param_names = params.names();
