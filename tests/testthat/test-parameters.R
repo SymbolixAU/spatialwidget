@@ -31,7 +31,7 @@ test_that("parameters constructed",{
 test_that("parameters converted to pseudo-geojson",{
 
   df <- spatialwidget::widget_capitals
-  l <- list(fill_colour = "country", stroke_colour = "capital")
+  l <- list(fill_colour = "country", stroke_colour = "capital", legend = T)
   data_rows <- nrow( df )
   lst_defaults <- list(
     fill_colour = rep(1.0, data_rows)
@@ -52,10 +52,8 @@ test_that("parameters converted to pseudo-geojson",{
   expect_true( all( res$data$fill_colour == fill ) )
   expect_true( all( res$data$stroke_colour == stroke ) )
 
-  ## TODO
-  ## write a rcpp_construct_legend_list function and test it
-  ## and see why a legend isn't prodcued in the above tests
-
+  expect_true( res$legend$fill_colour$title == "country" )
+  expect_true( res$legend$stroke_colour$title == "capital" )
 
 
 })

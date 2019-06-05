@@ -53,6 +53,10 @@ namespace colour {
     return "";
   }
 
+  /*
+   *
+   *
+   */
   inline Rcpp::List make_colours(
       Rcpp::List& lst_params,
       Rcpp::List& params,

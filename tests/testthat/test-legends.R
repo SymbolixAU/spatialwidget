@@ -136,3 +136,51 @@ test_that("legend_digts used and formats legend", {
 
 })
 
+
+test_that("rcpp legend list constructed",{
+
+  df <- spatialwidget::widget_capitals
+  l <- list(fill_colour = "country", stroke_colour = "capital", legend = T)
+  p <- spatialwidget:::rcpp_construct_params( data = df, params = l)
+  pn <- names( l )
+  ll <- c("fill_colour","stroke_colour")
+
+  res <- spatialwidget:::rcpp_construct_legend_list(
+    lst_params = p
+    , params = l
+    , param_names = pn
+    , legend_types = ll
+    )
+
+  expect_true( res$fill_colour == TRUE )
+  expect_true( res$stroke_colour == TRUE )
+
+  l <- list(fill_colour = "country", stroke_colour = "capital", legend = list(fill_colour = TRUE))
+  p <- spatialwidget:::rcpp_construct_params( data = df, params = l)
+  pn <- names( l )
+  ll <- c("fill_colour","stroke_colour")
+
+  res <- spatialwidget:::rcpp_construct_legend_list(
+    lst_params = p
+    , params = l
+    , param_names = pn
+    , legend_types = ll
+  )
+
+  expect_true( res$fill_colour == TRUE )
+  expect_true( res$stroke_colour == FALSE )
+
+})
+
+
+test_that("legend options are set",{
+
+  opts <- list(title = "hello")  ## user-supplied option
+  value <- "foo"    ## the value to be replaced, like the column name
+  colour_name <- "fill_colour"
+
+  res <- spatialwidget:::rcpp_set_legend_option( opts, "title", value, colour_name );
+  expect_equal( res, "hello")
+
+})
+

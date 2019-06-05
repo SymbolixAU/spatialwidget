@@ -5,6 +5,26 @@
 
 using namespace Rcpp;
 
+// rcpp_make_colours
+Rcpp::List rcpp_make_colours(Rcpp::List& lst_params, Rcpp::List& params, Rcpp::DataFrame& data, Rcpp::List& lst_defaults, int col_index, SEXP& palette_type, Rcpp::NumericVector& alpha, std::string& colour_name, bool& include_legend, int legend_digits);
+RcppExport SEXP _spatialwidget_rcpp_make_colours(SEXP lst_paramsSEXP, SEXP paramsSEXP, SEXP dataSEXP, SEXP lst_defaultsSEXP, SEXP col_indexSEXP, SEXP palette_typeSEXP, SEXP alphaSEXP, SEXP colour_nameSEXP, SEXP include_legendSEXP, SEXP legend_digitsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type lst_params(lst_paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type params(paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type lst_defaults(lst_defaultsSEXP);
+    Rcpp::traits::input_parameter< int >::type col_index(col_indexSEXP);
+    Rcpp::traits::input_parameter< SEXP& >::type palette_type(palette_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector& >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< std::string& >::type colour_name(colour_nameSEXP);
+    Rcpp::traits::input_parameter< bool& >::type include_legend(include_legendSEXP);
+    Rcpp::traits::input_parameter< int >::type legend_digits(legend_digitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_make_colours(lst_params, params, data, lst_defaults, col_index, palette_type, alpha, colour_name, include_legend, legend_digits));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_construct_data
 Rcpp::DataFrame rcpp_construct_data(Rcpp::StringVector param_names, Rcpp::List params, Rcpp::StringVector data_names, Rcpp::List lst_defaults, Rcpp::DataFrame data, int data_rows);
 RcppExport SEXP _spatialwidget_rcpp_construct_data(SEXP param_namesSEXP, SEXP paramsSEXP, SEXP data_namesSEXP, SEXP lst_defaultsSEXP, SEXP dataSEXP, SEXP data_rowsSEXP) {
@@ -90,6 +110,34 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::DataFrame >::type sf(sfSEXP);
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type geometries(geometriesSEXP);
     rcpp_result_gen = Rcpp::wrap(rcpp_sf_to_geojson_multi_column_downcast(sf, geometries));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_construct_legend_list
+Rcpp::List rcpp_construct_legend_list(Rcpp::List& lst_params, Rcpp::List& params, Rcpp::StringVector& param_names, Rcpp::StringVector& legend_types);
+RcppExport SEXP _spatialwidget_rcpp_construct_legend_list(SEXP lst_paramsSEXP, SEXP paramsSEXP, SEXP param_namesSEXP, SEXP legend_typesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type lst_params(lst_paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type params(paramsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector& >::type param_names(param_namesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector& >::type legend_types(legend_typesSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_construct_legend_list(lst_params, params, param_names, legend_types));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_set_legend_option
+std::string rcpp_set_legend_option(Rcpp::List& opts, std::string& option, std::string value, std::string& colour_name);
+RcppExport SEXP _spatialwidget_rcpp_set_legend_option(SEXP optsSEXP, SEXP optionSEXP, SEXP valueSEXP, SEXP colour_nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type opts(optsSEXP);
+    Rcpp::traits::input_parameter< std::string& >::type option(optionSEXP);
+    Rcpp::traits::input_parameter< std::string >::type value(valueSEXP);
+    Rcpp::traits::input_parameter< std::string& >::type colour_name(colour_nameSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_set_legend_option(opts, option, value, colour_name));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -284,6 +332,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_spatialwidget_rcpp_make_colours", (DL_FUNC) &_spatialwidget_rcpp_make_colours, 10},
     {"_spatialwidget_rcpp_construct_data", (DL_FUNC) &_spatialwidget_rcpp_construct_data, 6},
     {"_spatialwidget_rcpp_geojson", (DL_FUNC) &_spatialwidget_rcpp_geojson, 2},
     {"_spatialwidget_rcpp_geojson_sf", (DL_FUNC) &_spatialwidget_rcpp_geojson_sf, 2},
@@ -291,6 +340,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_geojson_dfz", (DL_FUNC) &_spatialwidget_rcpp_geojson_dfz, 2},
     {"_spatialwidget_rcpp_sf_to_geojson_downcast", (DL_FUNC) &_spatialwidget_rcpp_sf_to_geojson_downcast, 2},
     {"_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast", (DL_FUNC) &_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast, 2},
+    {"_spatialwidget_rcpp_construct_legend_list", (DL_FUNC) &_spatialwidget_rcpp_construct_legend_list, 4},
+    {"_spatialwidget_rcpp_set_legend_option", (DL_FUNC) &_spatialwidget_rcpp_set_legend_option, 4},
     {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_rcpp_colour_str_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_str_with_palette, 6},
     {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 8},

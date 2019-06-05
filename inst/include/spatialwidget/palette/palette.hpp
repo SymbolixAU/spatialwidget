@@ -76,6 +76,11 @@ namespace palette {
   }
 
 
+  /*
+   * Colour with Palette
+   *
+   * Calls colourvalues for the given vector, palette and options
+   */
 	inline Rcpp::List colour_with_palette(
 			SEXP& palette,
 			Rcpp::NumericVector& fill_colour_vec,
