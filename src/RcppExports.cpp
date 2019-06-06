@@ -141,6 +141,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_to_geojson_mesh
+Rcpp::StringVector rcpp_to_geojson_mesh(Rcpp::List& mesh, Rcpp::StringVector vertices);
+RcppExport SEXP _spatialwidget_rcpp_to_geojson_mesh(SEXP meshSEXP, SEXP verticesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type mesh(meshSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type vertices(verticesSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_to_geojson_mesh(mesh, vertices));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_resolve_palette
 Rcpp::StringVector rcpp_resolve_palette(Rcpp::List lst_params, Rcpp::List params);
 RcppExport SEXP _spatialwidget_rcpp_resolve_palette(SEXP lst_paramsSEXP, SEXP paramsSEXP) {
@@ -342,6 +354,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast", (DL_FUNC) &_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast, 2},
     {"_spatialwidget_rcpp_construct_legend_list", (DL_FUNC) &_spatialwidget_rcpp_construct_legend_list, 4},
     {"_spatialwidget_rcpp_set_legend_option", (DL_FUNC) &_spatialwidget_rcpp_set_legend_option, 4},
+    {"_spatialwidget_rcpp_to_geojson_mesh", (DL_FUNC) &_spatialwidget_rcpp_to_geojson_mesh, 2},
     {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_rcpp_colour_str_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_str_with_palette, 6},
     {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 8},

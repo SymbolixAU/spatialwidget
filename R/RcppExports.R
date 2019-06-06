@@ -41,6 +41,10 @@ rcpp_set_legend_option <- function(opts, option, value, colour_name) {
     .Call(`_spatialwidget_rcpp_set_legend_option`, opts, option, value, colour_name)
 }
 
+rcpp_to_geojson_mesh <- function(mesh, vertices) {
+    .Call(`_spatialwidget_rcpp_to_geojson_mesh`, mesh, vertices)
+}
+
 rcpp_resolve_palette <- function(lst_params, params) {
     .Call(`_spatialwidget_rcpp_resolve_palette`, lst_params, params)
 }

@@ -10,9 +10,139 @@
 
 #include "jsonify/jsonify.hpp"
 #include "jsonify/to_json/writers/simple.hpp"
+#include "colourvalues/colours/colours_hex.hpp"
 
 namespace spatialwidget {
 namespace geojson {
+
+  /*
+   * converts mesh data structure to geojson
+   */
+  inline Rcpp::StringVector to_geojson_mesh(
+    Rcpp::List& mesh,
+    Rcpp::StringVector vertices
+  ) {
+
+    Rcpp::String vertex_b = vertices[0];
+    Rcpp::String vertex_i = vertices[1];
+    Rcpp::NumericMatrix vb = mesh[ vertex_b ];
+    Rcpp::NumericMatrix ib = mesh[ vertex_i ];
+
+    // each column of each row of ib gives the row of vb containing coordinates which form the mesh
+    // as we're working with polygons, we can turn the coordinates into list of matrices
+    size_t n_row = ib.nrow();
+    size_t n_col = ib.ncol();
+    size_t n_coords = vb.nrow();
+
+    Rcpp::List sfc( n_col );
+    Rcpp::List z( n_col ); // for creating a list-column of the z attributes
+
+    size_t i, j;
+
+    // TODO:
+    // - extract the 'z' elements, create a vector (of averages)
+    // - then apply colourvalues
+    Rcpp::NumericVector avg_z( n_col );
+
+    for( i = 0; i < n_col; i++ ) {
+
+      Rcpp::NumericVector z_values( n_row );
+
+      for( j = 0; j < n_row; j++ ) {
+        //int this_index = polygon_indeces[j];
+        //this_index = this_index - 1;
+
+        //a_polygon(j, Rcpp::_) = vb(Rcpp::_, this_index);
+        z_values[ j ] = vb(j, 2);
+
+      }
+      avg_z[i] = Rcpp::mean( z_values );
+    }
+
+
+    std::string palette = "viridis";
+    std::string na_colour = "#808080";
+    Rcpp::NumericVector alpha( n_col, 0.8 );
+    bool include_alpha = true;
+    int n_summaries = 5;
+    bool format = false;
+    std::string format_type = "";
+    int digits = 2;
+
+    Rcpp::StringVector colours = colourvalues::colours_hex::colour_value_hex(
+      avg_z, palette, na_colour, alpha, include_alpha, n_summaries, format, format_type, digits
+    );
+
+    Rcpp::Rcout << "colours: " << colours << std::endl;
+
+    Rcpp::NumericVector polygon_indeces( n_row );
+    Rcpp::NumericVector polygon_coordinates( n_row );
+
+    rapidjson::StringBuffer sb;
+    rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
+    writer.StartArray();
+
+    for( i = 0; i < n_col; i++ ) {
+
+      // we're writing a POLYGON
+      polygon_indeces = ib(Rcpp::_, i);
+      Rcpp::NumericMatrix a_polygon( n_row, n_coords );
+      //Rcpp::List sfg(1);
+      //Rcpp::NumericVector z_values( n_row ); // each 'col' contains the index of the xyz1 coords
+
+
+      writer.StartObject();
+      geojsonsf::writers::start_features( writer );
+
+      writer.String("geometry");
+      writer.StartObject();
+
+
+      writer.String("geometry");
+      writer.StartObject();
+      writer.String("type");
+      writer.String("Polygon");
+      writer.String("coordinates");
+      writer.StartArray();
+
+      for( j = 0; j < n_row; j++ ) {
+        int this_index = polygon_indeces[j];
+        this_index = this_index - 1;
+
+        a_polygon(j, Rcpp::_) = vb(Rcpp::_, this_index);
+        //z_values[ j ] = a_polygon(j, 2);
+
+      }
+      jsonify::writers::simple::write_value(writer, a_polygon);
+
+      writer.EndArray();
+      writer.EndObject();
+
+      geojsonsf::writers::start_properties( writer );
+
+      writer.StartObject();
+      // TODO: properties
+      //writer.String("fill_colour");
+      //double z = Rcpp::mean( z_values );
+      //jsonify::writers::scalars::write_value( writer, z, -1 );
+      //jsonify::writers::simple::write_value(writer, z_values, false, -1, false);
+      writer.EndObject();
+
+      writer.EndObject();
+
+      //writer.EndObject();
+      writer.EndObject();
+    //avg_z[i] = Rcpp::mean( z_values );
+    //writer.EndObject();
+    }
+
+    writer.EndArray();
+
+    Rcpp::StringVector geojson = sb.GetString();
+    geojson.attr("class") = Rcpp::CharacterVector::create("json");
+    return geojson;
+
+  }
 
   /*
    * a variation on the atomise function to return an array of atomised features
