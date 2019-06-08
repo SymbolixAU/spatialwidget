@@ -3,7 +3,7 @@
 
 #include <Rcpp.h>
 //#include "spatialwidget/spatialwidget.hpp"
-#include "colourvalues/colours/colours_hex.hpp"
+#include "colourvalues/api/api.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
 //#include <Rcpp/Benchmark/Timer.h>

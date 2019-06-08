@@ -19,7 +19,7 @@ Imports:
     Rcpp
 LinkingTo: 
     BH,
-    colourvalues (>= 0.2.2),
+    colourvalues (>= 0.3.0),
     geojsonsf (>= 1.3.2),
     jsonify (>= 0.2.0),
     rapidjsonr,

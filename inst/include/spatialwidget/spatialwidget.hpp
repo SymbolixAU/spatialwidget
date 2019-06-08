@@ -4,7 +4,7 @@
 #include "Rcpp.h"
 
 // [[Rcpp::depends(colourvalues)]]
-#include "colourvalues/colours/colours_hex.hpp"
+#include "colourvalues/api/api.hpp"
 
 // [[Rcpp::depends(jsonify)]]
 #include "jsonify/jsonify.hpp"
@@ -21,6 +21,12 @@ namespace spatialwidget {
 namespace api {
 
   //inline int x;
+
+  inline Rcpp::StringVector create_geojson_mesh(
+    Rcpp::List& mesh, Rcpp::StringVector vertices
+  ) {
+    return spatialwidget::geojson::to_geojson_mesh( mesh, vertices );
+  }
 
   /*
    * sf object with one or many sfc columns
