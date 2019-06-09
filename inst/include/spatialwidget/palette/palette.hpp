@@ -45,6 +45,12 @@ namespace palette {
 
     Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
 
+    int n_summaries = 5;
+    bool format = true;
+    bool summary = true;
+    std::string format_type = "character";
+    int legend_digits = 2;  // not used in character vector
+
   	switch ( TYPEOF( palette ) ) {
     	case SYMSXP: { // SYMSXP
     	Rcpp::stop("Unsupported palette type");
@@ -52,13 +58,14 @@ namespace palette {
     }
   	case INTSXP: {} // go to REALSXP
   	case REALSXP: { // REALSXP (i.e, matrix)
-  		Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-  		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
-  		break;
+  		//Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
+  		//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
+  		//break;
   	}
   	case STRSXP: {
-  		std::string thispal = Rcpp::as< std::string>( palette );
-  		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
+  		//std::string thispal = Rcpp::as< std::string>( palette );
+  		//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
+  		return colourvalues::api::colour_values_hex( fill_colour_clone, palette, alpha, na_colour, include_alpha, format, format_type, legend_digits, summary, n_summaries);
   		break;
   	}
   	case VECSXP: {
@@ -100,6 +107,7 @@ namespace palette {
 		//int x = fill_colour_vec.size();
 		int n_summaries = 5;
 	  bool format = true;
+	  bool summary = true;
 	  //int digits = 12;
 
 		switch ( TYPEOF( palette ) ) {
@@ -109,13 +117,14 @@ namespace palette {
   	}
 		case INTSXP: {} // go to REALSXP
 		case REALSXP: { // REALSXP (i.e, matrix)
-			Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, legend_digits );
-			break;
+			//Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
+			//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, legend_digits );
+			//break;
 		}
 		case STRSXP: {
-			std::string thispal = Rcpp::as< std::string>( palette );
-			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, legend_digits );
+			//std::string thispal = Rcpp::as< std::string>( palette );
+			//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, legend_digits );
+			return colourvalues::api::colour_values_hex(fill_colour_clone, palette, alpha, na_colour, include_alpha, format, format_type, legend_digits, summary, n_summaries);
 			break;
 		}
 		case VECSXP: {
