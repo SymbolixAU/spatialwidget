@@ -122,23 +122,10 @@ namespace colour {
     }
     default: {
 
-      Rcpp::CharacterVector cls = getRClass( palette_type );
-      if( is_in( "Date", cls ) ) {
-        format_type = "Date";
-      } else if ( is_in("POSIXct", cls) ) {
-        format_type = "POSIXct";
-      } else if ( is_in("logical", cls) ) {
-        format_type = "logical";
-      } else if ( is_in("character", cls) ) {
-        format_type = "character";
-      } else {
-        format_type = "numeric";
-      }
-
       Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
       Rcpp::List legend = spatialwidget::palette::colour_with_palette(
         pal, colour_vec, alpha, na_colour, include_alpha, colour_name,
-        format_type, legend_digits
+        legend_digits
         );
 
       if ( include_legend ) {

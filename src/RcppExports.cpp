@@ -182,8 +182,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_colour_num_with_palette
-Rcpp::List rcpp_colour_num_with_palette(SEXP palette, Rcpp::NumericVector fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name, std::string format_type, int legend_digits);
-RcppExport SEXP _spatialwidget_rcpp_colour_num_with_palette(SEXP paletteSEXP, SEXP fill_colour_vecSEXP, SEXP alphaSEXP, SEXP na_colourSEXP, SEXP include_alphaSEXP, SEXP colour_nameSEXP, SEXP format_typeSEXP, SEXP legend_digitsSEXP) {
+Rcpp::List rcpp_colour_num_with_palette(SEXP palette, Rcpp::NumericVector fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name, int legend_digits);
+RcppExport SEXP _spatialwidget_rcpp_colour_num_with_palette(SEXP paletteSEXP, SEXP fill_colour_vecSEXP, SEXP alphaSEXP, SEXP na_colourSEXP, SEXP include_alphaSEXP, SEXP colour_nameSEXP, SEXP legend_digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -193,9 +193,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string >::type na_colour(na_colourSEXP);
     Rcpp::traits::input_parameter< bool >::type include_alpha(include_alphaSEXP);
     Rcpp::traits::input_parameter< std::string >::type colour_name(colour_nameSEXP);
-    Rcpp::traits::input_parameter< std::string >::type format_type(format_typeSEXP);
     Rcpp::traits::input_parameter< int >::type legend_digits(legend_digitsSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_colour_num_with_palette(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type, legend_digits));
+    rcpp_result_gen = Rcpp::wrap(rcpp_colour_num_with_palette(palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, legend_digits));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -357,7 +356,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_to_geojson_mesh", (DL_FUNC) &_spatialwidget_rcpp_to_geojson_mesh, 2},
     {"_spatialwidget_rcpp_resolve_palette", (DL_FUNC) &_spatialwidget_rcpp_resolve_palette, 2},
     {"_spatialwidget_rcpp_colour_str_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_str_with_palette, 6},
-    {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 8},
+    {"_spatialwidget_rcpp_colour_num_with_palette", (DL_FUNC) &_spatialwidget_rcpp_colour_num_with_palette, 7},
     {"_spatialwidget_rcpp_construct_params", (DL_FUNC) &_spatialwidget_rcpp_construct_params, 2},
     {"_spatialwidget_rcpp_params_to_data", (DL_FUNC) &_spatialwidget_rcpp_params_to_data, 8},
     {"_spatialwidget_rcpp_fill_vector", (DL_FUNC) &_spatialwidget_rcpp_fill_vector, 4},

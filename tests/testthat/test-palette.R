@@ -30,7 +30,7 @@ test_that("colour_with_palette works for nums and strs", {
   expect_equal( res$summary_colours, col$summary_colours )
   expect_equal( res$summary_values, col$summary_values )
 
-  res <- spatialwidget:::rcpp_colour_num_with_palette("viridis", 1:26, 255.0, "#808080FF", TRUE, "fill_colour", "numeric", 5)
+  res <- spatialwidget:::rcpp_colour_num_with_palette("viridis", 1:26, 255.0, "#808080FF", TRUE, "fill_colour", 5)
   col <- colourvalues::color_values(1:26, n_summaries = 5, format = T, digits = 5)
 
   expect_equal( res$colours, col$colours )

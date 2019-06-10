@@ -50,10 +50,9 @@ Rcpp::List rcpp_colour_num_with_palette(
     std::string na_colour,
     bool include_alpha,
     std::string colour_name,
-    std::string format_type = "numeric",
     int legend_digits = 2) {
 
   return spatialwidget::palette::colour_with_palette(
-    palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type, legend_digits
+    palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, legend_digits
   );
 }

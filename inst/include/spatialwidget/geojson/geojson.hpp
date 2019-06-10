@@ -79,12 +79,11 @@ namespace geojson {
     bool include_alpha = true;
     int n_summaries = 0;
     bool format = false;
-    std::string format_type = "numeric";
     bool summary = false;
     int digits = 2;
 
     Rcpp::List colours = colourvalues::api::colour_values_hex(
-      z_values, palette, alpha, na_colour, include_alpha, format, format_type, digits, summary, n_summaries
+      z_values, palette, alpha, na_colour, include_alpha, format, digits, summary, n_summaries
     );
 
     //Rcpp::StringVector first_colour = colours[1];
