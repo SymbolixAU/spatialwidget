@@ -146,8 +146,8 @@ namespace colour {
       std::string& colour_name,
       std::string& opacity_name,
       Rcpp::List& lst_legend,
-      bool& include_legend,
-      int legend_digits = 2
+      bool& include_legend
+      //int legend_digits = 2
     ) {
 
     Rcpp::IntegerVector data_column_index = lst_params[ "data_column_index" ];
@@ -197,39 +197,63 @@ namespace colour {
       }
     }
 
-    Rcpp::List legend = make_colours(
-      lst_params, params, data, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
-      this_colour, alpha, colour_name, include_legend, legend_digits
-    );
+    // TODO
+    // get the 'legend_digits' before here so it goes into colourvalues
+    //
+
+
 
     // this can't be replaced with 'include_legend'
     bool make_legend = false;
+    int legend_digits = 2;
+    std::string title;
+    std::string css;
+    std::string legend_digits_str = std::to_string( legend_digits );
 
     if ( lst_legend.containsElementNamed( colour_name.c_str() ) ) {
       make_legend = lst_legend[ colour_name.c_str() ];
     }
 
-    lst_defaults[ colour_name.c_str() ] = legend[ "colours" ];
-
     if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {
 
-      if (  make_legend == true ) {
+      if ( make_legend == true ) {
 
         SEXP t = params[ colour_name ];
         Rcpp::StringVector sv = Rcpp::as< Rcpp::StringVector >( t );
         Rcpp::String s = sv[0];
-        std::string title = s;
-        std::string css = "";
+        title = s;
+        css = "";
+        //int legend_digits;
 
         if ( params.containsElementNamed("legend_options") ) {
 
           Rcpp::List opts = params[ "legend_options" ];
           std::string title_string = "title";
           std::string css_string = "css";
+          std::string digits_string = "digits";
+
           spatialwidget::legend::set_legend_option( opts, title_string, title, colour_name );
           spatialwidget::legend::set_legend_option( opts, css_string, css, colour_name );
+          //Rcpp::Rcout << "legend_digits_str " << legend_digits_str << std::endl;
+          spatialwidget::legend::set_legend_option( opts, digits_string, legend_digits_str, colour_name );
+          //Rcpp::Rcout << "setting legend digits " << std::endl;
+          legend_digits = std::stoi( legend_digits_str );
         }
+      }
+    }
 
+    // make colours returns a summary anyway. Whether or not it's included
+    // on the map is determined by `make_legend` check
+    // since colourvalues controls the summary values, we need 'legend_digits'
+    // known here before it goes into 'make_colours' and then into colourvalues
+    Rcpp::List legend = make_colours(
+      lst_params, params, data, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
+      this_colour, alpha, colour_name, include_legend, legend_digits
+    );
+
+    if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {
+
+      if ( make_legend == true ) {
         Rcpp::List summary = Rcpp::List::create(
           Rcpp::_["colour"] = legend[ "summary_colours" ],
           Rcpp::_["variable"] = legend[ "summary_values" ],
@@ -241,6 +265,9 @@ namespace colour {
         lst_legend[ colour_name ] = summary;
       }
     }
+
+    lst_defaults[ colour_name.c_str() ] = legend[ "colours" ];
+
   }
 
 

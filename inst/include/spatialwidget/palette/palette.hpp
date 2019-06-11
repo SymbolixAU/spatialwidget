@@ -56,14 +56,8 @@ namespace palette {
     	break;
     }
   	case INTSXP: {} // go to REALSXP
-  	case REALSXP: { // REALSXP (i.e, matrix)
-  		//Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-  		//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
-  		//break;
-  	}
+  	case REALSXP: {} // REALSXP (i.e, matrix)
   	case STRSXP: {
-  		//std::string thispal = Rcpp::as< std::string>( palette );
-  		//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
   		return colourvalues::api::colour_values_hex( fill_colour_clone, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
   		break;
   	}
@@ -114,14 +108,8 @@ namespace palette {
   		break;
   	}
 		case INTSXP: {} // go to REALSXP
-		case REALSXP: { // REALSXP (i.e, matrix)
-			//Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-			//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, legend_digits );
-			//break;
-		}
+		case REALSXP: {} // REALSXP (i.e, matrix)
 		case STRSXP: {
-			//std::string thispal = Rcpp::as< std::string>( palette );
-			//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, legend_digits );
 			return colourvalues::api::colour_values_hex(fill_colour_clone, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
 			break;
 		}

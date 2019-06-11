@@ -45,12 +45,10 @@ namespace api {
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector& geometry_columns,
       bool jsonify_legend,
-      int digits = -1,
-      int legend_digits = 2
+      int digits = -1
     ) {
 
-    // Rcpp::Rcout << "create_geojson1" << std::endl;
-
+    //Rcpp::Rcout << "create_geojson1" << std::endl;
     //Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
@@ -65,8 +63,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true,   // factors as strings
-      legend_digits
+      true   // factors as strings
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -103,11 +100,11 @@ namespace api {
       Rcpp::StringVector& parameter_exclusions,
       std::string& geometry_column,              // single geometry column from sf object
       bool jsonify_legend,
-      int digits = -1,
-      int legend_digits = 2
+      int digits = -1
   ) {
 
-    // Rcpp::Rcout << "create_geojson2" << std::endl;
+    //Rcpp::Rcout << "create_geojson2" << std::endl;
+    // Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
 
@@ -121,8 +118,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true,  // factors as strings
-      legend_digits
+      true  // factors as strings
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -160,8 +156,7 @@ namespace api {
       Rcpp::StringVector& parameter_exclusions,
       std::string& geometry_column,
       bool jsonify_legend,
-      int digits = -1,
-      int legend_digits = 2
+      int digits = -1
   ) {
 
     Rcpp::List res(2);
@@ -176,8 +171,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true,
-      legend_digits
+      true
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -216,8 +210,7 @@ namespace api {
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector& geometry_column,
       bool jsonify_legend,
-      int digits = -1,
-      int legend_digits = 2
+      int digits = -1
   ) {
 
     Rcpp::List res(2);
@@ -232,8 +225,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true, // factors as strings
-      legend_digits
+      true // factors as strings
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -270,11 +262,11 @@ namespace api {
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::List& geometry_columns,
       bool jsonify_legend,
-      int digits = -1,
-      int legend_digits = 2
+      int digits = -1
   ) {
 
-    // Rcpp::Rcout << "create_geojson3" << std::endl;
+    //Rcpp::Rcout << "create_geojson3" << std::endl;
+    // Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
@@ -287,8 +279,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true, // factors as string
-      legend_digits
+      true // factors as string
     );
 
 
@@ -330,11 +321,11 @@ namespace api {
       Rcpp::List& geometry_columns,
       bool jsonify_legend,
       bool elevation,
-      int digits = -1,
-      int legend_digits = 2
+      int digits = -1
   ) {
 
-    // Rcpp::Rcout << "create_geojson4" << std::endl;
+    //Rcpp::Rcout << "create_geojson4" << std::endl;
+    // Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
@@ -347,8 +338,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true, // factors as string
-      legend_digits
+      true // factors as string
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -385,8 +375,7 @@ namespace api {
       int& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector geometry_columns,
-      bool jsonify_legend,
-      int legend_digits = 2
+      bool jsonify_legend
   ) {
 
     Rcpp::List res(2);
@@ -399,8 +388,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true, // factors as string
-      legend_digits
+      true // factors as string
     );
 
     SEXP df = lst["data"];
