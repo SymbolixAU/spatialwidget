@@ -61,8 +61,8 @@ rcpp_construct_params <- function(data, params) {
     .Call(`_spatialwidget_rcpp_construct_params`, data, params)
 }
 
-rcpp_params_to_data <- function(data, params, lst_defaults, layer_legend, data_rows, parameter_exclusions, factors_as_string, legend_digits) {
-    .Call(`_spatialwidget_rcpp_params_to_data`, data, params, lst_defaults, layer_legend, data_rows, parameter_exclusions, factors_as_string, legend_digits)
+rcpp_params_to_data <- function(data, params, lst_defaults, layer_legend, data_rows, parameter_exclusions, factors_as_string) {
+    .Call(`_spatialwidget_rcpp_params_to_data`, data, params, lst_defaults, layer_legend, data_rows, parameter_exclusions, factors_as_string)
 }
 
 rcpp_fill_vector <- function(lst_defaults, param_name, value, n_rows) {
@@ -81,19 +81,19 @@ is_hex <- function(hex_str) {
     .Call(`_spatialwidget_is_hex`, hex_str)
 }
 
-rcpp_widget_line <- function(data, params, geometry_columns, jsonify_legend, digits, legend_digits) {
-    .Call(`_spatialwidget_rcpp_widget_line`, data, params, geometry_columns, jsonify_legend, digits, legend_digits)
+rcpp_widget_line <- function(data, params, geometry_columns, jsonify_legend, digits) {
+    .Call(`_spatialwidget_rcpp_widget_line`, data, params, geometry_columns, jsonify_legend, digits)
 }
 
-rcpp_widget_point <- function(data, params, geometry_columns, jsonify_legend, digits, legend_digits) {
-    .Call(`_spatialwidget_rcpp_widget_point`, data, params, geometry_columns, jsonify_legend, digits, legend_digits)
+rcpp_widget_point <- function(data, params, geometry_columns, jsonify_legend, digits) {
+    .Call(`_spatialwidget_rcpp_widget_point`, data, params, geometry_columns, jsonify_legend, digits)
 }
 
-rcpp_widget_point_df <- function(data, params, geometries, jsonify_legend, digits, legend_digits) {
-    .Call(`_spatialwidget_rcpp_widget_point_df`, data, params, geometries, jsonify_legend, digits, legend_digits)
+rcpp_widget_point_df <- function(data, params, geometries, jsonify_legend, digits) {
+    .Call(`_spatialwidget_rcpp_widget_point_df`, data, params, geometries, jsonify_legend, digits)
 }
 
-rcpp_widget_polygon <- function(data, params, geometry_columns, jsonify_legend, digits, legend_digits) {
-    .Call(`_spatialwidget_rcpp_widget_polygon`, data, params, geometry_columns, jsonify_legend, digits, legend_digits)
+rcpp_widget_polygon <- function(data, params, geometry_columns, jsonify_legend, digits) {
+    .Call(`_spatialwidget_rcpp_widget_polygon`, data, params, geometry_columns, jsonify_legend, digits)
 }
 

@@ -43,7 +43,7 @@ test_that("parameters converted to pseudo-geojson",{
 
   res <- spatialwidget:::rcpp_params_to_data(
     df, l, lst_defaults, layer_legend, data_rows, parameter_exclusions,
-    factors_as_string = TRUE, legend_digits = 2
+    factors_as_string = TRUE
   )
 
   fill <- colourvalues::colour_values(df$country)

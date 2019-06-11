@@ -65,8 +65,7 @@ namespace parameters {
   		Rcpp::StringVector& layer_legend,     // vector of colours to use in the legend
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions,
-  		bool factors_as_string = true,
-  		int legend_digits = 2
+  		bool factors_as_string = true
   ) {
 
     // Turn factors to strings
@@ -109,8 +108,7 @@ namespace parameters {
 	      colour_column,
 	      opacity_column,
 	      lst_legend,
-	      include_legend,
-	      legend_digits
+	      include_legend
 	      );
 		}
 

@@ -33,8 +33,7 @@ Rcpp::List rcpp_params_to_data(
     Rcpp::StringVector layer_legend,     // vector of colours to use in the legend
     int data_rows,
     Rcpp::StringVector parameter_exclusions,
-    bool factors_as_string,
-    int legend_digits
+    bool factors_as_string
   ) {
 
   // this fails when used as an argument to the function!?
@@ -44,6 +43,6 @@ Rcpp::List rcpp_params_to_data(
 
   return spatialwidget::parameters::parameters_to_data(
     data, params, lst_defaults, colour_columns, layer_legend,
-    data_rows, parameter_exclusions, factors_as_string, legend_digits
+    data_rows, parameter_exclusions, factors_as_string
   );
 }

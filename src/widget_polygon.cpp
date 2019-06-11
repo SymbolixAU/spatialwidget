@@ -9,8 +9,8 @@ Rcpp::List rcpp_widget_polygon(
     Rcpp::List params,
     Rcpp::StringVector geometry_columns,
     bool jsonify_legend,
-    int digits,
-    int legend_digits) {
+    int digits
+  ) {
 
   int data_rows = data.nrows();
   Rcpp::List defaults = polygon_defaults( data_rows );
@@ -29,7 +29,6 @@ Rcpp::List rcpp_widget_polygon(
     parameter_exclusions,
     geometry_columns,
     jsonify_legend,
-    digits,
-    legend_digits
+    digits
   );
 }

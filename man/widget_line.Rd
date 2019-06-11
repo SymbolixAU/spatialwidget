@@ -6,7 +6,7 @@
 \usage{
 widget_line(data, stroke_colour = NULL, stroke_opacity = NULL,
   stroke_width = NULL, legend = TRUE, json_legend = TRUE,
-  digits = 6, legend_digits = 2)
+  digits = 6)
 }
 \arguments{
 \item{data}{\code{sf} object}
@@ -25,8 +25,6 @@ or a single value to apply to all rows of data}
 \item{json_legend}{logical indicating if the legend will be returned as json}
 
 \item{digits}{number of decimal places for rounding lon o& lat coordinates. Default 6}
-
-\item{legend_digits}{number of decimal places to show in the legend. Default 2}
 }
 \description{
 Converts an `sf` object with LINESTRING geometriers into JSON for plotting in an htmlwidget

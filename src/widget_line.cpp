@@ -9,8 +9,7 @@ Rcpp::List rcpp_widget_line(
     Rcpp::List params,
     Rcpp::StringVector geometry_columns,
     bool jsonify_legend,
-    int digits,
-    int legend_digits
+    int digits
   ) {
 
   int data_rows = data.nrows();
@@ -30,7 +29,6 @@ Rcpp::List rcpp_widget_line(
     parameter_exclusions,
     geometry_columns,
     jsonify_legend,
-    digits,
-    legend_digits
+    digits
   );
 }

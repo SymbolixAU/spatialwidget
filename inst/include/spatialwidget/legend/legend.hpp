@@ -14,8 +14,30 @@ namespace legend {
       std::string& colour_name
   ) {
 
+
     if ( opts.containsElementNamed( option.c_str() ) ) {
-      Rcpp::String s_value = opts[ option ];
+      SEXP s = opts[ option ];
+      Rcpp::String s_value;
+      switch( TYPEOF( s ) ) {
+      case STRSXP: {
+        s_value = Rcpp::as< Rcpp::String >( s );
+        break;
+      }
+      case REALSXP :{
+        Rcpp::IntegerVector iv = Rcpp::as< Rcpp::IntegerVector >( s );
+        int i = iv[0];
+        s_value = std::to_string( i );
+        break;
+      }
+      case INTSXP: {
+        int i = opts[ option ];
+        s_value = std::to_string( i );
+        break;
+      }
+      default: {
+        Rcpp::stop("unknown legend_option type, expecting string or int value");
+      }
+      }
       value = s_value;
     } else if ( opts.containsElementNamed( colour_name.c_str() ) ) {
       Rcpp::List opts2 = opts[ colour_name ];
