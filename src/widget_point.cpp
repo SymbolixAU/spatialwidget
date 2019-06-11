@@ -8,7 +8,10 @@ Rcpp::List rcpp_widget_point(
     Rcpp::DataFrame data,
     Rcpp::List params,
     Rcpp::StringVector geometry_columns,
-    bool jsonify_legend ) {
+    bool jsonify_legend,
+    int digits,
+    int legend_digits
+  ) {
 
   int data_rows = data.nrows();
   Rcpp::List defaults = point_defaults( data_rows );
@@ -16,6 +19,8 @@ Rcpp::List rcpp_widget_point(
   std::unordered_map< std::string, std::string > point_colours = spatialwidget::widgetpoint::point_colours;
   Rcpp::StringVector point_legend = spatialwidget::widgetpoint::point_legend;
   Rcpp::StringVector parameter_exclusions = Rcpp::StringVector::create("legend","legend_options","palette","na_colour");
+
+  //Rcpp::Rcout << "legend_digits 1: " << legend_digits << std::endl;
 
   return spatialwidget::api::create_geojson(
     data,
@@ -26,7 +31,9 @@ Rcpp::List rcpp_widget_point(
     data_rows,
     parameter_exclusions,
     geometry_columns,
-    jsonify_legend
+    jsonify_legend,
+    digits,
+    legend_digits
   );
 }
 
@@ -35,7 +42,10 @@ Rcpp::List rcpp_widget_point_df(
     Rcpp::DataFrame data,
     Rcpp::List params,
     Rcpp::List geometries,
-    bool jsonify_legend) {
+    bool jsonify_legend,
+    int digits,
+    int legend_digits
+  ) {
 
   int data_rows = data.nrows();
   Rcpp::List defaults = point_defaults( data_rows );
@@ -53,6 +63,8 @@ Rcpp::List rcpp_widget_point_df(
     data_rows,
     parameter_exclusions,
     geometries,
-    jsonify_legend
+    jsonify_legend,
+    digits,
+    legend_digits
   );
 }

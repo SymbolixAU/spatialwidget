@@ -11,19 +11,24 @@
 #' or a single value to apply to all rows of data
 #' @param legend logical indicating if legend data will be returned
 #' @param json_legend logical indicating if the legend will be returned as json
-#'
+#' @param digits number of decimal places for rounding lon o& lat coordinates. Default 6
+#' @param legend_digits number of decimal places to show in the legend. Default 2
 #' @examples
 #'
 #' ## use default stroke options
 #' l <- widget_line( widget_roads, legend = TRUE )
 #'
 #' @export
-widget_line <- function( data,
-                         stroke_colour = NULL,
-                         stroke_opacity = NULL,
-                         stroke_width = NULL,
-                         legend = TRUE,
-                         json_legend = TRUE) {
+widget_line <- function(
+  data,
+  stroke_colour = NULL,
+  stroke_opacity = NULL,
+  stroke_width = NULL,
+  legend = TRUE,
+  json_legend = TRUE,
+  digits = 6,
+  legend_digits = 2
+  ) {
 
   l <- as.list( match.call( expand.dots = F) )
   l[[1]] <- NULL
@@ -42,7 +47,7 @@ widget_line <- function( data,
   }
   l[["data_type"]] <- NULL
 
-  js_data <- rcpp_widget_line( data, l, c("geometry"), json_legend  )
+  js_data <- rcpp_widget_line( data, l, c("geometry"), json_legend, digits, legend_digits  )
   return( js_data )
 }
 
@@ -63,14 +68,18 @@ widget_line <- function( data,
 #' l <- widget_polygon( widget_melbourne, fill_colour = "AREASQKM16", legend = TRUE )
 #'
 #' @export
-widget_polygon <- function( data,
-                            stroke_colour = NULL,
-                            stroke_opacity = NULL,
-                            stroke_width = NULL,
-                            fill_colour = NULL,
-                            fill_opacity = NULL,
-                            legend = TRUE,
-                            json_legend = TRUE ) {
+widget_polygon <- function(
+  data,
+  stroke_colour = NULL,
+  stroke_opacity = NULL,
+  stroke_width = NULL,
+  fill_colour = NULL,
+  fill_opacity = NULL,
+  legend = TRUE,
+  json_legend = TRUE,
+  digits = 6,
+  legend_digits = 2
+  ) {
 
   l <- as.list( match.call( expand.dots = F ) )
   l[[1]] <- NULL
@@ -91,7 +100,7 @@ widget_polygon <- function( data,
   }
   l[["data_type"]] <- NULL
 
-  js_data <- rcpp_widget_polygon( data, l, c("geometry"), json_legend )
+  js_data <- rcpp_widget_polygon( data, l, c("geometry"), json_legend, digits, legend_digits )
   return( js_data )
 }
 
@@ -111,13 +120,17 @@ widget_polygon <- function( data,
 #' l <- widget_point( data = widget_capitals, legend = FALSE )
 #'
 #' @export
-widget_point <- function( data,
-                          fill_colour = NULL,
-                          fill_opacity = NULL,
-                          lon = NULL,
-                          lat = NULL,
-                          legend = TRUE,
-                          json_legend = TRUE ) {
+widget_point <- function(
+  data,
+  fill_colour = NULL,
+  fill_opacity = NULL,
+  lon = NULL,
+  lat = NULL,
+  legend = TRUE,
+  json_legend = TRUE,
+  digits = 6,
+  legend_digits = 2
+  ) {
 
   l <- as.list( match.call( expand.dots = F ) )
   l[[1]] <- NULL
@@ -140,13 +153,13 @@ widget_point <- function( data,
   l[["data_type"]] <- NULL
 
   if( tp == "sf" ) {
-    js_data <- rcpp_widget_point( data, l, c("geometry"), json_legend )
+    js_data <- rcpp_widget_point( data, l, c("geometry"), json_legend, digits, legend_digits )
   } else if (tp == "df" ) {
     if( is.null( lon ) || is.null( lat ) ) {
       stop("lon and lat are requried for data.frames")
     }
     js_data <- rcpp_widget_point_df(
-      data, l, list(myGeometry = c("lon","lat") ), json_legend
+      data, l, list(myGeometry = c("lon","lat") ), json_legend, digits, legend_digits
       )
   }
   return( js_data )
@@ -166,13 +179,15 @@ widget_point <- function( data,
 #' l <- widget_od( data = widget_arcs, origin = "origin", destination = "destination", legend = FALSE )
 #'
 #' @export
-widget_od <- function( data,
-                       origin,
-                       destination,
-                       fill_colour = NULL,
-                       fill_opacity = NULL,
-                       legend = TRUE,
-                       json_legend = TRUE ) {
+widget_od <- function(
+  data,
+  origin,
+  destination,
+  fill_colour = NULL,
+  fill_opacity = NULL,
+  legend = TRUE,
+  json_legend = TRUE
+  ) {
 
   l <- as.list( match.call( expand.dots = F ) )
   l[[1]] <- NULL

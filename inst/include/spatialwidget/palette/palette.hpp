@@ -3,7 +3,7 @@
 
 #include <Rcpp.h>
 //#include "spatialwidget/spatialwidget.hpp"
-#include "colourvalues/colours/colours_hex.hpp"
+#include "colourvalues/api/api.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
 //#include <Rcpp/Benchmark/Timer.h>
@@ -40,9 +40,15 @@ namespace palette {
   		Rcpp::NumericVector& alpha,
   		std::string& na_colour,
   		bool& include_alpha,
-  		std::string& colour_name ) {
+  		std::string& colour_name
+  ) {
 
     Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
+
+    int n_summaries = 5;
+    bool format = true;
+    bool summary = true;
+    int legend_digits = 2;  // not used in character vector
 
   	switch ( TYPEOF( palette ) ) {
     	case SYMSXP: { // SYMSXP
@@ -51,13 +57,14 @@ namespace palette {
     }
   	case INTSXP: {} // go to REALSXP
   	case REALSXP: { // REALSXP (i.e, matrix)
-  		Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-  		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
-  		break;
+  		//Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
+  		//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, true );
+  		//break;
   	}
   	case STRSXP: {
-  		std::string thispal = Rcpp::as< std::string>( palette );
-  		return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
+  		//std::string thispal = Rcpp::as< std::string>( palette );
+  		//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, true );
+  		return colourvalues::api::colour_values_hex( fill_colour_clone, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
   		break;
   	}
   	case VECSXP: {
@@ -75,6 +82,11 @@ namespace palette {
   }
 
 
+  /*
+   * Colour with Palette
+   *
+   * Calls colourvalues for the given vector, palette and options
+   */
 	inline Rcpp::List colour_with_palette(
 			SEXP& palette,
 			Rcpp::NumericVector& fill_colour_vec,
@@ -82,7 +94,8 @@ namespace palette {
 			std::string& na_colour,
 			bool& include_alpha,
 			std::string& colour_name,
-			std::string format_type = "numeric" ) {
+			int legend_digits = 2
+  ) {
 
 	  Rcpp::NumericVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
 
@@ -92,7 +105,8 @@ namespace palette {
 		//int x = fill_colour_vec.size();
 		int n_summaries = 5;
 	  bool format = true;
-	  int digits = 12;
+	  bool summary = true;
+	  //int digits = 12;
 
 		switch ( TYPEOF( palette ) ) {
 		case SYMSXP: { // SYMSXP
@@ -101,20 +115,21 @@ namespace palette {
   	}
 		case INTSXP: {} // go to REALSXP
 		case REALSXP: { // REALSXP (i.e, matrix)
-			Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
-			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, digits );
-			break;
+			//Rcpp::NumericMatrix thispal = Rcpp::as< Rcpp::NumericMatrix >( palette );
+			//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, include_alpha, n_summaries, format, format_type, legend_digits );
+			//break;
 		}
 		case STRSXP: {
-			std::string thispal = Rcpp::as< std::string>( palette );
-			return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, digits );
+			//std::string thispal = Rcpp::as< std::string>( palette );
+			//return colourvalues::colours_hex::colour_value_hex( fill_colour_clone, thispal, na_colour, alpha, include_alpha, n_summaries, format, format_type, legend_digits );
+			return colourvalues::api::colour_values_hex(fill_colour_clone, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
 			break;
 		}
 		case VECSXP: {
 		  // extract the list elemetn for either 'fill' or 'stroke'
 		  Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
 		  SEXP pal = lst[ colour_name.c_str() ];
-		  return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, format_type );
+		  return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, legend_digits );
 		  break;
 		}
 		default: {

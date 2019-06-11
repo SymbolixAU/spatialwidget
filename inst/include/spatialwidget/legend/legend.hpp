@@ -23,6 +23,15 @@ namespace legend {
     }
   }
 
+
+  /*
+   * Construct Lgend List
+   *
+   * Creates a list where the name is the colour element, and the value is
+   * TRUE or FALSE depending if the that colour is to be used in the legend
+   *
+   * e.g. list(fill_colour = TRUE, stroke_colour = FALSE)
+   */
   inline Rcpp::List construct_legend_list(
       Rcpp::List& lst_params,
       Rcpp::List& params,
@@ -56,8 +65,8 @@ namespace legend {
         // the user supplied either legend = T or legend = F
         // if T, switch all the 'false' elements to true
         for ( i = 0; i < n; i++ ) {  // TODO( dont' swithc the FALSEs to TRUE)
-        legend[ i ] = lege;
-      }
+          legend[ i ] = lege;
+        }
         break;
       }
       case VECSXP: { // list

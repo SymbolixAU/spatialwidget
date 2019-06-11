@@ -26,7 +26,8 @@ namespace parameters {
    */
   inline Rcpp::List construct_params(
       Rcpp::DataFrame& data,
-      Rcpp::List& params) {
+      Rcpp::List& params
+  ) {
 
     int n_params = params.size();
     Rcpp::StringVector param_names = params.names();
@@ -64,7 +65,9 @@ namespace parameters {
   		Rcpp::StringVector& layer_legend,     // vector of colours to use in the legend
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions,
-  		bool factors_as_string = true) {
+  		bool factors_as_string = true,
+  		int legend_digits = 2
+  ) {
 
     // Turn factors to strings
     if (factors_as_string ) {
@@ -106,7 +109,8 @@ namespace parameters {
 	      colour_column,
 	      opacity_column,
 	      lst_legend,
-	      include_legend
+	      include_legend,
+	      legend_digits
 	      );
 		}
 
