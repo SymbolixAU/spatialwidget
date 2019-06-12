@@ -15,7 +15,7 @@ test_that("legends are formatted", {
 
   expect_equal( as.character( res$legend ), '{"fill_colour":{"colour":["#440154FF","#31688EFF","#35B779FF","#FDE725FF"],"variable":["1.00","2.00","3.00","4.00"],"colourType":["fill_colour"],"type":["gradient"],"title":["col"],"css":[""]}}')
 
-  ## factor (converted to char)
+  ## factor
   df <- data.frame(lon = c(1,2,-5,0.3), lat = 1:4, col = letters[1:4])
 
   res <- spatialwidget::widget_point(

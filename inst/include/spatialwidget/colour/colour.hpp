@@ -122,6 +122,7 @@ namespace colour {
 
         // TODO
         // - if numeric, it's 'gradient', else 'category'
+        // - but factor needs to be category
         if ( include_legend ) {
           legend[ "colour_type" ] = colour_name;
           legend[ "type" ] = "category";
@@ -141,9 +142,12 @@ namespace colour {
         pal, palette_type, alpha, na_colour, include_alpha, colour_name
       );
 
+      std::string legend_type = Rf_isFactor( palette_type )  ? "category" : "gradient";
+
+
       if ( include_legend ) {
         legend[ "colour_type" ] = colour_name;
-        legend[ "type" ] = "gradient";
+        legend[ "type" ] = legend_type;
       }
       return legend;
       break;
