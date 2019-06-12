@@ -28,7 +28,7 @@ Rcpp::StringVector rcpp_resolve_palette( Rcpp::List lst_params, Rcpp::List param
 // [[Rcpp::export]]
 Rcpp::List rcpp_colour_str_with_palette(
     SEXP palette,
-    Rcpp::StringVector fill_colour_vec,
+    SEXP fill_colour_vec,
     Rcpp::NumericVector alpha,
     std::string na_colour,
     bool include_alpha,
@@ -45,7 +45,7 @@ Rcpp::List rcpp_colour_str_with_palette(
 // [[Rcpp::export]]
 Rcpp::List rcpp_colour_num_with_palette(
     SEXP palette,
-    Rcpp::NumericVector fill_colour_vec,
+    SEXP fill_colour_vec,
     Rcpp::NumericVector alpha,
     std::string na_colour,
     bool include_alpha,

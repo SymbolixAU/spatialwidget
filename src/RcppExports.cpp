@@ -166,13 +166,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_colour_str_with_palette
-Rcpp::List rcpp_colour_str_with_palette(SEXP palette, Rcpp::StringVector fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name);
+Rcpp::List rcpp_colour_str_with_palette(SEXP palette, SEXP fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name);
 RcppExport SEXP _spatialwidget_rcpp_colour_str_with_palette(SEXP paletteSEXP, SEXP fill_colour_vecSEXP, SEXP alphaSEXP, SEXP na_colourSEXP, SEXP include_alphaSEXP, SEXP colour_nameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type palette(paletteSEXP);
-    Rcpp::traits::input_parameter< Rcpp::StringVector >::type fill_colour_vec(fill_colour_vecSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type fill_colour_vec(fill_colour_vecSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< std::string >::type na_colour(na_colourSEXP);
     Rcpp::traits::input_parameter< bool >::type include_alpha(include_alphaSEXP);
@@ -182,13 +182,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_colour_num_with_palette
-Rcpp::List rcpp_colour_num_with_palette(SEXP palette, Rcpp::NumericVector fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name, int legend_digits);
+Rcpp::List rcpp_colour_num_with_palette(SEXP palette, SEXP fill_colour_vec, Rcpp::NumericVector alpha, std::string na_colour, bool include_alpha, std::string colour_name, int legend_digits);
 RcppExport SEXP _spatialwidget_rcpp_colour_num_with_palette(SEXP paletteSEXP, SEXP fill_colour_vecSEXP, SEXP alphaSEXP, SEXP na_colourSEXP, SEXP include_alphaSEXP, SEXP colour_nameSEXP, SEXP legend_digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type palette(paletteSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type fill_colour_vec(fill_colour_vecSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type fill_colour_vec(fill_colour_vecSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< std::string >::type na_colour(na_colourSEXP);
     Rcpp::traits::input_parameter< bool >::type include_alpha(include_alphaSEXP);

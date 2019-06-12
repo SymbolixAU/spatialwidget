@@ -85,6 +85,9 @@ namespace colour {
       Rcpp::String this_colour = params[ colour_name.c_str() ];
     }
 
+    // here it's already a STRSXP, not factor (INTSXP)
+    //Rcpp::Rcout << "palette_type: " << TYPEOF( palette_type ) << std::endl;
+
     switch ( TYPEOF( palette_type ) ) {
     case STRSXP: {} // string vector
     case LGLSXP: {  // logical vector
@@ -108,25 +111,35 @@ namespace colour {
         return legend;
 
       } else {
+
         Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-          pal, colour_vec, alpha, na_colour, include_alpha, colour_name
+          pal, palette_type, alpha, na_colour, include_alpha, colour_name
         );
 
+        // Rcpp::List legend = spatialwidget::palette::colour_with_palette(
+        //   pal, colour_vec, alpha, na_colour, include_alpha, colour_name
+        // );
+
+        // TODO
+        // - if numeric, it's 'gradient', else 'category'
         if ( include_legend ) {
           legend[ "colour_type" ] = colour_name;
           legend[ "type" ] = "category";
         }
         return legend;
-      }
+     }
       break;
     }
     default: {
 
-      Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
+      // Rcpp::NumericVector colour_vec = Rcpp::as< Rcpp::NumericVector >( palette_type );
+      // Rcpp::List legend = spatialwidget::palette::colour_with_palette(
+      //   pal, colour_vec, alpha, na_colour, include_alpha, colour_name,
+      //   legend_digits
+      //   );
       Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-        pal, colour_vec, alpha, na_colour, include_alpha, colour_name,
-        legend_digits
-        );
+        pal, palette_type, alpha, na_colour, include_alpha, colour_name
+      );
 
       if ( include_legend ) {
         legend[ "colour_type" ] = colour_name;

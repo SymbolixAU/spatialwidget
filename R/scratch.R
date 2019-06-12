@@ -15,33 +15,29 @@
 #     , legend_types = ll
 #   )
 #
-#   rcpp_make_colours(
-#     Rcpp::List& lst_params,
-#     Rcpp::List& params,
-#     Rcpp::DataFrame& data,
-#     Rcpp::List& lst_defaults,
-#     int col_index,
-#     SEXP& palette_type,
-#     Rcpp::NumericVector& alpha,
-#     std::string& colour_name,
-#     bool& include_legend,
-#     int legend_digits = 2
-#   )
+#   # rcpp_make_colours(
+#   #   Rcpp::List& lst_params,
+#   #   Rcpp::List& params,
+#   #   Rcpp::DataFrame& data,
+#   #   Rcpp::List& lst_defaults,
+#   #   int col_index,
+#   #   SEXP& palette_type,
+#   #   Rcpp::NumericVector& alpha,
+#   #   std::string& colour_name,
+#   #   bool& include_legend,
+#   #   int legend_digits = 2
+#   # )
+#
+  # data <- data.frame(
+  #   lat = c(49.25,49.2)
+  #   , lng = c(-123.1,-123)
+  #   , value = factor( c("A","B"), levels = c("B","A"))
+  # )
+  #
+  # str( data$value )
+  #
+  # widget_point(data, fill_colour = "value", lon = "lng", lat = "lat")
+  #
+  # str( data$value )
 #
 # })
-#
-#
-# library(quadmesh)
-# library(raster)
-# ## dummy raster
-# rr <- setExtent(raster::raster(matrix(sample(1:12), 3)), raster::extent(0, 4, 0, 3))
-# qm <- quadmesh(rr * 10000)  ## something suitably exaggerated
-#
-# geo <- spatialwidget:::rcpp_to_geojson_mesh(qm, c("vb","ib"))
-# geo
-#
-# jsonify::validate_json( geo )
-#
-# js <- widget_polygon( widget_melbourne[1:3, ])
-#
-#

@@ -68,7 +68,7 @@ namespace parameters {
   		bool factors_as_string = true
   ) {
 
-    // Turn factors to strings
+    //Turn factors to strings
     if (factors_as_string ) {
       spatialwidget::utils::factors::factors_to_string( data );
     }
