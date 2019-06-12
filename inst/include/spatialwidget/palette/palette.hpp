@@ -34,98 +34,39 @@ namespace palette {
   	return R_NilValue;
   }
 
+// TODO - fill_colour_vec should be SEXP, so it's handled by colourvalues
   inline Rcpp::List colour_with_palette(
-  		SEXP& palette,
-  		Rcpp::StringVector& fill_colour_vec,
-  		Rcpp::NumericVector& alpha,
-  		std::string& na_colour,
-  		bool& include_alpha,
-  		std::string& colour_name
+      SEXP& palette,
+      SEXP& fill_colour_vec,
+      Rcpp::NumericVector& alpha,
+      std::string& na_colour,
+      bool& include_alpha,
+      std::string& colour_name,
+      int legend_digits = 2
   ) {
 
-    Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
+    //Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
 
     int n_summaries = 5;
     bool format = true;
     bool summary = true;
-    int legend_digits = 2;  // not used in character vector
+    //int legend_digits = 2;  // not used in character vector
 
-  	switch ( TYPEOF( palette ) ) {
-    	case SYMSXP: { // SYMSXP
-    	Rcpp::stop("Unsupported palette type");
-    	break;
+    switch ( TYPEOF( palette ) ) {
+    case VECSXP: {
+      // extract the list elemetn for either 'fill' or 'stroke'
+      Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
+      SEXP pal = lst[ colour_name.c_str() ];
+      return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name );
+      break;
     }
-  	case INTSXP: {} // go to REALSXP
-  	case REALSXP: {} // REALSXP (i.e, matrix)
-  	case STRSXP: {
-  		return colourvalues::api::colour_values_hex( fill_colour_clone, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
-  		break;
-  	}
-  	case VECSXP: {
-  	  // extract the list elemetn for either 'fill' or 'stroke'
-  	  Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
-  	  SEXP pal = lst[ colour_name.c_str() ];
-  	  return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name );
-  	  break;
-  	}
-  	default: {
-  		Rcpp::stop("Unsupported palette type");
-  	}
-  	}
-  	return ""; // never reached
+    default: {
+      return colourvalues::api::colour_values_hex( fill_colour_vec, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
+      break;
+    }
+    }
+    return ""; // never reached
   }
-
-
-  /*
-   * Colour with Palette
-   *
-   * Calls colourvalues for the given vector, palette and options
-   */
-	inline Rcpp::List colour_with_palette(
-			SEXP& palette,
-			Rcpp::NumericVector& fill_colour_vec,
-			Rcpp::NumericVector& alpha,
-			std::string& na_colour,
-			bool& include_alpha,
-			std::string& colour_name,
-			int legend_digits = 2
-  ) {
-
-	  Rcpp::NumericVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
-
-		//int n_summaries = 5;
-	  // TODO( supply 'format' arguments to colour_value_hex)
-	  // need the R obj type
-		//int x = fill_colour_vec.size();
-		int n_summaries = 5;
-	  bool format = true;
-	  bool summary = true;
-	  //int digits = 12;
-
-		switch ( TYPEOF( palette ) ) {
-		case SYMSXP: { // SYMSXP
-  		Rcpp::stop("Unsupported palette type");
-  		break;
-  	}
-		case INTSXP: {} // go to REALSXP
-		case REALSXP: {} // REALSXP (i.e, matrix)
-		case STRSXP: {
-			return colourvalues::api::colour_values_hex(fill_colour_clone, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
-			break;
-		}
-		case VECSXP: {
-		  // extract the list elemetn for either 'fill' or 'stroke'
-		  Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
-		  SEXP pal = lst[ colour_name.c_str() ];
-		  return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, legend_digits );
-		  break;
-		}
-		default: {
-			Rcpp::stop("Unsupported palette type");
-		}
-		}
-		return ""; // never reached
-	}
 
 } // namespace palette
 } // namespace spatialwidget

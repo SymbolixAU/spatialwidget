@@ -63,7 +63,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true   // factors as strings
+      false   // factors as strings
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -118,7 +118,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true  // factors as strings
+      false  // factors as strings
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -171,7 +171,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true
+      false // factors as strings
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -225,7 +225,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true // factors as strings
+      false // factors as strings
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -279,7 +279,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true // factors as string
+      false // factors as string
     );
 
 
@@ -338,7 +338,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true // factors as string
+      false // factors as string
     );
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
@@ -388,7 +388,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      true // factors as string
+      false // factors as string
     );
 
     SEXP df = lst["data"];
