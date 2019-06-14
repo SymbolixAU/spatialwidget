@@ -113,7 +113,7 @@ namespace colour {
       } else {
 
         Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-          pal, palette_type, alpha, na_colour, include_alpha, colour_name
+          pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits
         );
 
         // Rcpp::List legend = spatialwidget::palette::colour_with_palette(
@@ -139,7 +139,7 @@ namespace colour {
       //   legend_digits
       //   );
       Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-        pal, palette_type, alpha, na_colour, include_alpha, colour_name
+        pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits
       );
 
       std::string legend_type = Rf_isFactor( palette_type )  ? "category" : "gradient";

@@ -57,11 +57,16 @@ namespace palette {
       // extract the list elemetn for either 'fill' or 'stroke'
       Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
       SEXP pal = lst[ colour_name.c_str() ];
-      return colour_with_palette( pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name );
+      return colour_with_palette(
+        pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, legend_digits
+        );
       break;
     }
     default: {
-      return colourvalues::api::colour_values_hex( fill_colour_vec, palette, alpha, na_colour, include_alpha, format, legend_digits, summary, n_summaries);
+      return colourvalues::api::colour_values_hex(
+        fill_colour_vec, palette, alpha, na_colour, include_alpha, format,
+        legend_digits, summary, n_summaries
+      );
       break;
     }
     }
