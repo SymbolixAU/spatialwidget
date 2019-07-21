@@ -37,8 +37,4 @@ test_that("colour_with_palette works for nums and strs", {
   expect_equal( res$summary_colours, col$summary_colours )
   expect_equal( res$summary_values, col$summary_values )
 
-
-
-
-
 })

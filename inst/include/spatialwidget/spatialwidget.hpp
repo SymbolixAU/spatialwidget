@@ -48,7 +48,7 @@ namespace api {
       int digits = -1
     ) {
 
-    //Rcpp::Rcout << "create_geojson1" << std::endl;
+    Rcpp::Rcout << "create_geojson1" << std::endl;
     //Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
@@ -65,6 +65,8 @@ namespace api {
       parameter_exclusions,
       false   // factors as strings
     );
+
+    return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
@@ -103,7 +105,7 @@ namespace api {
       int digits = -1
   ) {
 
-    //Rcpp::Rcout << "create_geojson2" << std::endl;
+    Rcpp::Rcout << "create_geojson2" << std::endl;
     // Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
@@ -120,6 +122,8 @@ namespace api {
       parameter_exclusions,
       false  // factors as strings
     );
+
+    return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson( df, geometry_column, digits );
@@ -159,6 +163,7 @@ namespace api {
       int digits = -1
   ) {
 
+    Rcpp::Rcout << "create_geojson3" << std::endl;
     Rcpp::List res(2);
 
     Rcpp::StringVector data_names = data.names();
@@ -173,6 +178,8 @@ namespace api {
       parameter_exclusions,
       false // factors as strings
     );
+
+    return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column, digits );
@@ -213,6 +220,7 @@ namespace api {
       int digits = -1
   ) {
 
+    Rcpp::Rcout << "create_geojson4" << std::endl;
     Rcpp::List res(2);
 
     Rcpp::StringVector data_names = data.names();
@@ -227,6 +235,8 @@ namespace api {
       parameter_exclusions,
       false // factors as strings
     );
+
+    return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column, digits );
@@ -265,7 +275,7 @@ namespace api {
       int digits = -1
   ) {
 
-    //Rcpp::Rcout << "create_geojson3" << std::endl;
+    Rcpp::Rcout << "create_geojson5" << std::endl;
     // Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
@@ -282,6 +292,7 @@ namespace api {
       false // factors as string
     );
 
+    return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
@@ -324,7 +335,7 @@ namespace api {
       int digits = -1
   ) {
 
-    //Rcpp::Rcout << "create_geojson4" << std::endl;
+    Rcpp::Rcout << "create_geojson6" << std::endl;
     // Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
@@ -340,6 +351,8 @@ namespace api {
       parameter_exclusions,
       false // factors as string
     );
+
+    return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_z_atomise( df, geometry_columns, digits );
@@ -378,6 +391,8 @@ namespace api {
       bool jsonify_legend
   ) {
 
+    Rcpp::Rcout << "create_geojson7" << std::endl;
+
     Rcpp::List res(2);
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
@@ -390,6 +405,8 @@ namespace api {
       parameter_exclusions,
       false // factors as string
     );
+
+    return lst;
 
     SEXP df = lst["data"];
     Rcpp::StringVector js_data = jsonify::api::to_json( df );

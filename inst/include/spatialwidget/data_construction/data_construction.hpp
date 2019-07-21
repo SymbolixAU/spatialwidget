@@ -7,16 +7,16 @@
 namespace spatialwidget {
 namespace construction {
 
-  inline void construct_df( Rcpp::List& df, int& nrows ) {
-
-    if ( nrows < 1 ) {
-      Rcpp::stop("Error creating data layer");
-    }
-
-    Rcpp::IntegerVector nv = Rcpp::seq(1, nrows);
-    df.attr("class") = "data.frame";
-    df.attr("row.names") = nv;
-  }
+  // inline void construct_df( Rcpp::List& df, int& nrows ) {
+  //
+  //   if ( nrows < 1 ) {
+  //     Rcpp::stop("Error creating data layer");
+  //   }
+  //
+  //   Rcpp::IntegerVector nv = Rcpp::seq(1, nrows);
+  //   df.attr("class") = "data.frame";
+  //   df.attr("row.names") = nv;
+  // }
 
   /*
    * Assess each variable passed in to the R function as an argument, determines
@@ -28,13 +28,14 @@ namespace construction {
    * This assumes the fill and stroke colours have already been resolved and removed
    * from the list of parameters
    */
-  inline Rcpp::DataFrame construct_data(
+  inline SEXP construct_data(
   		Rcpp::StringVector& param_names,
   		Rcpp::List& params,
   		Rcpp::StringVector& data_names,
   		Rcpp::List& lst_defaults,
   		Rcpp::DataFrame& data,
-  		int& data_rows) {
+  		int& data_rows
+    ) {
 
   	int n = params.size();
   	int colIndex = -1;
@@ -80,7 +81,7 @@ namespace construction {
 			}
 		} // TODO( is there an 'else' condition? )
 
-  	construct_df( lst_defaults, data_rows );
+  	//construct_df( lst_defaults, data_rows );
   	return lst_defaults;
   }
 

@@ -2,7 +2,6 @@
 #define R_SPATIALWIDGET_PALETTE_H
 
 #include <Rcpp.h>
-//#include "spatialwidget/spatialwidget.hpp"
 #include "colourvalues/api/api.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
@@ -63,7 +62,7 @@ namespace palette {
       break;
     }
     default: {
-      return colourvalues::api::colour_values_hex(
+      return colourvalues::api::colour_values_rgb(
         fill_colour_vec, palette, alpha, na_colour, include_alpha, format,
         legend_digits, summary, n_summaries
       );
