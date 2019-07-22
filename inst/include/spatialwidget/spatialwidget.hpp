@@ -275,7 +275,7 @@ namespace api {
       int digits = -1
   ) {
 
-    Rcpp::Rcout << "create_geojson5" << std::endl;
+    // Rcpp::Rcout << "create_geojson5" << std::endl;
     // Rcpp::Rcout << "legend digits: " << legend_digits << std::endl;
 
     Rcpp::List res(2);
@@ -292,10 +292,15 @@ namespace api {
       false // factors as string
     );
 
-    return lst;
+    //return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    return df;
+
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
+
+    //return js_data;
 
     res[0] = js_data;
 

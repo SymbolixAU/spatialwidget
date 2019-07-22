@@ -12,6 +12,7 @@
 
 #include "jsonify/jsonify.hpp"
 #include "jsonify/to_json/writers/simple.hpp"
+#include "jsonify/to_json/writers/complex.hpp"
 #include "colourvalues/api/api.hpp"
 
 namespace spatialwidget {
@@ -163,7 +164,8 @@ namespace geojson {
   inline Rcpp::StringVector to_geojson_atomise(
       Rcpp::DataFrame& sf,
       Rcpp::StringVector& geometries,
-      int digits) {
+      int digits
+  ) {
 
     int n_geometries = geometries.size();
     int geom;
@@ -207,6 +209,10 @@ namespace geojson {
 
         writer.String( h );
         jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
+        jsonify::writers::complex::write_value( writer, this_vec, true, -1, true, true, "row", i );
+
+        // Rcpp::StringVector geojson_test = sb.GetString();
+        // Rcpp::Rcout << "geojson: " << geojson_test << std::endl;
       }
       writer.EndObject();
 
@@ -589,6 +595,7 @@ namespace geojson {
 
         writer.String( h );
         jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
+        //jsonify::writers::complex::write_value( writer, this_vec, true, -1, true, true, "row", i );
       }
 
       writer.EndObject();
