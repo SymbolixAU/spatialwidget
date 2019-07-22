@@ -144,7 +144,6 @@ namespace colour {
 
       std::string legend_type = Rf_isFactor( palette_type )  ? "category" : "gradient";
 
-
       if ( include_legend ) {
         legend[ "colour_type" ] = colour_name;
         legend[ "type" ] = legend_type;

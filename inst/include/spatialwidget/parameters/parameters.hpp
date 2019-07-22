@@ -130,7 +130,7 @@ namespace parameters {
 
   	lst_params = construct_params( data, params );
 
-  	SEXP res = spatialwidget::construction::construct_data(
+  	Rcpp::DataFrame df = spatialwidget::construction::construct_data(
   		param_names,
   		params,
   		data_names,
@@ -140,7 +140,7 @@ namespace parameters {
   	);
 
   	Rcpp::List result = Rcpp::List::create(
-  		Rcpp::_["data"] = res,
+  		Rcpp::_["data"] = df,
   		Rcpp::_["legend"] = lst_legend
   	);
 
