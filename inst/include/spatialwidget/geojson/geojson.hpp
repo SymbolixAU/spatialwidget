@@ -209,7 +209,7 @@ namespace geojson {
 
         writer.String( h );
         jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
-        jsonify::writers::complex::write_value( writer, this_vec, true, -1, true, true, "row", i );
+        //jsonify::writers::complex::write_value( writer, this_vec, true, -1, true, true, "row", i );
 
         // Rcpp::StringVector geojson_test = sb.GetString();
         // Rcpp::Rcout << "geojson: " << geojson_test << std::endl;
