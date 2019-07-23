@@ -41,7 +41,8 @@ namespace palette {
       std::string& na_colour,
       bool& include_alpha,
       std::string& colour_name,
-      int legend_digits = 2
+      int legend_digits = 2,
+      std::string colour_format = "hex"
   ) {
 
     //Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
@@ -62,11 +63,18 @@ namespace palette {
       break;
     }
     default: {
+      if( colour_format == "hex" ) {
+      return colourvalues::api::colour_values_hex(
+        fill_colour_vec, palette, alpha, na_colour, include_alpha, format,
+        legend_digits, summary, n_summaries
+      );
+    } else {
       return colourvalues::api::colour_values_rgb(
         fill_colour_vec, palette, alpha, na_colour, include_alpha, format,
         legend_digits, summary, n_summaries
       );
-      break;
+    }
+    break;
     }
     }
     return ""; // never reached

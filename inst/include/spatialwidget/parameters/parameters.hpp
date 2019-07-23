@@ -65,7 +65,8 @@ namespace parameters {
   		Rcpp::StringVector& layer_legend,     // vector of colours to use in the legend
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions,
-  		bool factors_as_string = true
+  		bool factors_as_string = true,
+  		std::string colour_format = "hex"
   ) {
 
     //Turn factors to strings
@@ -108,7 +109,8 @@ namespace parameters {
 	      colour_column,
 	      opacity_column,
 	      lst_legend,
-	      include_legend
+	      include_legend,
+	      colour_format
 	      );
 		}
 
@@ -130,7 +132,7 @@ namespace parameters {
 
   	lst_params = construct_params( data, params );
 
-  	Rcpp::DataFrame df = spatialwidget::construction::construct_data(
+  	SEXP df = spatialwidget::construction::construct_data(
   		param_names,
   		params,
   		data_names,

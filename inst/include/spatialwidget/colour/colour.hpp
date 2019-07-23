@@ -67,7 +67,8 @@ namespace colour {
       Rcpp::NumericVector& alpha,
       std::string& colour_name,
       bool& include_legend,
-      int legend_digits = 2
+      int legend_digits = 2,
+      std::string colour_format = "hex"
     ) {
 
     std::string na_colour = params.containsElementNamed( "na_colour" ) ?
@@ -113,7 +114,7 @@ namespace colour {
       } else {
 
         Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-          pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits
+          pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits, colour_format
         );
 
         // Rcpp::List legend = spatialwidget::palette::colour_with_palette(
@@ -139,7 +140,7 @@ namespace colour {
       //   legend_digits
       //   );
       Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-        pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits
+        pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits, colour_format
       );
 
       std::string legend_type = Rf_isFactor( palette_type )  ? "category" : "gradient";
@@ -162,7 +163,8 @@ namespace colour {
       std::string& colour_name,
       std::string& opacity_name,
       Rcpp::List& lst_legend,
-      bool& include_legend
+      bool& include_legend,
+      std::string colour_format = "hex"
       //int legend_digits = 2
     ) {
 
@@ -264,7 +266,7 @@ namespace colour {
     // known here before it goes into 'make_colours' and then into colourvalues
     Rcpp::List legend = make_colours(
       lst_params, params, data, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
-      this_colour, alpha, colour_name, include_legend, legend_digits
+      this_colour, alpha, colour_name, include_legend, legend_digits, colour_format
     );
 
     if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {

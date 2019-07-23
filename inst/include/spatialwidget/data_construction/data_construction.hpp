@@ -28,7 +28,7 @@ namespace construction {
    * This assumes the fill and stroke colours have already been resolved and removed
    * from the list of parameters
    */
-  inline Rcpp::DataFrame construct_data(
+  inline SEXP construct_data(
   		Rcpp::StringVector& param_names,
   		Rcpp::List& params,
   		Rcpp::StringVector& data_names,
@@ -80,6 +80,11 @@ namespace construction {
 			  spatialwidget::utils::fill::fill_vector( lst_defaults, this_param, value, data_rows );
 			}
 		} // TODO( is there an 'else' condition? )
+
+  	Rcpp::StringVector list_names = lst_defaults.names();
+  	// Rcpp::Rcout << "list_names: " << list_names << std::endl;
+
+  	//return lst_defaults;
 
   	construct_df( lst_defaults, data_rows );
   	return lst_defaults;
