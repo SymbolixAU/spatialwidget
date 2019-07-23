@@ -185,7 +185,7 @@ namespace api {
       colour_format
     );
 
-    return lst;
+    //return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column, digits );
