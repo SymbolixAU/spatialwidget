@@ -40,8 +40,10 @@ namespace construction {
   	int n = params.size();
   	int colIndex = -1;
 
+  	// Rcpp::Rcout << "param_names " << param_names << ", n: " << n << std::endl;
+
   	if (param_names.size() != n ) {
-  	  Rcpp::stop("unsuitable data object");
+  	  Rcpp::stop("spatialwidget - unsuitable data object");
   	}
 
   	// iterate each of the parameters

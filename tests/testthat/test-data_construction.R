@@ -35,7 +35,7 @@ test_that("invalid columns and parameters handled", {
   ## when entering the 'construct_data' function, all the colours and palettes will have been sorted out
   expect_error(
     spatialwidget:::rcpp_construct_data( param_names, params, data_names, lst_defaults, data, data_rows ),
-    "unsuitable data object"
+    "spatialwidget - unsuitable data object"
   )
 
   ## param_names is created from params, so they should alwys be teh same length
@@ -52,7 +52,7 @@ test_that("invalid columns and parameters handled", {
 
   expect_error(
     spatialwidget:::rcpp_construct_data( param_names, params, data_names, lst_defaults, data, data_rows ),
-    "unsuitable data object"
+    "spatialwidget - unsuitable data object"
   )
 
   # res <- spatialwidget:::rcpp_construct_data( param_names, params, data_names, lst_defaults, data, data_rows )
@@ -91,7 +91,7 @@ test_that("parameters not supplied by user are ignored", {
 
   expect_error(
     spatialwidget:::rcpp_construct_data( param_names, params, data_names, lst_defaults, data, data_rows ),
-    "unsuitable data object"
+    "spatialwidget - unsuitable data object"
   )
 
   # res <- spatialwidget:::rcpp_construct_data( param_names, params, data_names, lst_defaults, data, data_rows )

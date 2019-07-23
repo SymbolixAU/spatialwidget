@@ -105,6 +105,15 @@ namespace colour {
           _["summary_colours"] = lvls
         );
 
+        if( colour_format == "rgb" ) {
+          Rcpp::IntegerMatrix colour_mat = colourvalues::convert::convert_hex_to_rgb( colour_vec );
+          Rcpp::IntegerMatrix colour_mat_lvls = colourvalues::convert::convert_hex_to_rgb( lvls );
+
+          legend["colours"] = colour_mat;
+          legend["summary_colours"] = colour_mat_lvls;
+        }
+
+
         if ( include_legend ) {
           legend[ "colour_type" ] = colour_name;
           legend[ "type" ] = "category";

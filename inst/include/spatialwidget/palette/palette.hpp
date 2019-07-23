@@ -68,11 +68,13 @@ namespace palette {
         fill_colour_vec, palette, alpha, na_colour, include_alpha, format,
         legend_digits, summary, n_summaries
       );
-    } else {
+    } else if ( colour_format == "rgb" ) {
       return colourvalues::api::colour_values_rgb(
         fill_colour_vec, palette, alpha, na_colour, include_alpha, format,
         legend_digits, summary, n_summaries
       );
+    } else {
+      Rcpp::stop("spatialwidget - unknown colour format, expecting hex or rgb");
     }
     break;
     }
