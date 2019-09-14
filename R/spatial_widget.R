@@ -182,7 +182,8 @@ widget_od <- function(
   fill_colour = NULL,
   fill_opacity = NULL,
   legend = TRUE,
-  json_legend = TRUE
+  json_legend = TRUE,
+  digits = 6
   ) {
 
   l <- as.list( match.call( expand.dots = F ) )
@@ -201,7 +202,7 @@ widget_od <- function(
   tp <- l[["data_type"]]
   l[["data_type"]] <- NULL
 
-  js_data <- rcpp_widget_point( data, l, c("origin","destination"), json_legend )
+  js_data <- rcpp_widget_point( data, l, c("origin","destination"), json_legend, digits )
 
   return( js_data )
 }
