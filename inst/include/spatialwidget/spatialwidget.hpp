@@ -335,6 +335,106 @@ namespace api {
     return res;
   }
 
+/*
+ * expects `data` to be data.frame withn lon & lat columns. The geometry_columns
+ * argument is a named list, list(myGeometry = c("lon","lat")), where 'myGeometry'
+ * will be returned inside the 'geometry' object of the GeoJSON
+ */
+inline Rcpp::NumericVector create_binary(
+    Rcpp::DataFrame& data,
+    Rcpp::List& params,
+    Rcpp::List& lst_defaults,
+    std::unordered_map< std::string, std::string >& layer_colours,
+    Rcpp::StringVector& layer_legend,
+    int& data_rows,
+    Rcpp::StringVector& parameter_exclusions,
+    Rcpp::List& geometry_columns,
+    bool jsonify_legend,
+    int digits = -1,
+    std::string colour_format = "rgb"  // can't be hex for binary data
+) {
+
+  Rcpp::List res(2);
+  Rcpp::StringVector data_names = data.names();
+
+  Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
+    data,
+    params,
+    lst_defaults,
+    layer_colours,
+    layer_legend,
+    data_rows,
+    parameter_exclusions,
+    false, // factors as string
+    colour_format
+  );
+
+  // lst is an object with a [data] and [legend] component
+  // data is a data.frame
+  // for primitive layers, each column should be a vector (apart form colours, which will have four elements)
+  // we can turn all the columns into numeric vectors(?)
+  // (any reason why some won't be numeric?)
+  // (year, like tooltips...)
+  // (oh, taht's right)
+  // - all the mapdeck get* functions shoudl be numeric, thoughh
+
+  Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+  //
+  // Rcpp::List lst_geometries = df["geometry"];
+  //
+  // Rcpp::NumericVector lons = lst_geometries[0];
+  // Rcpp::NumericVector lats = lst_geometries[1];
+  //
+
+  Rcpp::StringVector df_names = df.names();
+  Rcpp::Rcout << df_names << std::endl;
+
+  Rcpp::NumericVector lons = df["lon"];
+  Rcpp::NumericVector lats = df["lat"];
+  //return lons;
+
+
+  R_xlen_t n_1 = lons.size();
+  R_xlen_t n_2 = lats.size();
+
+  R_xlen_t n = n_1 + n_2;
+
+  Rcpp::NumericVector binary_res( n );
+
+  R_xlen_t i;
+  for( i = 0; i < n_1; i++ ) {
+    binary_res[i] = lons[i];
+  }
+
+  int idx = 0;
+  for( i = n_1; i < n; i++ ) {
+    binary_res[i] = lats[ idx ];
+    idx++;
+  }
+
+  return binary_res;
+  //
+  // Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
+  //
+  // res[0] = js_data;
+  //
+  // SEXP legend = lst[ "legend" ];
+  // if ( jsonify_legend ) {
+  //   legend = jsonify::api::to_json( legend );
+  //
+  //   Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+  //   // Rcpp::Rcout << "legend: " << sv_leg << std::endl;
+  //
+  //   res[1] = sv_leg;
+  // } else {
+  //   res[1] = legend;
+  // }
+  //
+  // res.names() = Rcpp::CharacterVector::create("data", "legend");
+  // return res;
+}
+
+
 
   /*
    * expects `data` to be data.frame withn lon & lat & elev columns. The 'bool elevation'

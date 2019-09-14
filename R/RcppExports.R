@@ -93,6 +93,10 @@ rcpp_widget_point_df <- function(data, params, geometries, jsonify_legend, digit
     .Call(`_spatialwidget_rcpp_widget_point_df`, data, params, geometries, jsonify_legend, digits)
 }
 
+rcpp_widget_point_df_binary <- function(data, params, geometries, jsonify_legend, digits) {
+    .Call(`_spatialwidget_rcpp_widget_point_df_binary`, data, params, geometries, jsonify_legend, digits)
+}
+
 rcpp_widget_polygon <- function(data, params, geometry_columns, jsonify_legend, digits) {
     .Call(`_spatialwidget_rcpp_widget_polygon`, data, params, geometry_columns, jsonify_legend, digits)
 }
