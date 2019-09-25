@@ -15,6 +15,8 @@
 #include "jsonify/to_json/writers/complex.hpp"
 #include "colourvalues/api/api.hpp"
 
+#include "sfheaders/sfc/sfc_attributes.hpp"
+
 namespace spatialwidget {
 namespace geojson {
 
@@ -278,7 +280,7 @@ namespace geojson {
       Rcpp::List sfc = sf[ geom_column ];
       SEXP sfg = sfc[ i ];
 
-      cls = geojsonsf::getSfClass(sfg);
+      cls = sfheaders::sfc::getSfClass(sfg);
       geojsonsf::write_geometry::cls_check( cls );
       geom_type = cls[1];
 
@@ -377,7 +379,7 @@ namespace geojson {
         Rcpp::List sfc = sf[ geom_column ];
         SEXP sfg = sfc[ i ];
 
-        cls = geojsonsf::getSfClass(sfg);
+        cls = sfheaders::sfc::getSfClass(sfg);
         geojsonsf::write_geometry::cls_check( cls );
         geom_type = cls[1];
 
@@ -440,7 +442,7 @@ namespace geojson {
           Rcpp::List sfc = sf[ geom_column ];
           SEXP sfg = sfc[ i ];
 
-          cls = geojsonsf::getSfClass(sfg);
+          cls = sfheaders::sfc::getSfClass(sfg);
           geojsonsf::write_geometry::cls_check( cls );
           geom_type = cls[1];
 

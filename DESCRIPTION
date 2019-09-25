@@ -23,7 +23,8 @@ LinkingTo:
     geojsonsf (>= 1.3.2),
     jsonify (>= 0.2.10002),
     rapidjsonr,
-    Rcpp
+    Rcpp,
+    sfheaders
 RoxygenNote: 6.1.1
 Suggests:
     colourvalues,
