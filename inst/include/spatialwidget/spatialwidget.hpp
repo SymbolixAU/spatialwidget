@@ -64,7 +64,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      false,   // factors as strings
+      true,   // factors as strings
       colour_format
     );
 
@@ -123,7 +123,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      false,  // factors as strings
+      true,  // factors as strings
       colour_format
     );
 
@@ -181,7 +181,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      false, // factors as strings
+      true, // factors as strings
       colour_format
     );
 
@@ -240,7 +240,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      false, // factors as strings
+      true, // factors as strings
       colour_format
     );
 
@@ -298,7 +298,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      false, // factors as string
+      true, // factors as string
       colour_format
     );
 
@@ -370,7 +370,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      false, // factors as string
+      true, // factors as string
       colour_format
     );
 
@@ -426,7 +426,7 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      false, // factors as string
+      true, // factors as string
       colour_format
     );
 

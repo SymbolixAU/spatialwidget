@@ -140,13 +140,9 @@ namespace geojson {
       //double z = Rcpp::mean( z_values );
       Rcpp::StringVector poly_colours = colours[j];
       jsonify::writers::simple::write_value( writer, poly_colours, false );
-      //jsonify::writers::scalars::write_value( writer, z, -1 );
-      //jsonify::writers::simple::write_value(writer, z_values, false, -1, false);
-      writer.EndObject();
 
       writer.EndObject();
-
-      //writer.EndObject();
+      writer.EndObject();
       writer.EndObject();
     //avg_z[i] = Rcpp::mean( z_values );
     //writer.EndObject();
@@ -166,7 +162,8 @@ namespace geojson {
   inline Rcpp::StringVector to_geojson_atomise(
       Rcpp::DataFrame& sf,
       Rcpp::StringVector& geometries,
-      int digits
+      int digits,
+      bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
   ) {
 
     int n_geometries = geometries.size();
@@ -210,8 +207,7 @@ namespace geojson {
         SEXP this_vec = sf[ h ];
 
         writer.String( h );
-        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
-        //jsonify::writers::complex::write_value( writer, this_vec, true, -1, true, true, "row", i );
+        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, factors_as_string );
 
         // Rcpp::StringVector geojson_test = sb.GetString();
         // Rcpp::Rcout << "geojson: " << geojson_test << std::endl;
@@ -244,7 +240,9 @@ namespace geojson {
   inline Rcpp::StringVector to_geojson_downcast_atomise(
       Rcpp::DataFrame& sf,
       std::string geometry,
-      int digits ) {
+      int digits,
+      bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
+  ) {
 
 
     const char* geom_column = geometry.c_str();
@@ -305,7 +303,7 @@ namespace geojson {
           SEXP this_vec = sf[ h ];
 
           writer.String( h );
-          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
+          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, factors_as_string  );
         }
         writer.EndObject();
 
@@ -332,8 +330,9 @@ namespace geojson {
   inline Rcpp::StringVector to_geojson_downcast_atomise(
       Rcpp::DataFrame& sf,
       Rcpp::StringVector geometries,
-      int digits)
-  {
+      int digits,
+      bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
+ ) {
 
     int n_geometries = geometries.size();
     if ( n_geometries != 2 ) {
@@ -426,7 +425,7 @@ namespace geojson {
           SEXP this_vec = sf[ h ];
 
           writer.String( h );
-          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
+          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, factors_as_string );
         }
         writer.EndObject();
 
@@ -467,7 +466,12 @@ namespace geojson {
   /*
    * converts 'sf' object to standard GeoJSON
    */
-  inline Rcpp::StringVector to_geojson( Rcpp::DataFrame& sf, std::string geom_column, int digits ) {
+  inline Rcpp::StringVector to_geojson(
+      Rcpp::DataFrame& sf,
+      std::string geom_column,
+      int digits,
+      bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
+  ) {
 
     rapidjson::StringBuffer sb;
     rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
@@ -506,7 +510,7 @@ namespace geojson {
         SEXP this_vec = sf[ h ];
 
         writer.String( h );
-        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
+        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, factors_as_string  );
       }
       writer.EndObject();
 
@@ -529,8 +533,9 @@ namespace geojson {
   inline Rcpp::StringVector to_geojson_atomise(
       Rcpp::DataFrame& df,
       Rcpp::List& geometries, // i.e., list(origin = c("start_lon", "start_lat", destination = c("end_lon", "end_lat")))
-      int digits )
-  {
+      int digits,
+      bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
+  ) {
 
     int n_cols = df.ncol();
     int n_rows = df.nrows();
@@ -596,7 +601,7 @@ namespace geojson {
         SEXP this_vec = df[ h ];
 
         writer.String( h );
-        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true );
+        jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, factors_as_string );
         //jsonify::writers::complex::write_value( writer, this_vec, true, -1, true, true, "row", i );
       }
 
@@ -631,8 +636,9 @@ namespace geojson {
   inline Rcpp::StringVector to_geojson_z_atomise(
       Rcpp::DataFrame& df,
       Rcpp::List& geometries, // i.e., list(origin = c("start_lon", "start_lat", destination = c("end_lon", "end_lat")))
-      int digits )
-  {
+      int digits,
+      bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
+  ) {
 
     int n_cols = df.ncol();
     int n_rows = df.nrows();
@@ -712,7 +718,7 @@ namespace geojson {
           SEXP this_vec = df[ h ];
 
           writer.String( h );
-          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, true  );
+          jsonify::writers::simple::write_value( writer, this_vec, i, -1, false, factors_as_string  );
         }
         writer.EndObject();
       }
