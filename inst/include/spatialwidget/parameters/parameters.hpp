@@ -5,7 +5,11 @@
 #include "spatialwidget/spatialwidget.hpp"
 #include "spatialwidget/legend/legend.hpp"
 #include "spatialwidget/colour/colour.hpp"
+#include "spatialwidget/utils/utils.hpp"
 //#include <Rcpp/Benchmark/Timer.h>
+
+// #include "jsonify/to_json/dates/dates.hpp"
+// #include "jsonify/to_json/utils.hpp"
 
 namespace spatialwidget {
 namespace parameters {
@@ -72,6 +76,32 @@ namespace parameters {
     //Turn factors to strings
     if (factors_as_string ) {
       spatialwidget::utils::factors::factors_to_string( data );
+    }
+
+    // convert dates to characters
+    int tp;
+    int df_col;
+    Rcpp::StringVector column_names= data.names();
+    int n_cols = data.ncol();
+
+    for( df_col = 0; df_col < n_cols; ++df_col ) {
+      const char * col_name = column_names[ df_col ];
+      tp = TYPEOF( data[ col_name ] );
+
+      if( tp == REALSXP ) {
+        Rcpp::CharacterVector cls = spatialwidget::utils::getRClass( data[ col_name ] );
+
+        if( spatialwidget::utils::is_in( "Date", cls ) ) {
+          Rcpp::NumericVector nv_dte = Rcpp::as< Rcpp::NumericVector >( data[ col_name ] );
+          Rcpp::StringVector sv_dte = jsonify::dates::date_to_string( nv_dte );
+          data[ col_name ] = sv_dte;
+
+        } else if (spatialwidget::utils::is_in( "POSIXt", cls ) ) {
+          Rcpp::NumericVector nv_psx = Rcpp::as< Rcpp::NumericVector >( data[ col_name ] );
+          Rcpp::StringVector sv_psx = jsonify::dates::posixct_to_string( nv_psx );
+          data[ col_name ] = sv_psx;
+        }
+      }
     }
 
 
