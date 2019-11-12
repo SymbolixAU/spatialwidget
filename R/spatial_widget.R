@@ -194,7 +194,7 @@ widget_point_binary <- function(
   l[["data_type"]] <- NULL
 
   if( tp == "sf" ) {
-    js_data <- rcpp_widget_point_binary( data, l, c("geometry"), json_legend, digits )
+    js_data <- rcpp_widget_point_df_binary( data, l, c("geometry"), json_legend, digits )
   } else if (tp == "df" ) {
     if( is.null( lon ) || is.null( lat ) ) {
       stop("lon and lat are requried for data.frames")

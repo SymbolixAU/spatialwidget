@@ -340,7 +340,7 @@ namespace api {
  * argument is a named list, list(myGeometry = c("lon","lat")), where 'myGeometry'
  * will be returned inside the 'geometry' object of the GeoJSON
  */
-inline Rcpp::NumericVector create_binary(
+inline Rcpp::List create_binary(
     Rcpp::DataFrame& data,
     Rcpp::List& params,
     Rcpp::List& lst_defaults,
@@ -378,7 +378,15 @@ inline Rcpp::NumericVector create_binary(
   // (oh, taht's right)
   // - all the mapdeck get* functions shoudl be numeric, thoughh
 
+  return lst["data"];
+
+  // TODO
+  // construct vectors of positions, colours, and everything else
+
   Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+  return df;
+
   //
   // Rcpp::List lst_geometries = df["geometry"];
   //
@@ -386,33 +394,35 @@ inline Rcpp::NumericVector create_binary(
   // Rcpp::NumericVector lats = lst_geometries[1];
   //
 
-  Rcpp::StringVector df_names = df.names();
-  Rcpp::Rcout << df_names << std::endl;
+  // Rcpp::StringVector df_names = df.names();
+  // Rcpp::Rcout << df_names << std::endl;
+  //
+  // Rcpp::NumericVector lons = df["lon"];
+  // Rcpp::NumericVector lats = df["lat"];
+  // //return lons;
+  //
+  //
+  // R_xlen_t n_1 = lons.size();
+  // R_xlen_t n_2 = lats.size();
+  //
+  // R_xlen_t n = n_1 + n_2;
+  //
+  // Rcpp::NumericVector binary_res( n );
+  //
+  // R_xlen_t i;
+  // for( i = 0; i < n_1; i++ ) {
+  //   binary_res[i] = lons[i];
+  // }
+  //
+  // int idx = 0;
+  // for( i = n_1; i < n; i++ ) {
+  //   binary_res[i] = lats[ idx ];
+  //   idx++;
+  // }
+  //
+  // return binary_res;
 
-  Rcpp::NumericVector lons = df["lon"];
-  Rcpp::NumericVector lats = df["lat"];
-  //return lons;
 
-
-  R_xlen_t n_1 = lons.size();
-  R_xlen_t n_2 = lats.size();
-
-  R_xlen_t n = n_1 + n_2;
-
-  Rcpp::NumericVector binary_res( n );
-
-  R_xlen_t i;
-  for( i = 0; i < n_1; i++ ) {
-    binary_res[i] = lons[i];
-  }
-
-  int idx = 0;
-  for( i = n_1; i < n; i++ ) {
-    binary_res[i] = lats[ idx ];
-    idx++;
-  }
-
-  return binary_res;
   //
   // Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
   //

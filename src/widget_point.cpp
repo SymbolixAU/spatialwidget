@@ -65,7 +65,7 @@ Rcpp::List rcpp_widget_point_df(
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector rcpp_widget_point_df_binary(
+Rcpp::List rcpp_widget_point_df_binary(
     Rcpp::DataFrame data,
     Rcpp::List params,
     Rcpp::List geometries,

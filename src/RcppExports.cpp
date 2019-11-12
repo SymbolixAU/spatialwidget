@@ -342,7 +342,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_widget_point_df_binary
-Rcpp::NumericVector rcpp_widget_point_df_binary(Rcpp::DataFrame data, Rcpp::List params, Rcpp::List geometries, bool jsonify_legend, int digits);
+Rcpp::List rcpp_widget_point_df_binary(Rcpp::DataFrame data, Rcpp::List params, Rcpp::List geometries, bool jsonify_legend, int digits);
 RcppExport SEXP _spatialwidget_rcpp_widget_point_df_binary(SEXP dataSEXP, SEXP paramsSEXP, SEXP geometriesSEXP, SEXP jsonify_legendSEXP, SEXP digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
