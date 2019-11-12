@@ -1,5 +1,6 @@
 # v0.2.2
 
+* colours returned as either hex strings or RGBA matrix
 * factors maintained as-is (reverting 0.2.1) and used in summary values
 * `legend_digits` argument exposed throug api
 * `digits` argument exposed through api
