@@ -7,5 +7,6 @@
 #include "spatialwidget/utils/remove/remove.hpp"
 #include "spatialwidget/utils/map/map.hpp"
 #include "spatialwidget/utils/colour/colour.hpp"
+#include "spatialwidget/utils/dates/dates.hpp"
 
 #endif

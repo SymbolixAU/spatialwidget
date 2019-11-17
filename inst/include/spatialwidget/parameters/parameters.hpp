@@ -5,7 +5,11 @@
 #include "spatialwidget/spatialwidget.hpp"
 #include "spatialwidget/legend/legend.hpp"
 #include "spatialwidget/colour/colour.hpp"
+#include "spatialwidget/utils/utils.hpp"
 //#include <Rcpp/Benchmark/Timer.h>
+
+// #include "jsonify/to_json/dates/dates.hpp"
+// #include "jsonify/to_json/utils.hpp"
 
 namespace spatialwidget {
 namespace parameters {
@@ -73,6 +77,9 @@ namespace parameters {
     if (factors_as_string ) {
       spatialwidget::utils::factors::factors_to_string( data );
     }
+
+    // convert dates to characters
+    spatialwidget::utils::dates::dates_to_string( data );
 
 
   	Rcpp::StringVector param_names = params.names();
