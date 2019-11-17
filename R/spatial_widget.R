@@ -200,7 +200,7 @@ widget_point_binary <- function(
       stop("lon and lat are requried for data.frames")
     }
     js_data <- rcpp_widget_point_df_binary(
-      data, l, list(myGeometry = c("lon","lat") ), json_legend, digits
+      data, l, list( myGeometry = c("lon","lat") ), json_legend, digits
     )
   }
   return( js_data )
