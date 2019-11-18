@@ -426,6 +426,7 @@ inline Rcpp::List create_binary(
   //Rcpp::Rcout << "geometry_columns: " << geometry_columns.names() << std::endl;
   Rcpp::List lst_geometry; // list containing all geometry vectors
   int n_geometries = geometry_columns.size();
+  Rcpp::StringVector geometry_names = geometry_columns.names();
 
   int n_rows = data.nrows();
   int n_cols = data.ncol();
@@ -434,7 +435,7 @@ inline Rcpp::List create_binary(
   int n_lats = geometry_columns.size();  // it is expected the lon & lat data is the same size because
 
   int n_lonlat = n_lons + n_lats;
-  int n_properties = n_cols - n_lonlat; // LON & LAT columns
+  //int n_properties = n_cols - n_lonlat; // LON & LAT columns
   int i, j;
 
   Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
@@ -465,7 +466,10 @@ inline Rcpp::List create_binary(
       coords[ j + 1 ] = nv_lat[ counter ];
     }
 
-    lst_geometry[ "geometry" ] = coords;
+    Rcpp::String nme = geometry_names[i];
+    //Rcpp::Rcout << "name: " << nme.get_cstring() << std::endl;
+
+    lst_geometry[ nme.get_cstring() ] = coords;
   }
 
   spatialwidget::utils::remove::remove_list_elements( lst_binary, lats );
@@ -479,28 +483,6 @@ inline Rcpp::List create_binary(
   );
 
   res[0] = js_data;
-
-  // return res;
-  //
-  // return lst["data"];
-
-  // TODO
-  // construct vectors of positions, colours, and everything else
-
-
-
-  // unpack each column into a list
-  // and all the colours will be unpacked too
-
-
-  //return df;
-
-
-
-
-  //Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
-
-  //res[0] = js_data;
 
   SEXP legend = lst[ "legend" ];
   if ( jsonify_legend ) {
