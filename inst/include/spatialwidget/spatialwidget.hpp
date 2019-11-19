@@ -370,13 +370,6 @@ inline Rcpp::List create_binary(
   );
 
   // lst is an object with a [data] and [legend] component
-  // data is a data.frame
-  // for primitive layers, each column should be a vector (apart form colours, which will have four elements)
-  // we can turn all the columns into numeric vectors(?)
-  // (any reason why some won't be numeric?)
-  // (year, like tooltips...)
-  // (oh, taht's right)
-  // - all the mapdeck get* functions shoudl be numeric, thoughh
 
   // TODO
   // turn the colours into a single vector
@@ -385,7 +378,7 @@ inline Rcpp::List create_binary(
   // turn the coordinates into a single vector
   // p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, ...
 
-  //Rcpp::List lst_binary;
+  // all other columns are kept as-is (they should already be vectors)
 
   std::unordered_map< std::string, std::string>::iterator it;
 
@@ -398,9 +391,7 @@ inline Rcpp::List create_binary(
   for ( it = layer_colours.begin(); it != layer_colours.end(); ++it ) {
 
     colour_column = it->first;
-    opacity_column = it->second;
-
-    //Rcpp::Rcout << "colour_column: " << colour_column << ", opacity_column: " << opacity_column << std::endl;
+    // opacity_column = it->second;
 
     Rcpp::NumericMatrix colour_mat = lst_binary[ colour_column ];
 
@@ -411,10 +402,8 @@ inline Rcpp::List create_binary(
     R_xlen_t i = 0;
     Rcpp::NumericVector colour_vec( n );
     for( i = 0; i < n; i += increment, counter++ ) {
-
       Rcpp::Range rng( i, i + increment );
       colour_vec[ rng ] = colour_mat.row( counter );
-
     }
 
     lst_binary[ colour_column ] = colour_vec;
@@ -454,6 +443,8 @@ inline Rcpp::List create_binary(
   for ( i = 0; i < n_lons; i++ ) {
     const char* this_lon = lons[i];
     const char* this_lat = lats[i];
+    // for data.frames, can simply extract vector
+    // for sf objects, I need to implement sfheaders::to_df
     Rcpp::NumericVector nv_lon = data[ this_lon ];
     Rcpp::NumericVector nv_lat = data[ this_lat ];
 
