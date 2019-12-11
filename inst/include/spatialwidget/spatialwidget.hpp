@@ -414,16 +414,16 @@ inline Rcpp::List create_binary(
 
   //Rcpp::Rcout << "geometry_columns: " << geometry_columns.names() << std::endl;
   Rcpp::List lst_geometry; // list containing all geometry vectors
-  int n_geometries = geometry_columns.size();
+  //int n_geometries = geometry_columns.size();
   Rcpp::StringVector geometry_names = geometry_columns.names();
 
   int n_rows = data.nrows();
-  int n_cols = data.ncol();
+  //int n_cols = data.ncol();
 
   int n_lons = geometry_columns.size();
   int n_lats = geometry_columns.size();  // it is expected the lon & lat data is the same size because
 
-  int n_lonlat = n_lons + n_lats;
+  //int n_lonlat = n_lons + n_lats;
   //int n_properties = n_cols - n_lonlat; // LON & LAT columns
   int i, j;
 
