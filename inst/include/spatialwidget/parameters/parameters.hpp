@@ -80,8 +80,8 @@ namespace parameters {
     }
 
     // convert dates to characters
+    // issue 46 - moved this outside
     //spatialwidget::utils::dates::dates_to_string( data );
-
 
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
@@ -112,7 +112,9 @@ namespace parameters {
 		  include_legend = spatialwidget::utils::where::where_is( colour_column, legend_names ) >= 0 ? true : false;
 
 	    spatialwidget::colour::resolve_colour(
-	      lst_params, params, data,
+	      lst_params,
+	      params,
+	      data,
 	      lst_defaults,
 	      colour_column,
 	      opacity_column,
