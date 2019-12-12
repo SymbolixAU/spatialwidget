@@ -71,6 +71,10 @@ namespace api {
     //return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
+
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_atomise( df, geometry_columns, digits );
 
     res[0] = js_data;
@@ -130,6 +134,10 @@ namespace api {
     //return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
+
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson( df, geometry_column, digits );
 
     res[0] = js_data;
@@ -188,6 +196,10 @@ namespace api {
     //return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
+
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column, digits );
 
     res[0] = js_data;
@@ -247,6 +259,10 @@ namespace api {
     //return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
+
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_downcast_atomise( df, geometry_column, digits );
 
     res[0] = js_data;
@@ -308,6 +324,9 @@ namespace api {
     //return x;
     //spatialwidget::construction::construct_df( df, data_rows );
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
 
     //return df;
 
@@ -377,6 +396,10 @@ namespace api {
     //return lst;
 
     Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
+
     Rcpp::StringVector js_data = spatialwidget::geojson::to_geojson_z_atomise( df, geometry_columns, digits );
 
 
@@ -432,9 +455,12 @@ namespace api {
 
     //return lst;
 
-    SEXP df = lst["data"];
+    //SEXP df = lst["data"];
+    Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
 
-    //Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    // // issue 46
+    // spatialwidget::utils::dates::dates_to_string( df );
+
 
     Rcpp::StringVector js_data = jsonify::api::to_json( df );
 

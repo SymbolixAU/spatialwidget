@@ -73,13 +73,14 @@ namespace parameters {
   		std::string colour_format = "hex"
   ) {
 
+
     //Turn factors to strings
     if (factors_as_string ) {
       spatialwidget::utils::factors::factors_to_string( data );
     }
 
     // convert dates to characters
-    spatialwidget::utils::dates::dates_to_string( data );
+    //spatialwidget::utils::dates::dates_to_string( data );
 
 
   	Rcpp::StringVector param_names = params.names();
