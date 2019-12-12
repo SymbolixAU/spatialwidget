@@ -82,7 +82,7 @@ namespace parameters {
     // this is working on the whole data object, even if a column isn't used
     // doesn't seem right.
     // also, given colourvalues handles dates, is this even needed?
-    //spatialwidget::utils::dates::dates_to_string( data );
+    spatialwidget::utils::dates::dates_to_string( data );
 
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
