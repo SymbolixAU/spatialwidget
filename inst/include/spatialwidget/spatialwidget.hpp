@@ -359,7 +359,7 @@ namespace api {
  * argument is a named list, list(myGeometry = c("lon","lat")), where 'myGeometry'
  * will be returned inside the 'geometry' object of the GeoJSON
  */
-inline Rcpp::List create_binary(
+inline Rcpp::List create_columnar(
     Rcpp::DataFrame& data,
     Rcpp::List& params,
     Rcpp::List& lst_defaults,
@@ -370,7 +370,7 @@ inline Rcpp::List create_binary(
     Rcpp::List& geometry_columns,
     bool jsonify_legend,
     int digits = -1,
-    std::string colour_format = "rgb"  // can't be hex for binary data
+    std::string colour_format = "rgb"  // can't be hex for columnar data
 ) {
 
   Rcpp::List res(2);
@@ -405,14 +405,16 @@ inline Rcpp::List create_binary(
   std::string opacity_column;
 
   //Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-  Rcpp::List lst_binary = Rcpp::as< Rcpp::List >( lst["data"] );
+  Rcpp::List lst_columnar = Rcpp::as< Rcpp::List >( lst["data"] );
+
+  //return lst_columnar;
 
   for ( it = layer_colours.begin(); it != layer_colours.end(); ++it ) {
 
     colour_column = it->first;
     // opacity_column = it->second;
 
-    Rcpp::NumericMatrix colour_mat = lst_binary[ colour_column ];
+    Rcpp::NumericMatrix colour_mat = lst_columnar[ colour_column ];
 
     // convert matrix to vector
     R_xlen_t increment = colour_mat.ncol();
@@ -425,8 +427,10 @@ inline Rcpp::List create_binary(
       colour_vec[ rng ] = colour_mat.row( counter );
     }
 
-    lst_binary[ colour_column ] = colour_vec;
+    lst_columnar[ colour_column ] = colour_vec;
   }
+
+  //return lst_columnar;
 
   // now do geometry coordinates
   // and still make it 'nested'
@@ -454,7 +458,7 @@ inline Rcpp::List create_binary(
   }
 
   for ( i = 0; i < n_lons; i++ ) {
-    Rcpp::StringVector this_lonlat = geometry_columns[i];
+    Rcpp::StringVector this_lonlat = geometry_columns[ i ];
     lons[i] = this_lonlat[0];
     lats[i] = this_lonlat[1];
   }
@@ -467,6 +471,9 @@ inline Rcpp::List create_binary(
     Rcpp::NumericVector nv_lon = data[ this_lon ];
     Rcpp::NumericVector nv_lat = data[ this_lat ];
 
+    Rcpp::Rcout << "nv_lon :" << nv_lon << std::endl;
+    Rcpp::Rcout << "nv_lat :" << nv_lat << std::endl;
+
     Rcpp::NumericVector coords( n_rows * 2 );
     int counter = 0;
     int increment = 2;
@@ -477,19 +484,21 @@ inline Rcpp::List create_binary(
     }
 
     Rcpp::String nme = geometry_names[i];
-    //Rcpp::Rcout << "name: " << nme.get_cstring() << std::endl;
+    Rcpp::Rcout << "name: " << nme.get_cstring() << std::endl;
 
     lst_geometry[ nme.get_cstring() ] = coords;
   }
 
-  spatialwidget::utils::remove::remove_list_elements( lst_binary, lats );
-  spatialwidget::utils::remove::remove_list_elements( lst_binary, lons );
+  spatialwidget::utils::remove::remove_list_elements( lst_columnar, lats );
+  spatialwidget::utils::remove::remove_list_elements( lst_columnar, lons );
 
 
-  lst_binary[ "geometry" ] = lst_geometry;
+  lst_columnar[ "geometry" ] = lst_geometry;
+
+  //return lst_columnar;
 
   Rcpp::StringVector js_data = jsonify::api::to_json(
-    lst_binary, true, digits, false, true, "column"
+    lst_columnar, true, digits, false, true, "column"
   );
 
   res[0] = js_data;
