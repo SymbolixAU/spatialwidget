@@ -162,6 +162,31 @@ widget_point <- function(
 }
 
 
+## columnar design:
+## - dadta.frame. Specify lon, lat, geometries (origin, destinatin, other)
+## - if it's an 'sf' object, it will go to rcpp_sf_columnar()
+## -- get dimension, and turn into a data.frame with 'x', 'y', 'z', 'm'
+## -- IF xy, stride = 2, if xyz ,stried = 3, if xyzm, stride = 4
+## -- (plus other stried caused by colour etc)
+
+## If I'm going to use the binary data structure suggested by deck.gl
+##  // lon1, lat1, radius1, red1, green1, blue1, lon2, lat2, ...
+## const binaryData = new Float32Array([-122.4, 37.78, 1000, 255, 200, 0, -122.41, 37.775, 500, 200, 0, 0, -122.39, 37.8, 500, 0, 40, 200]);
+##
+## Then maybe I acutally should use
+## const lon = new Float32Array([])
+## const lat = new Float32Array([])
+## const fill_colour = new Float32Array([])
+## const ...
+## then the fill_colours will stried 4 (r,g,b,a)
+## the geometries will stried 2/3/4 (xy/z/m) + number_coordinates in a geometry
+##
+## and create a
+## const DATA = {
+##  srcLon: lon, length: lon.length / stride (1??),
+##  srcLat: lat, length:
+## }
+
 widget_point_columnar <- function(
   data,
   fill_colour = NULL,
@@ -200,7 +225,7 @@ widget_point_columnar <- function(
       stop("lon and lat are requried for data.frames")
     }
     js_data <- rcpp_widget_point_df_columnar(
-      data, l, list( myGeometry = c(lon, lat) ), json_legend, digits
+      data, l, json_legend, digits
     )
   }
   return( js_data )

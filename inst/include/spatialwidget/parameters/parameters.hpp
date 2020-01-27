@@ -88,6 +88,8 @@ namespace parameters {
 
   	Rcpp::List lst_params = construct_params( data, params );
 
+  	//return lst_params;
+
   	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list(
   	  lst_params,
   	  params,
@@ -141,6 +143,8 @@ namespace parameters {
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, layer_legend );
 
   	lst_params = construct_params( data, params );
+
+  	//return lst_params;
 
   	SEXP df = spatialwidget::construction::construct_data(
   		param_names,

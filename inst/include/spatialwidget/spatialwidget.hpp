@@ -366,7 +366,6 @@ inline SEXP create_columnar(
     Rcpp::StringVector& layer_legend,
     int& data_rows,
     Rcpp::StringVector& parameter_exclusions,
-    Rcpp::List& geometry_columns,
     bool jsonify_legend,
     int digits = -1,
     std::string colour_format = "rgb"  // can't be hex for columnar data
@@ -420,21 +419,13 @@ inline SEXP create_columnar(
     Rcpp::NumericMatrix t_colour_mat = Rcpp::transpose( colour_mat );
     t_colour_mat.attr("dim") = R_NilValue;
 
-    // // convert matrix to vector
-    // R_xlen_t increment = colour_mat.ncol();
-    // R_xlen_t n = colour_mat.nrow() * increment;
-    // R_xlen_t counter = 0;
-    // R_xlen_t i = 0;
-    // Rcpp::NumericVector colour_vec( n );
-    // for( i = 0; i < n; i += increment, counter++ ) {
-    //   Rcpp::Range rng( i, i + increment );
-    //   colour_vec[ rng ] = colour_mat.row( counter );
-    // }
-
     lst_columnar[ colour_column ] = t_colour_mat;
   }
 
-  // now add on the geometry columns to our output, then jsonify it, adnd we're done.
+  // now add on the geometry columns to our output, then jsonify it, adnd we're done...
+  // ... not qute...
+  // ... the binary data format requires one long float array (tests: https://jsfiddle.net/symbolixau/r06edftg/91/)
+  //
 
   return lst_columnar;
 
@@ -504,26 +495,26 @@ inline SEXP create_columnar(
   //
   // return lst_columnar;
   //
-  // Rcpp::StringVector js_data = jsonify::api::to_json(
-  //   lst_columnar, true, digits, false, true, "column"
-  // );
-  //
-  // res[0] = js_data;
-  //
-  // SEXP legend = lst[ "legend" ];
-  // if ( jsonify_legend ) {
-  //   legend = jsonify::api::to_json( legend );
-  //
-  //   Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
-  //   // Rcpp::Rcout << "legend: " << sv_leg << std::endl;
-  //
-  //   res[1] = sv_leg;
-  // } else {
-  //   res[1] = legend;
-  // }
-  //
-  // //res.names() = Rcpp::CharacterVector::create("data", "legend");
-  // return res;
+  Rcpp::StringVector js_data = jsonify::api::to_json(
+    lst_columnar, true, digits, false, true, "column"
+  );
+
+  res[0] = js_data;
+
+  SEXP legend = lst[ "legend" ];
+  if ( jsonify_legend ) {
+    legend = jsonify::api::to_json( legend );
+
+    Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+    // Rcpp::Rcout << "legend: " << sv_leg << std::endl;
+
+    res[1] = sv_leg;
+  } else {
+    res[1] = legend;
+  }
+
+  //res.names() = Rcpp::CharacterVector::create("data", "legend");
+  return res;
 }
 
 
