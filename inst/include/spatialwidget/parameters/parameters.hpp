@@ -35,6 +35,9 @@ namespace parameters {
 
     int n_params = params.size();
     Rcpp::StringVector param_names = params.names();
+
+    //Rcpp::Rcout << "param_names " << param_names << std::endl;
+
     Rcpp::IntegerVector parameter_r_types( n_params );
     Rcpp::IntegerVector data_column_index( n_params, -1 );
     Rcpp::StringVector data_names = data.names();
@@ -85,6 +88,9 @@ namespace parameters {
 
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
+
+  	//Rcpp::Rcout << "param_names " << param_names << std::endl;
+  	//Rcpp::Rcout << "data_names " << data_names << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
 

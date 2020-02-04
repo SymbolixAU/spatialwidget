@@ -166,21 +166,21 @@ namespace geojson {
       bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
   ) {
 
-    int n_geometries = geometries.size();
-    int geom;
+    R_xlen_t n_geometries = geometries.size();
+    R_xlen_t geom;
 
-    int n_cols = sf.ncol();
-    int n_properties = n_cols - n_geometries;
-    int n_rows = sf.nrows();
-    int i, j;
+    R_xlen_t n_cols = sf.ncol();
+    R_xlen_t n_properties = n_cols - n_geometries;
+    R_xlen_t n_rows = sf.nrows();
+    R_xlen_t i, j;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names( n_properties );
 
-    int property_counter = 0;
+    R_xlen_t property_counter = 0;
 
     for ( i = 0; i < sf.length(); i++) {
       Rcpp::String this_column = column_names[i];
-      int idx = spatialwidget::utils::where::where_is( this_column, geometries );
+      R_xlen_t idx = spatialwidget::utils::where::where_is( this_column, geometries );
 
       if ( idx == -1 ) {  // i.e., it's not in the vector of geometries
         property_names[ property_counter ] = column_names[i];
@@ -247,18 +247,18 @@ namespace geojson {
 
     const char* geom_column = geometry.c_str();
 
-    int n_cols = sf.ncol();
-    int n_properties = n_cols - 1;  // single geometry column
-    int n_rows = sf.nrows();
-    int i, j, i_geometry;
+    R_xlen_t n_cols = sf.ncol();
+    R_xlen_t n_properties = n_cols - 1;  // single geometry column
+    R_xlen_t n_rows = sf.nrows();
+    R_xlen_t i, j, i_geometry;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
-    int property_multiplier = 0;
+    R_xlen_t property_multiplier = 0;
     std::string geom_type;
     Rcpp::CharacterVector cls;
 
-    int property_counter = 0;
+    R_xlen_t property_counter = 0;
     for ( i = 0; i < n_cols; i++ ) {
 
       Rcpp::String this_column = column_names[i];
@@ -334,26 +334,26 @@ namespace geojson {
       bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
  ) {
 
-    int n_geometries = geometries.size();
+    R_xlen_t n_geometries = geometries.size();
     if ( n_geometries != 2 ) {
       Rcpp::stop("Only supports 2-column sf objects");
     }
 
-    int n_cols = sf.ncol();
-    int n_rows = sf.nrows();
-    int i, j;
-    int geometry, geometry_column;
+    R_xlen_t n_cols = sf.ncol();
+    R_xlen_t n_rows = sf.nrows();
+    R_xlen_t i, j;
+    R_xlen_t geometry, geometry_column;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
     std::string geom_type;
     Rcpp::CharacterVector cls;
 
-    int property_counter = 0;
+    R_xlen_t property_counter = 0;
     for ( i = 0; i < n_cols; i++) {
 
       Rcpp::String this_column = column_names[i];
-      int idx = spatialwidget::utils::where::where_is( this_column, geometries );
+      R_xlen_t idx = spatialwidget::utils::where::where_is( this_column, geometries );
 
       if ( idx == -1 ) {  // i.e., it's not in the vector of geometries
         property_names[ property_counter ] = column_names[i];
@@ -367,8 +367,8 @@ namespace geojson {
 
     for( i = 0; i < n_rows; i++ ) {
 
-      int geometry_size = 0;
-      int row_multiplier = 0;
+      R_xlen_t geometry_size = 0;
+      R_xlen_t row_multiplier = 0;
       Rcpp::IntegerVector geometry_sizes( n_geometries );
 
       for ( geometry = 0; geometry < n_geometries; geometry++ ) {
@@ -476,14 +476,14 @@ namespace geojson {
     rapidjson::StringBuffer sb;
     rapidjson::Writer < rapidjson::StringBuffer > writer( sb );
 
-    int n_cols = sf.ncol();
-    int n_properties = n_cols - 1;
-    int n_rows = sf.nrows();
-    int i, j;
+    R_xlen_t n_cols = sf.ncol();
+    R_xlen_t n_properties = n_cols - 1;
+    R_xlen_t n_rows = sf.nrows();
+    R_xlen_t i, j;
     Rcpp::StringVector column_names = sf.names();
     Rcpp::StringVector property_names(sf.size() - 1);
 
-    int property_counter = 0;
+    R_xlen_t property_counter = 0;
     for ( i = 0; i < n_cols; i++) {
       if (column_names[i] != geom_column) {
         property_names[property_counter] = column_names[i];
@@ -537,17 +537,17 @@ namespace geojson {
       bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
   ) {
 
-    int n_cols = df.ncol();
-    int n_rows = df.nrows();
+    R_xlen_t n_cols = df.ncol();
+    R_xlen_t n_rows = df.nrows();
 
-    int n_lons = geometries.size();
-    int n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
+    R_xlen_t n_lons = geometries.size();
+    R_xlen_t n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
 
-    int n_lonlat = n_lons + n_lats;
-    int n_properties = n_cols - n_lonlat; // LON & LAT columns
+    R_xlen_t n_lonlat = n_lons + n_lats;
+    R_xlen_t n_properties = n_cols - n_lonlat; // LON & LAT columns
 
     // it comes as columns on a data.frame
-    int i, j;
+    R_xlen_t i, j;
     Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
     Rcpp::StringVector lats( n_lats );
 
@@ -568,14 +568,14 @@ namespace geojson {
 
     Rcpp::CharacterVector cls = Rcpp::CharacterVector::create("XY", "POINT", "sfg");
 
-    int property_counter = 0;
+    R_xlen_t property_counter = 0;
 
-    for (int i = 0; i < df.length(); i++) {
+    for ( i = 0; i < df.length(); i++) {
 
       Rcpp::String this_column = column_names[i];
 
-      int idx_lon = spatialwidget::utils::where::where_is( this_column, lons );
-      int idx_lat = spatialwidget::utils::where::where_is( this_column, lats );
+      R_xlen_t idx_lon = spatialwidget::utils::where::where_is( this_column, lons );
+      R_xlen_t idx_lat = spatialwidget::utils::where::where_is( this_column, lats );
 
       if ( idx_lon == -1 && idx_lat == -1 ) {
         property_names[property_counter] = column_names[i];
@@ -640,18 +640,18 @@ namespace geojson {
       bool factors_as_string = true  // already used in parameters_to_data (parameters.hpp)
   ) {
 
-    int n_cols = df.ncol();
-    int n_rows = df.nrows();
+    R_xlen_t n_cols = df.ncol();
+    R_xlen_t n_rows = df.nrows();
 
-    int n_lons = geometries.size();
-    int n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
-    int n_elevs = geometries.size();
+    R_xlen_t n_lons = geometries.size();
+    R_xlen_t n_lats = geometries.size();  // it is expected the lon & lat data is the same size because
+    R_xlen_t n_elevs = geometries.size();
 
-    int n_lonlat = n_lons + n_lats + n_elevs;
-    int n_properties = n_cols - n_lonlat; // LON & LAT & ELEV columns
+    R_xlen_t n_lonlat = n_lons + n_lats + n_elevs;
+    R_xlen_t n_properties = n_cols - n_lonlat; // LON & LAT & ELEV columns
 
     // it comes as columns on a data.frame
-    int i, j;
+    R_xlen_t i, j;
     Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
     Rcpp::StringVector lats( n_lats );
     Rcpp::StringVector elevs( n_elevs );
@@ -680,15 +680,15 @@ namespace geojson {
 
     Rcpp::CharacterVector cls = Rcpp::CharacterVector::create("XYZ", "POINT", "sfg");
 
-    int property_counter = 0;
+    R_xlen_t property_counter = 0;
 
     for ( i = 0; i < df.length(); i++) {
 
       Rcpp::String this_column = column_names[i];
 
-      int idx_lon = spatialwidget::utils::where::where_is( this_column, lons );
-      int idx_lat = spatialwidget::utils::where::where_is( this_column, lats );
-      int idx_elev = spatialwidget::utils::where::where_is( this_column, elevs );
+      R_xlen_t idx_lon = spatialwidget::utils::where::where_is( this_column, lons );
+      R_xlen_t idx_lat = spatialwidget::utils::where::where_is( this_column, lats );
+      R_xlen_t idx_elev = spatialwidget::utils::where::where_is( this_column, elevs );
 
       if ( idx_lon == -1 && idx_lat == -1 && idx_elev == -1 ) {
         property_names[property_counter] = column_names[i];

@@ -366,13 +366,17 @@ inline SEXP create_columnar(
     Rcpp::StringVector& layer_legend,
     int& data_rows,
     Rcpp::StringVector& parameter_exclusions,
+    Rcpp::List& geometry_columns,
     bool jsonify_legend,
     int digits = -1,
-    std::string colour_format = "rgb"  // can't be hex for columnar data
+    std::string colour_format = "rgb",  // can't be hex for columnar data
+    bool leave_early = false
 ) {
 
   Rcpp::List res(2);
   Rcpp::StringVector data_names = data.names();
+  //Rcpp::Rcout << "data_names: " << data_names << std::endl;
+  R_xlen_t data_n_row = data.nrow();
 
   Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
     data,
@@ -417,9 +421,14 @@ inline SEXP create_columnar(
 
     Rcpp::NumericMatrix colour_mat = lst_columnar[ colour_column ];
     Rcpp::NumericMatrix t_colour_mat = Rcpp::transpose( colour_mat );
+    t_colour_mat = t_colour_mat / 255.0;
     t_colour_mat.attr("dim") = R_NilValue;
 
     lst_columnar[ colour_column ] = t_colour_mat;
+  }
+
+  if( leave_early ) {
+    return lst_columnar;
   }
 
   // now add on the geometry columns to our output, then jsonify it, adnd we're done...
@@ -427,7 +436,67 @@ inline SEXP create_columnar(
   // ... the binary data format requires one long float array (tests: https://jsfiddle.net/symbolixau/r06edftg/91/)
   //
 
-  return lst_columnar;
+  // combine the lon, lat, z, m values into a single vector
+  // need to loop over the geometry_columns list
+  // list( myGeometry = c('x','y'), myOtherGeometry = c('xx','yy'))
+  R_xlen_t i, j, k;
+  R_xlen_t n_geometries = geometry_columns.size();
+
+  if( n_geometries == 0 ) {
+    Rcpp::stop("spatialwidget - missing geometry columns");
+  }
+
+  Rcpp::StringVector geometry_names = geometry_columns.names();
+  //Rcpp::Rcout << "geometries: " << geometry_names << std::endl;
+
+  //return lst_columnar;
+
+  for( i = 0; i < n_geometries; ++i ) {
+
+    Rcpp::List this_geometry = geometry_columns[ i ];
+    Rcpp::String geom_name = geometry_names[ i ];
+
+    R_xlen_t dimension = this_geometry.size();
+
+    //Rcpp::Rcout << "dimension: " << dimension << std::endl;
+
+    //R_xlen_t n_coordinates = dimension * data_n_row;
+    //Rcpp::NumericVector coordinates( n_coordinates );
+
+    // fill the coordinates
+    //for( j = 0; j < dimension; ++j ) {
+    //}
+
+    // TODO:
+    // benchmark this matrix-transpose solution vs
+    // populating the coordinates vector in a loop
+    Rcpp::NumericMatrix mat( data_n_row, dimension );
+
+    for( j = 0; j < dimension; ++j ) {
+      Rcpp::String coord = this_geometry[ j ];
+      //Rcpp::Rcout << "coord: " << coord.get_cstring() << std::endl;
+      mat( Rcpp::_, j ) = Rcpp::as< Rcpp::NumericVector >( lst_columnar[ coord ] );
+    }
+    //return lst_columnar;
+
+    Rcpp::NumericMatrix mat2 = Rcpp::transpose( mat );
+    mat2.attr("dim") = R_NilValue;
+
+    Rcpp::NumericVector coordinates = Rcpp::as< Rcpp::NumericVector >( mat2 );
+    //Rcpp::Rcout << "coordinates << " << std::endl;
+    //Rcpp::Rcout << coordinates << std::endl;
+    lst_columnar[ geom_name ] = coordinates;
+
+  }
+
+
+  // TODO:
+  // - remove the extra 'lon' & 'lat' (& z & m ) columns from lst_columnar,
+  // - because we don't use them; we get the coords directly from 'data'.
+  // - only need to keep them iff deck.gl let's us use them directly,
+  // - rather than combining into one long vector
+
+  //return lst_columnar;
 
   //
   // // now do geometry coordinates
@@ -513,7 +582,7 @@ inline SEXP create_columnar(
     res[1] = legend;
   }
 
-  //res.names() = Rcpp::CharacterVector::create("data", "legend");
+  res.names() = Rcpp::CharacterVector::create("data", "legend");
   return res;
 }
 

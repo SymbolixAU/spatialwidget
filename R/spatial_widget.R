@@ -224,8 +224,11 @@ widget_point_columnar <- function(
     if( is.null( lon ) || is.null( lat ) ) {
       stop("lon and lat are requried for data.frames")
     }
+
+    # print( data )
+
     js_data <- rcpp_widget_point_df_columnar(
-      data, l, json_legend, digits
+      data, l, list( myGeometry = c("x","y") ), json_legend, digits
     )
   }
   return( js_data )
@@ -324,7 +327,7 @@ resolve_data.data.frame <- function( data, l, sf_geom ) {
   if( sf_geom != "POINT") {
     stop("only POINTS are supported for data.frames")
   }
-  l[["geometry"]] <- c( l[["lon"]], l[["lat"]] )
+  ## l[["geometry"]] <- c( l[["lon"]], l[["lat"]] )
   l[["data"]] <- data
   l[["data_type"]] <- "df"
   return( l )
