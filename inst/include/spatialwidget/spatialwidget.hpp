@@ -427,9 +427,9 @@ inline SEXP create_columnar(
     lst_columnar[ colour_column ] = t_colour_mat;
   }
 
-  if( leave_early ) {
-    return lst_columnar;
-  }
+  // if( leave_early ) {
+  //   return lst_columnar;
+  // }
 
   // now add on the geometry columns to our output, then jsonify it, adnd we're done...
   // ... not qute...
@@ -468,27 +468,40 @@ inline SEXP create_columnar(
     //}
 
     // TODO:
-    // benchmark this matrix-transpose solution vs
-    // populating the coordinates vector in a loop
-    Rcpp::NumericMatrix mat( data_n_row, dimension );
+    // // benchmark this matrix-transpose solution vs
+    // // populating the coordinates vector in a loop
+    // Rcpp::NumericMatrix mat( data_n_row, dimension );
+    //
+    // for( j = 0; j < dimension; ++j ) {
+    //   Rcpp::String coord = this_geometry[ j ];
+    //   //Rcpp::Rcout << "coord: " << coord.get_cstring() << std::endl;
+    //   mat( Rcpp::_, j ) = Rcpp::as< Rcpp::NumericVector >( lst_columnar[ coord ] );
+    // }
+    // //return lst_columnar;
+    //
+    // Rcpp::NumericMatrix mat2 = Rcpp::transpose( mat );
+    // mat2.attr("dim") = R_NilValue;
+    //
+    // Rcpp::NumericVector coordinates = Rcpp::as< Rcpp::NumericVector >( mat2 );
+    // //Rcpp::Rcout << "coordinates << " << std::endl;
+    // //Rcpp::Rcout << coordinates << std::endl;
+
+    Rcpp::NumericVector coordinates( data_n_row * dimension );
+    R_xlen_t idx = 0;
 
     for( j = 0; j < dimension; ++j ) {
       Rcpp::String coord = this_geometry[ j ];
-      //Rcpp::Rcout << "coord: " << coord.get_cstring() << std::endl;
-      mat( Rcpp::_, j ) = Rcpp::as< Rcpp::NumericVector >( lst_columnar[ coord ] );
+      Rcpp::NumericVector nv = lst_columnar[ coord ];
+
+      for( k = 0; k < data_n_row; ++k ) {
+        idx = k * dimension + j;
+        coordinates( idx ) = nv[ k ];
+      }
     }
-    //return lst_columnar;
 
-    Rcpp::NumericMatrix mat2 = Rcpp::transpose( mat );
-    mat2.attr("dim") = R_NilValue;
-
-    Rcpp::NumericVector coordinates = Rcpp::as< Rcpp::NumericVector >( mat2 );
-    //Rcpp::Rcout << "coordinates << " << std::endl;
-    //Rcpp::Rcout << coordinates << std::endl;
     lst_columnar[ geom_name ] = coordinates;
 
   }
-
 
   // TODO:
   // - remove the extra 'lon' & 'lat' (& z & m ) columns from lst_columnar,
@@ -564,11 +577,22 @@ inline SEXP create_columnar(
   //
   // return lst_columnar;
   //
+
+  if( leave_early ) {
+    return lst_columnar;
+  }
+
+  //::Rcout << "jsonifying" << std::endl;
+
   Rcpp::StringVector js_data = jsonify::api::to_json(
     lst_columnar, true, digits, false, true, "column"
   );
 
+  //Rcpp::Rcout << "jsonified" << std::endl;
+
   res[0] = js_data;
+
+  //res[0] = lst_columnar;
 
   SEXP legend = lst[ "legend" ];
   if ( jsonify_legend ) {
