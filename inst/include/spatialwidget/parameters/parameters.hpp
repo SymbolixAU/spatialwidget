@@ -148,8 +148,7 @@ namespace parameters {
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, colours_remove );
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, layer_legend );
 
-  	lst_params = construct_params( data, params );
-
+  	//lst_params = construct_params( data, params );
   	//return lst_params;
 
   	SEXP df = spatialwidget::construction::construct_data(
@@ -165,6 +164,8 @@ namespace parameters {
   		Rcpp::_["data"] = df,
   		Rcpp::_["legend"] = lst_legend
   	);
+
+  	//Rcpp::Rcout << "parameters.hpp done" << std::endl;
 
   	return result;
   }

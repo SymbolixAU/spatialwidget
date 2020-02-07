@@ -369,13 +369,12 @@ inline SEXP create_columnar(
     Rcpp::List& geometry_columns,
     bool jsonify_legend,
     int digits = -1,
-    std::string colour_format = "rgb",  // can't be hex for columnar data
-    bool leave_early = false
+    std::string colour_format = "rgb"  // can't be hex for columnar data
 ) {
 
   Rcpp::List res(2);
   Rcpp::StringVector data_names = data.names();
-  //Rcpp::Rcout << "data_names: " << data_names << std::endl;
+  // Rcpp::Rcout << "data_names again: " << data_names << std::endl;
   R_xlen_t data_n_row = data.nrow();
 
   Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
@@ -412,8 +411,6 @@ inline SEXP create_columnar(
   Rcpp::List lst_columnar = Rcpp::as< Rcpp::List >( lst["data"] );
   lst_columnar.attr("class") = R_NilValue;
 
-  //return lst_columnar;
-
   for ( it = layer_colours.begin(); it != layer_colours.end(); ++it ) {
 
     colour_column = it->first;
@@ -447,7 +444,7 @@ inline SEXP create_columnar(
   }
 
   Rcpp::StringVector geometry_names = geometry_columns.names();
-  //Rcpp::Rcout << "geometries: " << geometry_names << std::endl;
+  // Rcpp::Rcout << "geometries: " << geometry_names << std::endl;
 
   //return lst_columnar;
 
@@ -458,7 +455,7 @@ inline SEXP create_columnar(
 
     R_xlen_t dimension = this_geometry.size();
 
-    //Rcpp::Rcout << "dimension: " << dimension << std::endl;
+    // Rcpp::Rcout << "dimension: " << dimension << std::endl;
 
     //R_xlen_t n_coordinates = dimension * data_n_row;
     //Rcpp::NumericVector coordinates( n_coordinates );
@@ -491,7 +488,9 @@ inline SEXP create_columnar(
 
     for( j = 0; j < dimension; ++j ) {
       Rcpp::String coord = this_geometry[ j ];
+      // Rcpp::Rcout << "coord: " << coord.get_cstring() << std::endl;
       Rcpp::NumericVector nv = lst_columnar[ coord ];
+      // Rcpp::Rcout << "filling coords: " << std::endl;
 
       for( k = 0; k < data_n_row; ++k ) {
         idx = k * dimension + j;
@@ -578,9 +577,9 @@ inline SEXP create_columnar(
   // return lst_columnar;
   //
 
-  if( leave_early ) {
-    return lst_columnar;
-  }
+  // if( leave_early ) {
+  //   return lst_columnar;
+  // }
 
   //::Rcout << "jsonifying" << std::endl;
 
