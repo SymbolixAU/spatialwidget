@@ -70,7 +70,7 @@ Rcpp::List rcpp_widget_point_df(
 Rcpp::List rcpp_widget_point_df_columnar(
     Rcpp::DataFrame data,
     Rcpp::List params,
-    Rcpp::List geometries,
+    Rcpp::List geometry_columns,
     bool jsonify_legend,
     int digits
 ) {
@@ -90,7 +90,7 @@ Rcpp::List rcpp_widget_point_df_columnar(
     point_legend,
     data_rows,
     parameter_exclusions,
-    geometries,
+    geometry_columns,
     jsonify_legend,
     digits
   );

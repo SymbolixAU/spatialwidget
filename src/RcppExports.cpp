@@ -342,17 +342,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_widget_point_df_columnar
-Rcpp::List rcpp_widget_point_df_columnar(Rcpp::DataFrame data, Rcpp::List params, Rcpp::List geometries, bool jsonify_legend, int digits);
-RcppExport SEXP _spatialwidget_rcpp_widget_point_df_columnar(SEXP dataSEXP, SEXP paramsSEXP, SEXP geometriesSEXP, SEXP jsonify_legendSEXP, SEXP digitsSEXP) {
+Rcpp::List rcpp_widget_point_df_columnar(Rcpp::DataFrame data, Rcpp::List params, Rcpp::List geometry_columns, bool jsonify_legend, int digits);
+RcppExport SEXP _spatialwidget_rcpp_widget_point_df_columnar(SEXP dataSEXP, SEXP paramsSEXP, SEXP geometry_columnsSEXP, SEXP jsonify_legendSEXP, SEXP digitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::DataFrame >::type data(dataSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type params(paramsSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type geometries(geometriesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type geometry_columns(geometry_columnsSEXP);
     Rcpp::traits::input_parameter< bool >::type jsonify_legend(jsonify_legendSEXP);
     Rcpp::traits::input_parameter< int >::type digits(digitsSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_widget_point_df_columnar(data, params, geometries, jsonify_legend, digits));
+    rcpp_result_gen = Rcpp::wrap(rcpp_widget_point_df_columnar(data, params, geometry_columns, jsonify_legend, digits));
     return rcpp_result_gen;
 END_RCPP
 }

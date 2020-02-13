@@ -51,12 +51,15 @@ namespace construction {
   		// if the param element is length 1; check if it's a column name
 
   		Rcpp::String this_param = param_names[i];
+  	  //Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
+  	  //Rcpp::Rcout << "TYPEOF(param) " << TYPEOF( params[i] ) << std::endl;
 
 			if( TYPEOF( params[i] ) == STRSXP ) {
 				// it's a string
 				// is it also a column name
 
 				Rcpp::String param_value = params[i];
+			  //Rcpp::Rcout << "param_value: " << param_value.get_cstring() << std::endl;
 
 				// returns -1 if length != 1
 				colIndex = spatialwidget::utils::where::where_is( param_value, data_names );
@@ -84,7 +87,7 @@ namespace construction {
 		} // TODO( is there an 'else' condition? )
 
   	Rcpp::StringVector list_names = lst_defaults.names();
-  	// Rcpp::Rcout << "list_names: " << list_names << std::endl;
+  	//Rcpp::Rcout << "list_names: " << list_names << std::endl;
 
   	//return lst_defaults;
 

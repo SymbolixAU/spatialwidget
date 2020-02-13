@@ -354,179 +354,6 @@ namespace api {
     return res;
   }
 
-/*
- * expects `data` to be data.frame withn lon & lat columns.
- */
-inline SEXP create_columnar(
-    Rcpp::DataFrame& data,
-    Rcpp::List& params,
-    Rcpp::List& lst_defaults,
-    std::unordered_map< std::string, std::string >& layer_colours,
-    Rcpp::StringVector& layer_legend,
-    int& data_rows,
-    Rcpp::StringVector& parameter_exclusions,
-    Rcpp::List& geometry_columns,
-    bool jsonify_legend,
-    int digits = -1,
-    std::string colour_format = "rgb"  // can't be hex for columnar data
-) {
-
-  Rcpp::List res(2);
-  Rcpp::StringVector data_names = data.names();
-
-  Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
-    data,
-    params,
-    lst_defaults,
-    layer_colours,
-    layer_legend,
-    data_rows,
-    parameter_exclusions,
-    false, // factors as string
-    colour_format
-  );
-
-  //return lst;
-
-  // lst is an object with a [data] and [legend] component
-
-  // TODO
-  // turn the colours into a single vector
-  // r1, g1, b1, a1, r2, g2, b2, a2, ...
-
-  // turn the coordinates into a single vector
-  // p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, ...
-
-  // all other columns are kept as-is (they should already be vectors)
-
-  std::unordered_map< std::string, std::string>::iterator it;
-
-  std::string colour_column;
-  std::string opacity_column;
-
-  //Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
-  Rcpp::List lst_columnar = Rcpp::as< Rcpp::List >( lst["data"] );
-  lst_columnar.attr("class") = R_NilValue;
-
-  //return lst_columnar;
-
-  for ( it = layer_colours.begin(); it != layer_colours.end(); ++it ) {
-
-    colour_column = it->first;
-    // opacity_column = it->second;
-
-    Rcpp::NumericMatrix colour_mat = lst_columnar[ colour_column ];
-    Rcpp::NumericMatrix t_colour_mat = Rcpp::transpose( colour_mat );
-    t_colour_mat.attr("dim") = R_NilValue;
-
-    // // convert matrix to vector
-    // R_xlen_t increment = colour_mat.ncol();
-    // R_xlen_t n = colour_mat.nrow() * increment;
-    // R_xlen_t counter = 0;
-    // R_xlen_t i = 0;
-    // Rcpp::NumericVector colour_vec( n );
-    // for( i = 0; i < n; i += increment, counter++ ) {
-    //   Rcpp::Range rng( i, i + increment );
-    //   colour_vec[ rng ] = colour_mat.row( counter );
-    // }
-
-    lst_columnar[ colour_column ] = t_colour_mat;
-  }
-
-  // now add on the geometry columns to our output, then jsonify it, adnd we're done.
-
-  return lst_columnar;
-
-  //
-  // // now do geometry coordinates
-  // // and still make it 'nested'
-  //
-  // //Rcpp::Rcout << "geometry_columns: " << geometry_columns.names() << std::endl;
-  // Rcpp::List lst_geometry; // list containing all geometry vectors
-  // //int n_geometries = geometry_columns.size();
-  // Rcpp::StringVector geometry_names = geometry_columns.names();
-  //
-  // int n_rows = data.nrows();
-  // //int n_cols = data.ncol();
-  //
-  // int n_lons = geometry_columns.size();
-  // int n_lats = geometry_columns.size();  // it is expected the lon & lat data is the same size because
-  //
-  // //int n_lonlat = n_lons + n_lats;
-  // //int n_properties = n_cols - n_lonlat; // LON & LAT columns
-  // int i, j;
-  //
-  // Rcpp::StringVector lons( n_lons );  // the first elements of each 'geometry'
-  // Rcpp::StringVector lats( n_lats );
-  //
-  // if( Rf_isNull( geometry_columns.names() ) ) {
-  //   Rcpp::stop("Expecting a list of geometries, each element is named and contains the lon and lat columns");
-  // }
-  //
-  // for ( i = 0; i < n_lons; i++ ) {
-  //   Rcpp::StringVector this_lonlat = geometry_columns[ i ];
-  //   lons[i] = this_lonlat[0];
-  //   lats[i] = this_lonlat[1];
-  // }
-  //
-  // for ( i = 0; i < n_lons; i++ ) {
-  //   const char* this_lon = lons[i];
-  //   const char* this_lat = lats[i];
-  //   // for data.frames, can simply extract vector
-  //   // for sf objects, I need to implement sfheaders::to_df
-  //   Rcpp::NumericVector nv_lon = data[ this_lon ];
-  //   Rcpp::NumericVector nv_lat = data[ this_lat ];
-  //
-  //   Rcpp::Rcout << "nv_lon :" << nv_lon << std::endl;
-  //   Rcpp::Rcout << "nv_lat :" << nv_lat << std::endl;
-  //
-  //   Rcpp::NumericVector coords( n_rows * 2 );
-  //   int counter = 0;
-  //   int increment = 2;
-  //   //Rcpp::NumericVector v = Rcpp::NumericVector::create( nv_lon[i], nv_lat[i] );
-  //   for( j = 0; j < nv_lon.size(); j+= increment, counter++ ) {
-  //     coords[ j ] = nv_lon[ counter ];
-  //     coords[ j + 1 ] = nv_lat[ counter ];
-  //   }
-  //
-  //   Rcpp::String nme = geometry_names[i];
-  //   Rcpp::Rcout << "name: " << nme.get_cstring() << std::endl;
-  //
-  //   lst_geometry[ nme.get_cstring() ] = coords;
-  // }
-  //
-  // spatialwidget::utils::remove::remove_list_elements( lst_columnar, lats );
-  // spatialwidget::utils::remove::remove_list_elements( lst_columnar, lons );
-  //
-  //
-  // lst_columnar[ "geometry" ] = lst_geometry;
-  //
-  // return lst_columnar;
-  //
-  // Rcpp::StringVector js_data = jsonify::api::to_json(
-  //   lst_columnar, true, digits, false, true, "column"
-  // );
-  //
-  // res[0] = js_data;
-  //
-  // SEXP legend = lst[ "legend" ];
-  // if ( jsonify_legend ) {
-  //   legend = jsonify::api::to_json( legend );
-  //
-  //   Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
-  //   // Rcpp::Rcout << "legend: " << sv_leg << std::endl;
-  //
-  //   res[1] = sv_leg;
-  // } else {
-  //   res[1] = legend;
-  // }
-  //
-  // //res.names() = Rcpp::CharacterVector::create("data", "legend");
-  // return res;
-}
-
-
-
   /*
    * expects `data` to be data.frame withn lon & lat & elev columns. The 'bool elevation'
    * argument must be set to 'true', and the 'geometry_columns' should contain an 'elevation'
@@ -643,6 +470,123 @@ inline SEXP create_columnar(
       legend = jsonify::api::to_json( legend );
 
       Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+      res[1] = sv_leg;
+    } else {
+      res[1] = legend;
+    }
+
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    return res;
+  }
+
+  /*
+   * expects `data` to be data.frame with lon & lat columns. The geometry_columns
+   * argument is a named list, list(myGeometry = c("lon","lat")),
+   */
+  inline SEXP create_columnar(
+      Rcpp::DataFrame& data,
+      Rcpp::List& params,
+      Rcpp::List& lst_defaults,
+      std::unordered_map< std::string, std::string >& layer_colours,
+      Rcpp::StringVector& layer_legend,
+      int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
+      Rcpp::List& geometry_columns,
+      bool jsonify_legend,
+      int digits = -1,
+      std::string colour_format = "rgb"  // can't be hex for columnar data
+  ) {
+
+    Rcpp::List res(2);
+    Rcpp::StringVector data_names = data.names();
+    R_xlen_t data_n_row = data.nrow();
+
+    Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
+      data,
+      params,
+      lst_defaults,
+      layer_colours,
+      layer_legend,
+      data_rows,
+      parameter_exclusions,
+      false, // factors as string
+      colour_format
+    );
+
+    std::unordered_map< std::string, std::string>::iterator it;
+
+    std::string colour_column;
+    std::string opacity_column;
+
+    Rcpp::List lst_columnar = Rcpp::as< Rcpp::List >( lst["data"] );
+    lst_columnar.attr("class") = R_NilValue;
+
+    for ( it = layer_colours.begin(); it != layer_colours.end(); ++it ) {
+
+      colour_column = it->first;
+      // opacity_column = it->second;
+
+      Rcpp::NumericMatrix colour_mat = lst_columnar[ colour_column ];
+      Rcpp::NumericMatrix t_colour_mat = Rcpp::transpose( colour_mat );
+      t_colour_mat = t_colour_mat / 255.0;
+      t_colour_mat.attr("dim") = R_NilValue;
+
+      lst_columnar[ colour_column ] = t_colour_mat;
+    }
+
+    // combine the lon, lat, z, m values into a single vector
+    // need to loop over the geometry_columns list
+    // list( myGeometry = c('x','y'), myOtherGeometry = c('xx','yy'))
+    R_xlen_t i, j, k;
+    R_xlen_t n_geometries = geometry_columns.size();
+
+    if( n_geometries == 0 ) {
+      Rcpp::stop("spatialwidget - missing geometry columns");
+    }
+
+    Rcpp::StringVector geometry_names = geometry_columns.names();
+
+    for( i = 0; i < n_geometries; ++i ) {
+
+      Rcpp::List this_geometry = geometry_columns[ i ];
+      Rcpp::String geom_name = geometry_names[ i ];
+
+      R_xlen_t dimension = this_geometry.size();
+
+      Rcpp::NumericVector coordinates( data_n_row * dimension );
+      R_xlen_t idx = 0;
+
+      for( j = 0; j < dimension; ++j ) {
+        Rcpp::String coord = this_geometry[ j ];
+        Rcpp::NumericVector nv = lst_columnar[ coord ];
+
+        for( k = 0; k < data_n_row; ++k ) {
+          idx = k * dimension + j;
+          coordinates( idx ) = nv[ k ];
+        }
+      }
+
+      lst_columnar[ geom_name ] = coordinates;
+    }
+
+    // TODO:
+    // - remove the extra 'lon' & 'lat' (& z & m ) columns from lst_columnar,
+    // - because we don't use them; we get the coords directly from 'data'.
+    // - only need to keep them iff deck.gl let's us use them directly,
+    // - rather than combining into one long vector
+
+    Rcpp::StringVector js_data = jsonify::api::to_json(
+      lst_columnar, true, digits, false, true, "column"
+    );
+
+    res[0] = js_data;
+
+    SEXP legend = lst[ "legend" ];
+    if ( jsonify_legend ) {
+      legend = jsonify::api::to_json( legend );
+
+      Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+
       res[1] = sv_leg;
     } else {
       res[1] = legend;
