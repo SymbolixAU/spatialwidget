@@ -355,8 +355,7 @@ namespace api {
   }
 
 /*
- * expects `data` to be data.frame withn lon & lat columns. The geometry_columns
- * argument is a named list, list(myGeometry = c("lon","lat")),
+ * expects `data` to be data.frame withn lon & lat columns.
  */
 inline SEXP create_columnar(
     Rcpp::DataFrame& data,
