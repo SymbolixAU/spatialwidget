@@ -4,9 +4,15 @@
 \alias{widget_line}
 \title{Widget Line}
 \usage{
-widget_line(data, stroke_colour = NULL, stroke_opacity = NULL,
-  stroke_width = NULL, legend = TRUE, json_legend = TRUE,
-  digits = 6)
+widget_line(
+  data,
+  stroke_colour = NULL,
+  stroke_opacity = NULL,
+  stroke_width = NULL,
+  legend = TRUE,
+  json_legend = TRUE,
+  digits = 6
+)
 }
 \arguments{
 \item{data}{\code{sf} object}

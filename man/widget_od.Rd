@@ -4,9 +4,16 @@
 \alias{widget_od}
 \title{Widget OD}
 \usage{
-widget_od(data, origin, destination, fill_colour = NULL,
-  fill_opacity = NULL, legend = TRUE, json_legend = TRUE,
-  digits = 6)
+widget_od(
+  data,
+  origin,
+  destination,
+  fill_colour = NULL,
+  fill_opacity = NULL,
+  legend = TRUE,
+  json_legend = TRUE,
+  digits = 6
+)
 }
 \arguments{
 \item{data}{\code{sf} object}

@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 ```
 
 [![Travis build status](https://travis-ci.org/SymbolixAU/spatialwidget.svg?branch=master)](https://travis-ci.org/SymbolixAU/spatialwidget)
-[![Coverage status](https://codecov.io/gh/SymbolixAU/spatialwidget/branch/master/graph/badge.svg)](https://codecov.io/github/SymbolixAU/spatialwidget?branch=master)
 
 # spatialwidget
 

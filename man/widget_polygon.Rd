@@ -4,9 +4,17 @@
 \alias{widget_polygon}
 \title{Widget Polygon}
 \usage{
-widget_polygon(data, stroke_colour = NULL, stroke_opacity = NULL,
-  stroke_width = NULL, fill_colour = NULL, fill_opacity = NULL,
-  legend = TRUE, json_legend = TRUE, digits = 6)
+widget_polygon(
+  data,
+  stroke_colour = NULL,
+  stroke_opacity = NULL,
+  stroke_width = NULL,
+  fill_colour = NULL,
+  fill_opacity = NULL,
+  legend = TRUE,
+  json_legend = TRUE,
+  digits = 6
+)
 }
 \arguments{
 \item{data}{\code{sf} object}

@@ -5,6 +5,7 @@
 * `digits` argument exposed through api
 * integer matrix palettes supported
 * BH -DBOOST_NO_AUTO_PTR flag
+* removed sf and jsonlite suggets
 
 # v0.2.1
 
