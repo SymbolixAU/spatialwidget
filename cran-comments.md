@@ -1,13 +1,13 @@
 
 ## Release Notes
 
-* Updates v0.1 to v0.2
-* CRAN Check NOTES: large installed package size
-  - This library has a lot of required source C++ files which I can't remove
+* Updates v0.2 to v0.2.2
+* updated to work with geojsonsf v1.3.3 dependency
+
 
 
 ## Test environments
-* local OS X install, R 3.6.0
+* local OS X install, R 3.6.1
 * ubuntu 14.04 (on travis-ci), R 3.5.0
 * win-builder (devel and release)
 
