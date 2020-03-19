@@ -29,14 +29,6 @@ rcpp_geojson_dfz <- function(df, geometries) {
     .Call(`_spatialwidget_rcpp_geojson_dfz`, df, geometries)
 }
 
-rcpp_sf_to_geojson_downcast <- function(sf, geometry_column) {
-    .Call(`_spatialwidget_rcpp_sf_to_geojson_downcast`, sf, geometry_column)
-}
-
-rcpp_sf_to_geojson_multi_column_downcast <- function(sf, geometries) {
-    .Call(`_spatialwidget_rcpp_sf_to_geojson_multi_column_downcast`, sf, geometries)
-}
-
 rcpp_construct_legend_list <- function(lst_params, params, param_names, legend_types) {
     .Call(`_spatialwidget_rcpp_construct_legend_list`, lst_params, params, param_names, legend_types)
 }
