@@ -187,52 +187,52 @@ widget_point <- function(
 ##  srcLat: lat, length:
 ## }
 
-widget_point_columnar <- function(
-  data,
-  fill_colour = NULL,
-  fill_opacity = NULL,
-  lon = NULL,
-  lat = NULL,
-  legend = TRUE,
-  json_legend = TRUE,
-  digits = 6
-) {
-
-  l <- as.list( match.call( expand.dots = F ) )
-  l[[1]] <- NULL
-  l[["data"]] <- NULL
-  l[["json_legend"]] <- NULL
-  l[["lon"]] <- force( lon )
-  l[["lat"]] <- force( lat )
-  l[["fill_colour"]] <- force( fill_colour )
-  l[["fill_opacity"]] <- force( fill_opacity )
-
-  l <- resolve_legend( l, legend )
-  l <- resolve_data( data, l, "POINT" )
-
-  if( !is.null( l[["data"]] ) ) {
-    data <- l[["data"]]
-    l[["data"]] <- NULL
-  }
-
-  tp <- l[["data_type"]]
-  l[["data_type"]] <- NULL
-
-  if( tp == "sf" ) {
-    js_data <- rcpp_widget_point_sf_columnar( data, l, list( myGeometry = c("x","y") ), json_legend, digits )
-  } else if (tp == "df" ) {
-    if( is.null( lon ) || is.null( lat ) ) {
-      stop("lon and lat are requried for data.frames")
-    }
-
-    # print( data )
-
-    js_data <- rcpp_widget_point_df_columnar(
-      data, l, list( myGeometry = c("x","y") ), json_legend, digits
-    )
-  }
-  return( js_data )
-}
+# widget_point_columnar <- function(
+#   data,
+#   fill_colour = NULL,
+#   fill_opacity = NULL,
+#   lon = NULL,
+#   lat = NULL,
+#   legend = TRUE,
+#   json_legend = TRUE,
+#   digits = 6
+# ) {
+#
+#   l <- as.list( match.call( expand.dots = F ) )
+#   l[[1]] <- NULL
+#   l[["data"]] <- NULL
+#   l[["json_legend"]] <- NULL
+#   l[["lon"]] <- force( lon )
+#   l[["lat"]] <- force( lat )
+#   l[["fill_colour"]] <- force( fill_colour )
+#   l[["fill_opacity"]] <- force( fill_opacity )
+#
+#   l <- resolve_legend( l, legend )
+#   l <- resolve_data( data, l, "POINT" )
+#
+#   if( !is.null( l[["data"]] ) ) {
+#     data <- l[["data"]]
+#     l[["data"]] <- NULL
+#   }
+#
+#   tp <- l[["data_type"]]
+#   l[["data_type"]] <- NULL
+#
+#   if( tp == "sf" ) {
+#     js_data <- rcpp_widget_point_sf_columnar( data, l, list( myGeometry = c("x","y") ), json_legend, digits )
+#   } else if (tp == "df" ) {
+#     if( is.null( lon ) || is.null( lat ) ) {
+#       stop("lon and lat are requried for data.frames")
+#     }
+#
+#     # print( data )
+#
+#     js_data <- rcpp_widget_point_df_columnar(
+#       data, l, list( myGeometry = c("x","y") ), json_legend, digits
+#     )
+#   }
+#   return( js_data )
+# }
 
 
 #' Widget OD

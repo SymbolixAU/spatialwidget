@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 )
 
 library(spatialwidget)
-library(sf)
+library(sfheaders)
 library(geojsonsf)
 
 ```
@@ -44,7 +44,11 @@ head( widget_capitals )
 And convert it into pseudo-geojson ready to be parsed by javascript inside an htmlwidget
 
 ```{r}
-js <- spatialwidget::widget_point( data = widget_capitals, fill_colour = "country", legend = TRUE)
+js <- spatialwidget::widget_point(
+  data = widget_capitals
+  , fill_colour = "country"
+  , legend = TRUE
+  )
 
 substr( js$data, 1, 200 )
 ```
@@ -94,7 +98,11 @@ Where the `myGeometry` object is defined on a per-application bases. You are fre
 ### Points
 
 ```{r}
-l <- widget_point( widget_capitals[1:2, ], fill_colour = "country", legend = T )
+l <- widget_point(
+  widget_capitals[1:2, ]
+  , fill_colour = "country"
+  , legend = T
+  )
 
 substr( l$data, 1, 200 )
 ```
@@ -102,7 +110,11 @@ substr( l$data, 1, 200 )
 ### Lines
 
 ```{r}
-l <- widget_line( widget_roads[1:2, ], stroke_colour = "ROAD_NAME", legend = T )
+l <- widget_line(
+  widget_roads[1:2, ]
+  , stroke_colour = "ROAD_NAME"
+  , legend = T
+  )
 
 substr( l$data, 1, 200 )
 ```
@@ -110,7 +122,11 @@ substr( l$data, 1, 200 )
 ### Polygon
 
 ```{r}
-l <- widget_polygon( widget_melbourne[1:2, ], fill_colour = "AREASQKM16", legend = F)
+l <- widget_polygon(
+  widget_melbourne[1:2, ]
+  , fill_colour = "AREASQKM16"
+  , legend = F
+  )
 
 substr( l$data, 1, 200 )
 ```
@@ -653,10 +669,15 @@ feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"MultiPoint
 feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"MultiPoint","coordinates":[[1,1],[3,3],[5,5]]}}'
 sf1 <- geojsonsf::geojson_sf( feat1 )
 sf2 <- geojsonsf::geojson_sf( feat2 )
+names( sf2 ) <- c("id.1","geometry.1")
+
 
 sf <- cbind( sf1, sf2)
 
-geojson <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast( sf = sf, geometries = c("geometry","geometry.1"))
+geojson <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast(
+  sf = sf
+  , geometries = c("geometry","geometry.1")
+  )
 geojson
 ```
 
@@ -695,12 +716,9 @@ substr( geojson, 1, 300)
 ```
 
 ```{r}
-df <- as.data.frame( widget_capitals )
-coords <- sf::st_coordinates( widget_capitals )
-df[, c("lon","lat")] <- coords
-df$geometry <- NULL
+df <- sfheaders::sf_to_df( widget_capitals )
 
-geojson <- spatialwidget:::rcpp_geojson_df(df = df, list(geometry = c("lon","lat")) )
+geojson <- spatialwidget:::rcpp_geojson_df(df = df, list(geometry = c("x","y")) )
 substr( geojson, 1, 500 )
 ```
 
@@ -723,7 +741,7 @@ substr( geojson, 1, 500 )
 
 ```{r}
 df$z <- sample(1:500, size = nrow(df), replace = TRUE )
-geojson <- spatialwidget:::rcpp_geojson_dfz( df, geometries = list(geometry = c("lon","lat","z") ) )
+geojson <- spatialwidget:::rcpp_geojson_dfz( df, geometries = list(geometry = c("x","y","z") ) )
 substr( geojson, 1, 500 )
 
 ```
