@@ -194,64 +194,6 @@ inline Rcpp::List create_geojson(
 
 ---
 
-### single-`sfc`-column `sf` to down-casted geometries in pseudo-geojson
-
-
-```c++
-/*
- * expects `data` to be an sf object, where the geometry_column is a string
- * of the sfc column names (of sf) you want to use as the geometry object inside the GeoJSON.
- * This function will down-cast MULTI* objects to their single form
- *
- */
-inline Rcpp::List create_geojson_downcast(
-    Rcpp::DataFrame& data,
-    Rcpp::List& params,
-    Rcpp::List& lst_defaults,
-    std::unordered_map< std::string, std::string >& layer_colours,
-    Rcpp::StringVector& layer_legend,
-    int& data_rows,
-    Rcpp::StringVector& parameter_exclusions,
-    std::string& geometry_column,
-    bool jsonify_legend
-)
-```
-
-**in** - `sf` object with one `sfc` column
-
-**out** - MULTI* geometries down-cast to simpler form, in pseudo-geojson
-
----
-
-### two-`sfc`-column `sf` to down-casted psuedo-geojson
-
-
-```c++
-  /*
-   * expects `data` to be an sf object, where the geometry_column is a string vector
-   * of the sfc column name (of sf) you want to use as the geometry object inside the GeoJSON.
-   * This function will down-cast MULTI* objects to their single form
-   *
-   */
-  inline Rcpp::List create_geojson_downcast(
-      Rcpp::DataFrame& data,
-      Rcpp::List& params,
-      Rcpp::List& lst_defaults,
-      std::unordered_map< std::string, std::string >& layer_colours,
-      Rcpp::StringVector& layer_legend,
-      int& data_rows,
-      Rcpp::StringVector& parameter_exclusions,
-      Rcpp::StringVector& geometry_column,
-      bool jsonify_legend
-  )
-```
-
-**in** - `sf` object with two `sfc` columns
-
-**out** - MULTI* geometries down-cast to simpler form, in pseudo-geojson
-
----
-
 ### `data.frame` with lon & lat columns to pseudo-geojson
 
 
@@ -589,19 +531,6 @@ This structure is useful for sending to an htmlwidget because each object in the
 
 Therefore, most of the GeoJSON functions inside spatialwidget will return the 'atomised' form. 
 
-## Downcasting geojson
-
-**Downcasting** is the process of converting MULTI objects to their simpler form. For example, a MULTIPOINT will be down-cast to POINTs (one row/value for each of the multipoints).
-
-```{r}
-js <- '{"type":"Feature","properties":{"id":1,"val":"a"},"geometry":{"type":"MultiPoint","coordinates":[[1,4],[2,5],[3,6]]}}'
-sf <- geojsonsf::geojson_sf( js )
-geo_down <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf, "geometry" )
-jsonify::pretty_json( geo_down )
-```
-
-See here we started with a single MULTIPOINT (containing three coordinates), and we are returned three POINTs. Also notice the `id` and `val` fields are repeated across the new POINTs.
-
 # GeoJSON C++ API
 
 You can by-pass the `spatialwidget::api::` namepsace and call the `spatialwidget::geojson::` api directly. However, doing so will only convert your data to pseudo-geojson, it won't create colours or legends. 
@@ -630,60 +559,6 @@ substr( geojson, 1, 500)
 **in** - `sf` object with one or more `sfc` columns
 
 **out** - atomised pseudo-geojson
-
----
-
-### single-`sfc`-column `sf` to downcasted, atomised pseudo-geojson
-
-```
-  // down-casts MULTIGEOMETRIES to their simpler geometry
-  // only for one-column sfc objects
-  inline Rcpp::StringVector to_geojson_downcast_atomise(
-      Rcpp::DataFrame& sf,
-      std::string geometry ) {
-```
-
-```{r}
-geojson <- spatialwidget:::rcpp_sf_to_geojson_downcast( sf = widget_capitals, geometry_column = "geometry" )
-substr( geojson, 1, 500)
-```
-
-
-**in** - `sf` object with one `sfc` column
-
-**out** - pseudo-geojson downcast to simpler form
-
----
-
-### two-`sfc`-column `sf` to downcasted, atomised pseudo-geojson
-
-```
-  inline Rcpp::StringVector to_geojson_downcast_atomise(
-      Rcpp::DataFrame& sf,
-      Rcpp::StringVector geometries )
-    {
-```
-
-```{r}
-feat1 <- '{"type":"Feature","properties":{"id":1},"geometry":{"type":"MultiPoint","coordinates":[[0,0],[2,2],[4,4]]}}'
-feat2 <- '{"type":"Feature","properties":{"id":2},"geometry":{"type":"MultiPoint","coordinates":[[1,1],[3,3],[5,5]]}}'
-sf1 <- geojsonsf::geojson_sf( feat1 )
-sf2 <- geojsonsf::geojson_sf( feat2 )
-names( sf2 ) <- c("id.1","geometry.1")
-
-
-sf <- cbind( sf1, sf2)
-
-geojson <- spatialwidget:::rcpp_sf_to_geojson_multi_column_downcast(
-  sf = sf
-  , geometries = c("geometry","geometry.1")
-  )
-geojson
-```
-
-**in** - `sf` object with two `sfc` columns
-
-**out** - pseudo-geojson down-cast to simpler form. It will repeat the other columns to the correct length.
 
 ---
 
