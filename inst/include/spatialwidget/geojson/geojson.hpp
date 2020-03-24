@@ -15,8 +15,6 @@
 #include "jsonify/to_json/writers/complex.hpp"
 #include "colourvalues/api/api.hpp"
 
-#include "sfheaders/sfc/sfc_attributes.hpp"
-
 namespace spatialwidget {
 namespace geojson {
 
