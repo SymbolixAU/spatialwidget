@@ -309,7 +309,7 @@ namespace api {
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector geometry_columns,
       bool jsonify_legend,
-      std::string colour_format = "hex"
+      std::string colour_format = "rgb"
   ) {
 
     // Rcpp::Rcout << "create_geojson7" << std::endl;
@@ -387,7 +387,7 @@ namespace api {
       colour_format
     );
 
-   Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
 
     // issue 46
     spatialwidget::utils::dates::dates_to_string( df );
