@@ -1,7 +1,7 @@
 Package: spatialwidget
 Type: Package
 Title: Formats Spatial Data for Use in Htmlwidgets
-Version: 0.2.2001
+Version: 0.2.2002
 Date: 2020-03-20
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))

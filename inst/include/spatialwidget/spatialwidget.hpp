@@ -356,6 +356,50 @@ namespace api {
   }
 
   /*
+   * expects `data` to be data.frame with
+   * no geometry columns. It only formats data
+   * and doesn't create any JSON
+   */
+  inline SEXP format_data(
+      Rcpp::DataFrame& data,
+      Rcpp::List& params,
+      Rcpp::List& lst_defaults,
+      std::unordered_map< std::string, std::string >& layer_colours,
+      Rcpp::StringVector& layer_legend,
+      int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
+      int digits = -1,
+      std::string colour_format = "rgb"  // can't be hex for columnar data
+  ) {
+
+    Rcpp::List res(2);
+    Rcpp::StringVector data_names = data.names();
+
+    Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
+      data,
+      params,
+      lst_defaults,
+      layer_colours,
+      layer_legend,
+      data_rows,
+      parameter_exclusions,
+      true, // factors as string
+      colour_format
+    );
+
+   Rcpp::DataFrame df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
+
+    res[0] = df;
+    res[1] = lst[ "legend" ];;
+
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    return res;
+  }
+
+  /*
    * expects `data` to be data.frame with lon & lat columns. The geometry_columns
    * argument is a named list, list(myGeometry = c("lon","lat")),
    */
