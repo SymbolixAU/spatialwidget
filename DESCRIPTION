@@ -25,7 +25,7 @@ LinkingTo:
     jsonify (>= 1.1.1),
     rapidjsonr,
     Rcpp,
-    sfheaders (>= 0.2.1)
+    sfheaders (>= 0.2.1005)
 RoxygenNote: 7.0.2
 Suggests:
     colourvalues,
@@ -36,4 +36,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
+Remotes:
+    github::dcooley/sfheaders
 VignetteBuilder: knitr
