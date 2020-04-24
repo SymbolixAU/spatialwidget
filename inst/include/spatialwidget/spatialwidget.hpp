@@ -448,7 +448,7 @@ namespace api {
 
       Rcpp::NumericMatrix colour_mat = lst_columnar[ colour_column ];
       Rcpp::NumericMatrix t_colour_mat = Rcpp::transpose( colour_mat );
-      //t_colour_mat = t_colour_mat; / 255.0;  // TODO: remove if / when colourvalues returns scaled values
+
       t_colour_mat.attr("dim") = R_NilValue;
 
       lst_columnar[ colour_column ] = t_colour_mat;
