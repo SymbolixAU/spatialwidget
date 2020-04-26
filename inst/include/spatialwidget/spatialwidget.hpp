@@ -56,6 +56,9 @@ namespace api {
 
     Rcpp::StringVector data_names = data.names();
 
+    Rcpp::IntegerVector repeats(1); // not used
+    R_xlen_t total_colours = 0; // not used
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       params,
@@ -64,6 +67,8 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
+      repeats,
+      total_colours,
       true,   // factors as strings
       colour_format
     );
@@ -119,6 +124,9 @@ namespace api {
 
     Rcpp::StringVector data_names = data.names();
 
+    Rcpp::IntegerVector repeats(1); // not used
+    R_xlen_t total_colours = 0; // not used
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       params,
@@ -127,6 +135,8 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
+      repeats,
+      total_colours,
       true,  // factors as strings
       colour_format
     );
@@ -182,6 +192,9 @@ namespace api {
     Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
 
+    Rcpp::IntegerVector repeats(1); // not used
+    R_xlen_t total_colours = 0; // not used
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       params,
@@ -190,6 +203,8 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
+      repeats,
+      total_colours,
       true, // factors as string
       colour_format
     );
@@ -256,6 +271,9 @@ namespace api {
     Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
 
+    Rcpp::IntegerVector repeats(1); // not used
+    R_xlen_t total_colours = 0; // not used
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       params,
@@ -264,6 +282,8 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
+      repeats,
+      total_colours,
       true, // factors as string
       colour_format
     );
@@ -316,6 +336,9 @@ namespace api {
 
     Rcpp::List res(2);
 
+    Rcpp::IntegerVector repeats(1); // not used
+    R_xlen_t total_colours = 0; // not used
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       params,
@@ -324,6 +347,8 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
+      repeats,
+      total_colours,
       true, // factors as string
       colour_format
     );
@@ -375,6 +400,9 @@ namespace api {
     Rcpp::List res(2);
     Rcpp::StringVector data_names = data.names();
 
+    Rcpp::IntegerVector repeats(1); // not used
+    R_xlen_t total_colours = 0; // not used
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       params,
@@ -383,6 +411,8 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
+      repeats,
+      total_colours,
       true, // factors as string
       colour_format
     );
@@ -394,6 +424,76 @@ namespace api {
 
     res[0] = df;
     res[1] = lst[ "legend" ];;
+
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    return res;
+  }
+
+
+  /*
+   * expects an interleaved object
+   */
+  inline SEXP create_interleaved(
+      Rcpp::List& interleaved,
+      Rcpp::List& params,
+      Rcpp::List& lst_defaults,
+      std::unordered_map< std::string, std::string >& layer_colours,
+      Rcpp::StringVector& layer_legend,
+      int& data_rows,
+      Rcpp::StringVector& parameter_exclusions,
+      bool jsonify_legend,
+      int digits = -1,
+      std::string colour_format = "interleaved"  // can't be hex for columnar data
+  ) {
+
+    // Rcpp::Rcout << "create_interleaved" << std::endl;
+
+    Rcpp::List res(2);
+
+    Rcpp::DataFrame data = Rcpp::as< Rcpp::DataFrame >( interleaved["data"] );
+    Rcpp::IntegerVector repeats = Rcpp::as< Rcpp::IntegerVector >( interleaved["n_coordinates"] );
+    R_xlen_t total_colours = interleaved["total_coordinates"];
+
+    // Rcpp::Rcout << "repeats: " << repeats << std::endl;
+    // Rcpp::Rcout << "total_colours " << total_colours << std::endl;
+
+    Rcpp::StringVector data_names = data.names();
+
+    Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
+      data,
+      params,
+      lst_defaults,
+      layer_colours,
+      layer_legend,
+      data_rows,
+      parameter_exclusions,
+      repeats,
+      total_colours,
+      true, // factors as string
+      colour_format
+    );
+
+    return lst;
+
+    Rcpp::List df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+
+    // issue 46
+    spatialwidget::utils::dates::dates_to_string( df );
+    lst["data"] = df;
+
+    Rcpp::StringVector js_data = jsonify::api::to_json( lst, false, -1, true, true, "col" );
+
+    res[0] = js_data;
+
+    SEXP legend = lst[ "legend" ];
+    if ( jsonify_legend ) {
+      legend = jsonify::api::to_json( legend );
+
+      Rcpp::StringVector sv_leg = Rcpp::as< Rcpp::StringVector>( legend );
+      res[1] = sv_leg;
+    } else {
+      res[1] = legend;
+    }
 
     res.names() = Rcpp::CharacterVector::create("data", "legend");
     return res;
@@ -421,6 +521,9 @@ namespace api {
     Rcpp::StringVector data_names = data.names();
     R_xlen_t data_n_row = data.nrow();
 
+    Rcpp::IntegerVector repeats(1); // not used
+    R_xlen_t total_colours = 0; // not used
+
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
       params,
@@ -429,6 +532,8 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
+      repeats,
+      total_colours,
       false, // factors as string
       colour_format
     );

@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // rcpp_make_colours
-Rcpp::List rcpp_make_colours(Rcpp::List& lst_params, Rcpp::List& params, Rcpp::DataFrame& data, Rcpp::List& lst_defaults, int col_index, SEXP& palette_type, Rcpp::NumericVector& alpha, std::string& colour_name, bool& include_legend, int legend_digits, std::string colour_format);
-RcppExport SEXP _spatialwidget_rcpp_make_colours(SEXP lst_paramsSEXP, SEXP paramsSEXP, SEXP dataSEXP, SEXP lst_defaultsSEXP, SEXP col_indexSEXP, SEXP palette_typeSEXP, SEXP alphaSEXP, SEXP colour_nameSEXP, SEXP include_legendSEXP, SEXP legend_digitsSEXP, SEXP colour_formatSEXP) {
+Rcpp::List rcpp_make_colours(Rcpp::List& lst_params, Rcpp::List& params, Rcpp::DataFrame& data, Rcpp::List& lst_defaults, int col_index, SEXP& palette_type, Rcpp::NumericVector& alpha, std::string& colour_name, bool& include_legend, Rcpp::IntegerVector& repeats, R_xlen_t& total_colours, int legend_digits, std::string colour_format);
+RcppExport SEXP _spatialwidget_rcpp_make_colours(SEXP lst_paramsSEXP, SEXP paramsSEXP, SEXP dataSEXP, SEXP lst_defaultsSEXP, SEXP col_indexSEXP, SEXP palette_typeSEXP, SEXP alphaSEXP, SEXP colour_nameSEXP, SEXP include_legendSEXP, SEXP repeatsSEXP, SEXP total_coloursSEXP, SEXP legend_digitsSEXP, SEXP colour_formatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,15 +20,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::NumericVector& >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< std::string& >::type colour_name(colour_nameSEXP);
     Rcpp::traits::input_parameter< bool& >::type include_legend(include_legendSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type repeats(repeatsSEXP);
+    Rcpp::traits::input_parameter< R_xlen_t& >::type total_colours(total_coloursSEXP);
     Rcpp::traits::input_parameter< int >::type legend_digits(legend_digitsSEXP);
     Rcpp::traits::input_parameter< std::string >::type colour_format(colour_formatSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_make_colours(lst_params, params, data, lst_defaults, col_index, palette_type, alpha, colour_name, include_legend, legend_digits, colour_format));
+    rcpp_result_gen = Rcpp::wrap(rcpp_make_colours(lst_params, params, data, lst_defaults, col_index, palette_type, alpha, colour_name, include_legend, repeats, total_colours, legend_digits, colour_format));
     return rcpp_result_gen;
 END_RCPP
 }
 // rcpp_resolve_colour
-Rcpp::List rcpp_resolve_colour(Rcpp::List& lst_params, Rcpp::List& params, Rcpp::DataFrame& data, Rcpp::List& lst_defaults, std::string& colour_name, std::string& opacity_name, Rcpp::List& lst_legend, bool& include_legend, std::string colour_format);
-RcppExport SEXP _spatialwidget_rcpp_resolve_colour(SEXP lst_paramsSEXP, SEXP paramsSEXP, SEXP dataSEXP, SEXP lst_defaultsSEXP, SEXP colour_nameSEXP, SEXP opacity_nameSEXP, SEXP lst_legendSEXP, SEXP include_legendSEXP, SEXP colour_formatSEXP) {
+Rcpp::List rcpp_resolve_colour(Rcpp::List& lst_params, Rcpp::List& params, Rcpp::DataFrame& data, Rcpp::List& lst_defaults, std::string& colour_name, std::string& opacity_name, Rcpp::List& lst_legend, bool& include_legend, Rcpp::IntegerVector& repeats, R_xlen_t& total_colours, std::string colour_format);
+RcppExport SEXP _spatialwidget_rcpp_resolve_colour(SEXP lst_paramsSEXP, SEXP paramsSEXP, SEXP dataSEXP, SEXP lst_defaultsSEXP, SEXP colour_nameSEXP, SEXP opacity_nameSEXP, SEXP lst_legendSEXP, SEXP include_legendSEXP, SEXP repeatsSEXP, SEXP total_coloursSEXP, SEXP colour_formatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -40,8 +42,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string& >::type opacity_name(opacity_nameSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type lst_legend(lst_legendSEXP);
     Rcpp::traits::input_parameter< bool& >::type include_legend(include_legendSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type repeats(repeatsSEXP);
+    Rcpp::traits::input_parameter< R_xlen_t& >::type total_colours(total_coloursSEXP);
     Rcpp::traits::input_parameter< std::string >::type colour_format(colour_formatSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_resolve_colour(lst_params, params, data, lst_defaults, colour_name, opacity_name, lst_legend, include_legend, colour_format));
+    rcpp_result_gen = Rcpp::wrap(rcpp_resolve_colour(lst_params, params, data, lst_defaults, colour_name, opacity_name, lst_legend, include_legend, repeats, total_colours, colour_format));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -349,8 +353,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_spatialwidget_rcpp_make_colours", (DL_FUNC) &_spatialwidget_rcpp_make_colours, 11},
-    {"_spatialwidget_rcpp_resolve_colour", (DL_FUNC) &_spatialwidget_rcpp_resolve_colour, 9},
+    {"_spatialwidget_rcpp_make_colours", (DL_FUNC) &_spatialwidget_rcpp_make_colours, 13},
+    {"_spatialwidget_rcpp_resolve_colour", (DL_FUNC) &_spatialwidget_rcpp_resolve_colour, 11},
     {"_spatialwidget_rcpp_construct_data", (DL_FUNC) &_spatialwidget_rcpp_construct_data, 6},
     {"_spatialwidget_rcpp_geojson", (DL_FUNC) &_spatialwidget_rcpp_geojson, 2},
     {"_spatialwidget_rcpp_geojson_sf", (DL_FUNC) &_spatialwidget_rcpp_geojson_sf, 2},

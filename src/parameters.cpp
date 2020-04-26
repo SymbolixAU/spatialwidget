@@ -41,8 +41,11 @@ Rcpp::List rcpp_params_to_data(
     {"fill_colour","fill_opacity"},{"stroke_colour","stroke_opacity"}
   };
 
+  Rcpp::IntegerVector repeats(1); // not used
+  R_xlen_t total_colours = 0; // not used
+
   return spatialwidget::parameters::parameters_to_data(
     data, params, lst_defaults, colour_columns, layer_legend,
-    data_rows, parameter_exclusions, factors_as_string
+    data_rows, parameter_exclusions, repeats, total_colours, factors_as_string
   );
 }

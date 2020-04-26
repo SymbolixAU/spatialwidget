@@ -22,6 +22,8 @@ namespace colour {
       Rcpp::NumericVector& alpha,
       std::string& colour_name,
       bool& include_legend,
+      Rcpp::IntegerVector& repeats,
+      R_xlen_t& total_colours,
       int legend_digits = 2,
       std::string colour_format = "hex"
     ) {
@@ -78,7 +80,8 @@ namespace colour {
       } else {
 
         Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-          pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits, colour_format
+          pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
+          colour_name, legend_digits, colour_format
         );
 
         // Rcpp::List legend = spatialwidget::palette::colour_with_palette(
@@ -103,8 +106,11 @@ namespace colour {
       //   pal, colour_vec, alpha, na_colour, include_alpha, colour_name,
       //   legend_digits
       //   );
+      Rcpp::Rcout << "default" << std::endl;
+
       Rcpp::List legend = spatialwidget::palette::colour_with_palette(
-        pal, palette_type, alpha, na_colour, include_alpha, colour_name, legend_digits, colour_format
+        pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
+        colour_name, legend_digits, colour_format
       );
 
       std::string legend_type = Rf_isFactor( palette_type )  ? "category" : "gradient";
@@ -128,6 +134,8 @@ namespace colour {
       std::string& opacity_name,
       Rcpp::List& lst_legend,
       bool& include_legend,
+      Rcpp::IntegerVector& repeats,
+      R_xlen_t& total_colours,
       std::string colour_format = "hex"
       //int legend_digits = 2
     ) {
@@ -230,7 +238,7 @@ namespace colour {
     // known here before it goes into 'make_colours' and then into colourvalues
     Rcpp::List legend = make_colours(
       lst_params, params, data, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
-      this_colour, alpha, colour_name, include_legend, legend_digits, colour_format
+      this_colour, alpha, colour_name, include_legend, repeats, total_colours, legend_digits, colour_format
     );
 
     if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {

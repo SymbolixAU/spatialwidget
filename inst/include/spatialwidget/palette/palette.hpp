@@ -37,6 +37,8 @@ namespace palette {
   inline Rcpp::List colour_with_palette(
       SEXP& palette,
       SEXP& fill_colour_vec,
+      Rcpp::IntegerVector& repeats,
+      R_xlen_t& total_colours,
       Rcpp::NumericVector& alpha,
       std::string& na_colour,
       bool& include_alpha,
@@ -58,7 +60,8 @@ namespace palette {
       Rcpp::List lst = Rcpp::as< Rcpp::List >( palette );
       SEXP pal = lst[ colour_name.c_str() ];
       return colour_with_palette(
-        pal, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, legend_digits
+        pal, fill_colour_vec, repeats, total_colours, alpha, na_colour,
+        include_alpha, colour_name, legend_digits
         );
       break;
     }
@@ -73,8 +76,14 @@ namespace palette {
         fill_colour_vec, palette, alpha, na_colour, include_alpha, format,
         legend_digits, summary, n_summaries
       );
+    } else if ( colour_format == "interleaved" ) {
+      // Rcpp::Rcout << "colour_format = interleaved" << std::endl;
+      return colourvalues::api::colour_values_rgb_interleaved(
+        fill_colour_vec, palette, alpha, repeats, total_colours, na_colour, include_alpha, format,
+        legend_digits, summary, n_summaries
+      );
     } else {
-      Rcpp::stop("spatialwidget - unknown colour format, expecting hex or rgb");
+      Rcpp::stop("spatialwidget - unknown colour format, expecting hex, rgb or interleaved");
     }
     break;
     }

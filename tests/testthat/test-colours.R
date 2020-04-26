@@ -26,6 +26,8 @@ test_that("colours returned as hex or rgb",{
     opacity_name,
     lst_legend,
     include_legend,
+    repeats,
+    total_colours,
     colour_format
   )
 
@@ -58,6 +60,8 @@ test_that("colours returned as hex or rgb",{
     opacity_name,
     lst_legend,
     include_legend,
+    repeats,
+    total_colours,
     colour_format
   )
 
@@ -90,6 +94,8 @@ test_that("colours returned as hex or rgb",{
     opacity_name,
     lst_legend,
     include_legend,
+    repeats,
+    total_colours,
     colour_format
   )
 

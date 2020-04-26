@@ -72,6 +72,8 @@ namespace parameters {
   		Rcpp::StringVector& layer_legend,     // vector of colours to use in the legend
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions,
+  		Rcpp::IntegerVector& repeats,
+  		R_xlen_t& total_colours,
   		bool factors_as_string = true,
   		std::string colour_format = "hex"
   ) {
@@ -128,6 +130,8 @@ namespace parameters {
 	      opacity_column,
 	      lst_legend,
 	      include_legend,
+	      repeats,
+	      total_colours,
 	      colour_format
 	      );
 		}
@@ -150,8 +154,9 @@ namespace parameters {
 
   	//lst_params = construct_params( data, params );
   	//return lst_params;
+  	//return lst_defaults;
 
-  	SEXP df = spatialwidget::construction::construct_data(
+  	Rcpp::List df = spatialwidget::construction::construct_data(
   		param_names,
   		params,
   		data_names,
@@ -159,6 +164,13 @@ namespace parameters {
   		data,
   		data_rows
   	);
+
+
+    // if 'interleaving', we dont' want a final df
+    if( colour_format != "interleaved" ) {
+      // Rcpp::Rcout << "constructing data" << std::endl;
+      spatialwidget::construction::construct_df( df, data_rows );
+    }
 
   	Rcpp::List result = Rcpp::List::create(
   		Rcpp::_["data"] = df,
