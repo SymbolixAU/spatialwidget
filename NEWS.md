@@ -1,3 +1,7 @@
+# v0.2.3
+
+* Links to geometries
+
 # v0.2.2
 
 * colours returned as either hex strings or RGBA matrix
