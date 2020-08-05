@@ -452,7 +452,7 @@ namespace api {
     // - rather than combining into one long vector
 
     Rcpp::StringVector js_data = jsonify::api::to_json(
-      lst_columnar, true, digits, false, true, "column"
+      lst_columnar, false, digits, false, true, "column"
     );
 
     res[0] = js_data;

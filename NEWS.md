@@ -1,6 +1,7 @@
 # v0.2.3
 
 * Links to geometries
+* setting jsonify unbox to false for columnar data, so JSON is always an array
 
 # v0.2.2
 
