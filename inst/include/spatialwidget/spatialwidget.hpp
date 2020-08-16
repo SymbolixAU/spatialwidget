@@ -20,8 +20,6 @@
 namespace spatialwidget {
 namespace api {
 
-  //inline int x;
-
   inline Rcpp::StringVector create_geojson_mesh(
     Rcpp::List& mesh, Rcpp::StringVector vertices
   ) {
@@ -429,7 +427,6 @@ namespace api {
     return res;
   }
 
-
   /*
    * expects an interleaved object
    */
@@ -467,25 +464,37 @@ namespace api {
       layer_legend,
       data_rows,
       parameter_exclusions,
-      repeats,
+      repeats,              // used when the column is not a list-column(?)
       total_colours,
       true, // factors as string
       colour_format
     );
 
-    return lst;
 
-    Rcpp::List df = Rcpp::as< Rcpp::DataFrame >( lst["data"] );
+    //return lst;
+
+    Rcpp::Rcout << "0" << std::endl;
+
+    Rcpp::List df = Rcpp::as< Rcpp::List >( lst["data"] );
+
+    Rcpp::Rcout << "1" << std::endl;
 
     // issue 46
     spatialwidget::utils::dates::dates_to_string( df );
     lst["data"] = df;
 
-    Rcpp::StringVector js_data = jsonify::api::to_json( lst, false, -1, true, true, "col" );
+    Rcpp::Rcout << "2" << std::endl;
+
+    Rcpp::StringVector js_data = jsonify::api::to_json(
+      lst, false, -1, true, true, "col"
+    );
 
     res[0] = js_data;
 
     SEXP legend = lst[ "legend" ];
+
+    Rcpp::Rcout << "3" << std::endl;
+
     if ( jsonify_legend ) {
       legend = jsonify::api::to_json( legend );
 
@@ -494,6 +503,8 @@ namespace api {
     } else {
       res[1] = legend;
     }
+
+    Rcpp::Rcout << "4" << std::endl;
 
     res.names() = Rcpp::CharacterVector::create("data", "legend");
     return res;
