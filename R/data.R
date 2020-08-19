@@ -32,7 +32,7 @@
 #' A simple feature \code{sf} object of roads in central Melbourne
 #'
 #' @details
-#' Obtained from \url{http://www.data.gov.au} and distributed under the Creative Commons 4 License
+#' Obtained from \url{https://www.data.gov.au/} and distributed under the Creative Commons 4 License
 #' \url{https://creativecommons.org/licenses/by/4.0/}
 #'
 #' @format An sf and data frame object with 18286 observations and 16 variables
@@ -45,7 +45,7 @@
 #'
 #' This data set is a subset of the Statistical Area Level 2 (SA2) ASGS
 #' Edition 2016 data released by the Australian Bureau of Statistics
-#' \url{ http://www.abs.gov.au }
+#' \url{ https://www.abs.gov.au/ }
 #'
 #' The data is realsed under a Creative Commons Attribution 2.5 Australia licence
 #' \url{https://creativecommons.org/licenses/by/2.5/au/}

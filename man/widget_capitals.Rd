@@ -4,12 +4,14 @@
 \name{widget_capitals}
 \alias{widget_capitals}
 \title{Capital cities for each country}
-\format{A sf object with 200 observations and 4 variables
+\format{
+A sf object with 200 observations and 4 variables
 \describe{
   \item{country}{country name}
   \item{capital}{capital name}
   \item{geometry}{sfc geometry column}
-}}
+}
+}
 \usage{
 widget_capitals
 }

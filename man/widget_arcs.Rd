@@ -4,7 +4,8 @@
 \name{widget_arcs}
 \alias{widget_arcs}
 \title{Origin Destination points between Sydney, Australia and other capitals cities}
-\format{A sf object with 199 observations and 6 variables
+\format{
+A sf object with 199 observations and 6 variables
 \describe{
   \item{country_from}{origin country}
   \item{capital_from}{origin capital}
@@ -12,7 +13,8 @@
   \item{capital_to}{destination capital}
   \item{origin}{sfc geometry column}
   \item{destination}{sfc geometry column}
-}}
+}
+}
 \usage{
 widget_arcs
 }

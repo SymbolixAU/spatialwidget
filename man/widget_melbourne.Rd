@@ -4,13 +4,15 @@
 \name{widget_melbourne}
 \alias{widget_melbourne}
 \title{Melbourne}
-\format{A data frame with 397 observations and 7 variables
+\format{
+A data frame with 397 observations and 7 variables
 \describe{
   \item{SA2_NAME}{statistical area 2 name of the polygon}
   \item{SA3_NAME}{statistical area 3 name of the polygon}
   \item{AREASQKM}{area of the SA2 polygon}
   \item{geometry}{sfc geometry column}
-}}
+}
+}
 \usage{
 widget_melbourne
 }

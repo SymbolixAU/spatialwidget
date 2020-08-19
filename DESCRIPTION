@@ -2,7 +2,7 @@ Package: spatialwidget
 Type: Package
 Title: Formats Spatial Data for Use in Htmlwidgets
 Version: 0.2.3
-Date: 2020-08-05
+Date: 2020-08-19
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
@@ -27,7 +27,7 @@ LinkingTo:
     rapidjsonr,
     Rcpp,
     sfheaders (>= 0.2.1)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Suggests:
     colourvalues,
     covr,

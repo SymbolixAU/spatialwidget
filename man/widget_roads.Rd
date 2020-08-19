@@ -4,7 +4,9 @@
 \name{widget_roads}
 \alias{widget_roads}
 \title{Roads in central Melbourne}
-\format{An sf and data frame object with 18286 observations and 16 variables}
+\format{
+An sf and data frame object with 18286 observations and 16 variables
+}
 \usage{
 widget_roads
 }
