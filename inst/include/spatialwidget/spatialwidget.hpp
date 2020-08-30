@@ -443,8 +443,6 @@ namespace api {
       std::string colour_format = "interleaved"  // can't be hex for columnar data
   ) {
 
-    // Rcpp::Rcout << "create_interleaved" << std::endl;
-
     Rcpp::List res(2);
 
     Rcpp::DataFrame data = Rcpp::as< Rcpp::DataFrame >( interleaved["data"] );
@@ -470,20 +468,11 @@ namespace api {
       colour_format
     );
 
-
-    //return lst;
-
-    Rcpp::Rcout << "0" << std::endl;
-
     Rcpp::List df = Rcpp::as< Rcpp::List >( lst["data"] );
-
-    Rcpp::Rcout << "1" << std::endl;
 
     // issue 46
     spatialwidget::utils::dates::dates_to_string( df );
     lst["data"] = df;
-
-    Rcpp::Rcout << "2" << std::endl;
 
     Rcpp::StringVector js_data = jsonify::api::to_json(
       lst, false, -1, true, true, "col"
@@ -493,7 +482,7 @@ namespace api {
 
     SEXP legend = lst[ "legend" ];
 
-    Rcpp::Rcout << "3" << std::endl;
+    // Rcpp::Rcout << "3" << std::endl;
 
     if ( jsonify_legend ) {
       legend = jsonify::api::to_json( legend );
@@ -504,7 +493,7 @@ namespace api {
       res[1] = legend;
     }
 
-    Rcpp::Rcout << "4" << std::endl;
+    // Rcpp::Rcout << "4" << std::endl;
 
     res.names() = Rcpp::CharacterVector::create("data", "legend");
     return res;

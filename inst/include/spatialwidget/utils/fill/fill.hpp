@@ -7,27 +7,27 @@ namespace spatialwidget {
 namespace utils {
 namespace fill {
 
-  inline Rcpp::LogicalVector fill_vector( Rcpp::LogicalVector& x, int n ) {
+  inline Rcpp::LogicalVector fill_vector( Rcpp::LogicalVector& x, R_xlen_t n ) {
     Rcpp::LogicalVector v( n, x[0] );
     return v;
   }
 
-  inline Rcpp::IntegerVector fill_vector( Rcpp::IntegerVector& x, int n ) {
+  inline Rcpp::IntegerVector fill_vector( Rcpp::IntegerVector& x, R_xlen_t n ) {
     Rcpp::IntegerVector v( n, x[0] );
     return v;
   }
 
-  inline Rcpp::NumericVector fill_vector( Rcpp::NumericVector& x, int n ) {
+  inline Rcpp::NumericVector fill_vector( Rcpp::NumericVector& x, R_xlen_t n ) {
     Rcpp::NumericVector v( n, x[0] );
     return v;
   }
 
-  inline Rcpp::StringVector fill_vector( Rcpp::StringVector& x, int n ) {
+  inline Rcpp::StringVector fill_vector( Rcpp::StringVector& x, R_xlen_t n ) {
     Rcpp::StringVector v( n, x[0] );
     return v;
   }
 
-  inline Rcpp::StringVector fill_vector( Rcpp::String& x, int n ) {
+  inline Rcpp::StringVector fill_vector( Rcpp::String& x, R_xlen_t n ) {
     Rcpp::StringVector v( n, x );
     return v;
   }
@@ -36,7 +36,7 @@ namespace fill {
       Rcpp::List& lst_defaults,
       Rcpp::String& param_name,
       SEXP& value,
-      int n_rows ) {
+      R_xlen_t n_rows ) {
 
     switch( TYPEOF( value ) ) {
     case 10: { // LGLSXP

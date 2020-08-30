@@ -28,6 +28,8 @@ namespace colour {
       std::string colour_format = "hex"
     ) {
 
+    // Rcpp::Rcout << "make_colours" << std::endl;
+
     std::string na_colour = params.containsElementNamed( "na_colour" ) ?
     params["na_colour"] : default_na_colour;
 
@@ -49,6 +51,7 @@ namespace colour {
     switch ( TYPEOF( palette_type ) ) {
     case STRSXP: {} // string vector
     case LGLSXP: {  // logical vector
+      // Rcpp::Rcout << "LGLSXP || STRSXP " << std::endl;
       Rcpp::StringVector colour_vec = Rcpp::as< Rcpp::StringVector >( palette_type );
       Rcpp::String first_colour = colour_vec[0];
       std::string first_colour_str = first_colour;
@@ -79,6 +82,8 @@ namespace colour {
 
       } else {
 
+        // Rcpp::Rcout << "else " << std::endl;
+
         Rcpp::List legend = spatialwidget::palette::colour_with_palette(
           pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
           colour_name, legend_digits, colour_format
@@ -106,7 +111,7 @@ namespace colour {
       //   pal, colour_vec, alpha, na_colour, include_alpha, colour_name,
       //   legend_digits
       //   );
-      Rcpp::Rcout << "default" << std::endl;
+      // Rcpp::Rcout << "default" << std::endl;
 
       Rcpp::List legend = spatialwidget::palette::colour_with_palette(
         pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
@@ -140,6 +145,8 @@ namespace colour {
       //int legend_digits = 2
     ) {
 
+    // Rcpp::Rcout << "resolve_colour" << std::endl;
+
     Rcpp::IntegerVector data_column_index = lst_params[ "data_column_index" ];
     Rcpp::IntegerVector parameter_type = lst_params[ "parameter_type" ];
     Rcpp::StringVector param_names = params.names();
@@ -165,7 +172,7 @@ namespace colour {
       if ( colour_location >= 0 ) {
 
         SEXP val = params[ colour_location ];
-        int n = data.nrows();
+        R_xlen_t n = data.nrows();
         Rcpp::String col_name = colour_name;
         spatialwidget::utils::fill::fill_vector( lst_defaults, col_name, val, n );
 
@@ -190,8 +197,6 @@ namespace colour {
     // TODO
     // get the 'legend_digits' before here so it goes into colourvalues
     //
-
-
 
     // this can't be replaced with 'include_legend'
     bool make_legend = false;
@@ -231,6 +236,8 @@ namespace colour {
         }
       }
     }
+
+    // Rcpp::Rcout << "making colours " << std::endl;
 
     // make colours returns a summary anyway. Whether or not it's included
     // on the map is determined by `make_legend` check
