@@ -8,9 +8,6 @@
 #include "spatialwidget/utils/utils.hpp"
 //#include <Rcpp/Benchmark/Timer.h>
 
-// #include "jsonify/to_json/dates/dates.hpp"
-// #include "jsonify/to_json/utils.hpp"
-
 namespace spatialwidget {
 namespace parameters {
 

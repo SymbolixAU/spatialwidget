@@ -22,7 +22,7 @@ A simple feature \code{sf} object of Polygons for Melbourne and the surrounding 
 \details{
 This data set is a subset of the Statistical Area Level 2 (SA2) ASGS
 Edition 2016 data released by the Australian Bureau of Statistics
-\url{ http://www.abs.gov.au }
+\url{ https://www.abs.gov.au/ }
 
 The data is realsed under a Creative Commons Attribution 2.5 Australia licence
 \url{https://creativecommons.org/licenses/by/2.5/au/}
