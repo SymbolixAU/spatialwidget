@@ -8,9 +8,6 @@
 #include "spatialwidget/utils/utils.hpp"
 //#include <Rcpp/Benchmark/Timer.h>
 
-// #include "jsonify/to_json/dates/dates.hpp"
-// #include "jsonify/to_json/utils.hpp"
-
 namespace spatialwidget {
 namespace parameters {
 
@@ -91,12 +88,14 @@ namespace parameters {
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
 
-  	//Rcpp::Rcout << "param_names " << param_names << std::endl;
-  	//Rcpp::Rcout << "data_names " << data_names << std::endl;
+  	// Rcpp::Rcout << "param_names " << param_names << std::endl;
+  	// Rcpp::Rcout << "data_names " << data_names << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
 
   	//return lst_params;
+  	//return lst_defaults;
+
 
   	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list(
   	  lst_params,
@@ -104,6 +103,7 @@ namespace parameters {
   	  param_names,
   	  layer_legend
   	);
+
 
   	Rcpp::StringVector legend_names = lst_legend.names();
 
@@ -114,10 +114,14 @@ namespace parameters {
 		std::string colour_column;
 		std::string opacity_column;
 
+
 		for ( it = colour_columns.begin(); it != colour_columns.end(); ++it ) {
 
 		  colour_column = it->first;
 		  opacity_column = it->second;
+
+		  // Rcpp::Rcout << "colour_column: " << colour_column << std::endl;
+		  // Rcpp::Rcout << "opacity_column: " << opacity_column << std::endl;
 
 		  include_legend = spatialwidget::utils::where::where_is( colour_column, legend_names ) >= 0 ? true : false;
 
@@ -135,6 +139,10 @@ namespace parameters {
 	      colour_format
 	      );
 		}
+
+		//return lst_defaults;
+
+  	//Rcpp::stop("stopping");
 
   	// list(
   	//  colourType ("fill_colour", "stroke_colour", "stroke_from", "stroke_to")

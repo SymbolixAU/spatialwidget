@@ -37,6 +37,7 @@ namespace construction {
   		int& data_rows
   ) {
 
+    //R_xlen_t data_rows = data.nrow();
   	int n = params.size();
   	int colIndex = -1;
 

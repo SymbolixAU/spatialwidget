@@ -1,8 +1,8 @@
 
 ## Release Notes
 
-* Updates v0.2 to v0.2.2
-* updated to work with geojsonsf v1.3.3 and sfheaders v0.2.1 dependencies
+* Updates v0.2.2 to v0.2.3
+* one patch and some document updates
 
 
 

@@ -10,7 +10,6 @@
 namespace spatialwidget {
 namespace palette {
 
-  //const Rcpp::StringVector default_palette = "viridis";
 
   /*
    * resolve_palette
@@ -19,7 +18,6 @@ namespace palette {
    */
   inline SEXP resolve_palette( Rcpp::List& lst_params, Rcpp::List& params ) {
 
-  	//SEXP pal = default_palette;
   	Rcpp::StringVector sv = lst_params[ "parameter" ];
   	int idx =  spatialwidget::utils::where::where_is( "palette" , sv );
 
@@ -48,6 +46,8 @@ namespace palette {
   ) {
 
     //Rcpp::StringVector fill_colour_clone = Rcpp::clone( fill_colour_vec );
+
+    // Rcpp::Rcout << "colour_name: " << colour_name.c_str() << std::endl;
 
     int n_summaries = 5;
     bool format = true;
@@ -78,10 +78,14 @@ namespace palette {
       );
     } else if ( colour_format == "interleaved" ) {
       // Rcpp::Rcout << "colour_format = interleaved" << std::endl;
+      // Rcpp::Rcout << "total_colours: " << total_colours << std::endl;
+      // Rcpp::Rcout << "repeats: " << repeats << std::endl;
+
       return colourvalues::api::colour_values_rgb_interleaved(
         fill_colour_vec, palette, alpha, repeats, total_colours, na_colour, include_alpha, format,
         legend_digits, summary, n_summaries
       );
+      //Rcpp::stop("stopping");
     } else {
       Rcpp::stop("spatialwidget - unknown colour format, expecting hex, rgb or interleaved");
     }

@@ -449,10 +449,12 @@ namespace api {
     Rcpp::IntegerVector repeats = Rcpp::as< Rcpp::IntegerVector >( interleaved["n_coordinates"] );
     R_xlen_t total_colours = interleaved["total_coordinates"];
 
+
     // Rcpp::Rcout << "repeats: " << repeats << std::endl;
     // Rcpp::Rcout << "total_colours " << total_colours << std::endl;
 
     Rcpp::StringVector data_names = data.names();
+    // Rcpp::Rcout << "data_name: " << data_names << std::endl;
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
@@ -468,7 +470,7 @@ namespace api {
       colour_format
     );
 
-    Rcpp::List df = Rcpp::as< Rcpp::List >( lst["data"] );
+    Rcpp::List df = lst["data"];
 
     // issue 46
     spatialwidget::utils::dates::dates_to_string( df );
@@ -601,7 +603,7 @@ namespace api {
     // - rather than combining into one long vector
 
     Rcpp::StringVector js_data = jsonify::api::to_json(
-      lst_columnar, true, digits, false, true, "column"
+      lst_columnar, false, digits, false, true, "column"
     );
 
     res[0] = js_data;

@@ -4,13 +4,15 @@
 \name{widget_melbourne}
 \alias{widget_melbourne}
 \title{Melbourne}
-\format{A data frame with 397 observations and 7 variables
+\format{
+A data frame with 397 observations and 7 variables
 \describe{
   \item{SA2_NAME}{statistical area 2 name of the polygon}
   \item{SA3_NAME}{statistical area 3 name of the polygon}
   \item{AREASQKM}{area of the SA2 polygon}
   \item{geometry}{sfc geometry column}
-}}
+}
+}
 \usage{
 widget_melbourne
 }
@@ -20,7 +22,7 @@ A simple feature \code{sf} object of Polygons for Melbourne and the surrounding 
 \details{
 This data set is a subset of the Statistical Area Level 2 (SA2) ASGS
 Edition 2016 data released by the Australian Bureau of Statistics
-\url{ http://www.abs.gov.au }
+\url{ https://www.abs.gov.au/ }
 
 The data is realsed under a Creative Commons Attribution 2.5 Australia licence
 \url{https://creativecommons.org/licenses/by/2.5/au/}

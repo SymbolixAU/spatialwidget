@@ -47,6 +47,7 @@ namespace colour {
 
     // here it's already a STRSXP, not factor (INTSXP)
     //Rcpp::Rcout << "palette_type: " << TYPEOF( palette_type ) << std::endl;
+    //Rcpp::stop("stopping");
 
     switch ( TYPEOF( palette_type ) ) {
     case STRSXP: {} // string vector
@@ -83,7 +84,6 @@ namespace colour {
       } else {
 
         // Rcpp::Rcout << "else " << std::endl;
-
         Rcpp::List legend = spatialwidget::palette::colour_with_palette(
           pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
           colour_name, legend_digits, colour_format
@@ -117,6 +117,7 @@ namespace colour {
         pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
         colour_name, legend_digits, colour_format
       );
+      //Rcpp::stop("stopping");
 
       std::string legend_type = Rf_isFactor( palette_type )  ? "category" : "gradient";
 
@@ -165,6 +166,9 @@ namespace colour {
     int colourColIndex = colour_location >= 0 ? data_column_index[ colour_location ] : -1;
     int alphaColIndex = opacity_location >= 0 ? data_column_index[ opacity_location ] : -1;
 
+    // Rcpp::Rcout << "colourColIndex: " << colourColIndex << std::endl;
+    // Rcpp::Rcout << "alphaColIndex: " << alphaColIndex << std::endl;
+
     if ( colourColIndex >= 0 ) {
       this_colour = data[ colourColIndex ];
     } else {
@@ -182,6 +186,7 @@ namespace colour {
         lst_defaults[ colour_name.c_str() ] = nv; // need to add back to lst_defaults
       }
     }
+
 
     if ( alphaColIndex >= 0 ) {
       alpha = data[ alphaColIndex ];
