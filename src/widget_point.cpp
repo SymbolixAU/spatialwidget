@@ -14,7 +14,7 @@ Rcpp::List rcpp_widget_point(
     int digits
   ) {
 
-  int data_rows = data.nrows();
+  R_xlen_t data_rows = data.nrows();
   Rcpp::List defaults = point_defaults( data_rows );
 
   std::unordered_map< std::string, std::string > point_colours = spatialwidget::widgetpoint::point_colours;
@@ -44,7 +44,7 @@ Rcpp::List rcpp_widget_point_df(
     int digits
   ) {
 
-  int data_rows = data.nrows();
+  R_xlen_t data_rows = data.nrows();
   Rcpp::List defaults = point_defaults( data_rows );
 
   std::unordered_map< std::string, std::string > point_colours = spatialwidget::widgetpoint::point_colours;
@@ -75,7 +75,7 @@ Rcpp::List rcpp_widget_point_df_columnar(
     int digits
 ) {
 
-  int data_rows = data.nrows();
+  R_xlen_t data_rows = data.nrows();
   Rcpp::List defaults = point_defaults( data_rows );
 
   std::unordered_map< std::string, std::string > point_colours = spatialwidget::widgetpoint::point_colours;

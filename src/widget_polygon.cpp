@@ -12,7 +12,7 @@ Rcpp::List rcpp_widget_polygon(
     int digits
   ) {
 
-  int data_rows = data.nrows();
+  R_xlen_t data_rows = data.nrows();
   Rcpp::List defaults = polygon_defaults( data_rows );
 
   std::unordered_map< std::string, std::string > polygon_colours = spatialwidget::widgetpolygon::polygon_colours;

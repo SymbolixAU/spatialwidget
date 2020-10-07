@@ -7,7 +7,7 @@
 namespace spatialwidget {
 namespace construction {
 
-  inline void construct_df( Rcpp::List& df, int& nrows ) {
+  inline void construct_df( Rcpp::List& df, R_xlen_t& nrows ) {
 
     if ( nrows < 1 ) {
       Rcpp::stop("Error creating data layer");
@@ -34,7 +34,7 @@ namespace construction {
   		Rcpp::StringVector& data_names,
   		Rcpp::List& lst_defaults,
   		Rcpp::DataFrame& data,
-  		int& data_rows
+  		R_xlen_t& data_rows
   ) {
 
     //R_xlen_t data_rows = data.nrow();
@@ -48,7 +48,8 @@ namespace construction {
   	}
 
   	// iterate each of the parameters
-  	for (int i = 0; i < n; i ++ ) {
+  	int i;
+  	for (i = 0; i < n; i ++ ) {
   		// if the param element is length 1; check if it's a column name
 
   		Rcpp::String this_param = param_names[i];

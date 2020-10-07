@@ -67,7 +67,7 @@ namespace parameters {
   		Rcpp::List& lst_defaults,
   		std::unordered_map< std::string, std::string > colour_columns,
   		Rcpp::StringVector& layer_legend,     // vector of colours to use in the legend
-  		int& data_rows,
+  		R_xlen_t& data_rows,
   		Rcpp::StringVector& parameter_exclusions,
   		Rcpp::IntegerVector& repeats,
   		R_xlen_t& total_colours,

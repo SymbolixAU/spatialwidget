@@ -9,6 +9,12 @@
 // [[Rcpp::depends(jsonify)]]
 #include "jsonify/jsonify.hpp"
 
+// [[Rcpp::depends(geometries)]]
+#include "geometries/geometries.hpp"
+
+// [[Rcpp::depends(sfheaders)]]
+#include "sfheaders/sfheaders.hpp"
+
 #include "spatialwidget/colour/colour.hpp"
 #include "spatialwidget/data_construction/data_construction.hpp"
 #include "spatialwidget/geojson/geojson.hpp"
@@ -39,7 +45,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector& geometry_columns,
       bool jsonify_legend,
@@ -107,7 +113,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       std::string& geometry_column,              // single geometry column from sf object
       bool jsonify_legend,
@@ -176,7 +182,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::List& geometry_columns,
       bool jsonify_legend,
@@ -254,7 +260,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::List& geometry_columns,
       bool jsonify_legend,
@@ -323,7 +329,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::StringVector geometry_columns,
       bool jsonify_legend,
@@ -389,7 +395,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       int digits = -1,
       std::string colour_format = "rgb"  // can't be hex for columnar data
@@ -436,7 +442,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       bool jsonify_legend,
       int digits = -1,
@@ -511,7 +517,7 @@ namespace api {
       Rcpp::List& lst_defaults,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
-      int& data_rows,
+      R_xlen_t& data_rows,
       Rcpp::StringVector& parameter_exclusions,
       Rcpp::List& geometry_columns,  // a list, so we get a named object in the final JSON
       bool jsonify_legend,
