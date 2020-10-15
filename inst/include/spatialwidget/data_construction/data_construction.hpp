@@ -2,6 +2,7 @@
 #define R_SPATIALWIDGET_DATA_CONSTRUCTION_H
 
 #include <Rcpp.h>
+#include "geometries/utils/vectors/vectors.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
 namespace spatialwidget {
@@ -64,7 +65,7 @@ namespace construction {
 			  //Rcpp::Rcout << "param_value: " << param_value.get_cstring() << std::endl;
 
 				// returns -1 if length != 1
-				colIndex = spatialwidget::utils::where::where_is( param_value, data_names );
+				colIndex = geometries::utils::where_is( param_value, data_names );
 
 				if ( colIndex == -1 ) {
 				  continue;

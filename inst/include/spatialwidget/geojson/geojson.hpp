@@ -3,6 +3,8 @@
 
 #include <Rcpp.h>
 
+#include "geometries/utils/vectors/vectors.hpp"
+
 #include "geojsonsf/geojsonsf.h"
 #include "geojsonsf/geometries/sizes.hpp"
 #include "geojsonsf/write_geojson.hpp"
@@ -178,7 +180,7 @@ namespace geojson {
 
     for ( i = 0; i < sf.length(); i++) {
       Rcpp::String this_column = column_names[i];
-      R_xlen_t idx = spatialwidget::utils::where::where_is( this_column, geometries );
+      R_xlen_t idx = geometries::utils::where_is( this_column, geometries );
 
       if ( idx == -1 ) {  // i.e., it's not in the vector of geometries
         property_names[ property_counter ] = column_names[i];
@@ -344,8 +346,8 @@ namespace geojson {
 
       Rcpp::String this_column = column_names[i];
 
-      R_xlen_t idx_lon = spatialwidget::utils::where::where_is( this_column, lons );
-      R_xlen_t idx_lat = spatialwidget::utils::where::where_is( this_column, lats );
+      R_xlen_t idx_lon = geometries::utils::where_is( this_column, lons );
+      R_xlen_t idx_lat = geometries::utils::where_is( this_column, lats );
 
       if ( idx_lon == -1 && idx_lat == -1 ) {
         property_names[property_counter] = column_names[i];
@@ -456,9 +458,9 @@ namespace geojson {
 
       Rcpp::String this_column = column_names[i];
 
-      R_xlen_t idx_lon = spatialwidget::utils::where::where_is( this_column, lons );
-      R_xlen_t idx_lat = spatialwidget::utils::where::where_is( this_column, lats );
-      R_xlen_t idx_elev = spatialwidget::utils::where::where_is( this_column, elevs );
+      R_xlen_t idx_lon = geometries::utils::where_is( this_column, lons );
+      R_xlen_t idx_lat = geometries::utils::where_is( this_column, lats );
+      R_xlen_t idx_elev = geometries::utils::where_is( this_column, elevs );
 
       if ( idx_lon == -1 && idx_lat == -1 && idx_elev == -1 ) {
         property_names[property_counter] = column_names[i];

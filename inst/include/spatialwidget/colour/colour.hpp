@@ -2,9 +2,11 @@
 #define R_SPATIALWIDGET_COLOUR_H
 
 #include <Rcpp.h>
+
+#include "geometries/utils/vectors/vectors.hpp"
+
 #include "spatialwidget/palette/palette.hpp"
 #include "spatialwidget/utils/utils.hpp"
-#include "spatialwidget/utils/where/where.hpp"
 #include "spatialwidget/legend/legend.hpp"
 
 namespace spatialwidget {
@@ -28,7 +30,7 @@ namespace colour {
       std::string colour_format = "hex"
     ) {
 
-    // Rcpp::Rcout << "make_colours" << std::endl;
+    // Rcpp::Rcout << "sw - make_colours" << std::endl;
 
     std::string na_colour = params.containsElementNamed( "na_colour" ) ?
     params["na_colour"] : default_na_colour;
@@ -83,7 +85,7 @@ namespace colour {
 
       } else {
 
-        // Rcpp::Rcout << "else " << std::endl;
+        // Rcpp::Rcout << "spw else " << std::endl;
         Rcpp::List legend = spatialwidget::palette::colour_with_palette(
           pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
           colour_name, legend_digits, colour_format
@@ -111,13 +113,16 @@ namespace colour {
       //   pal, colour_vec, alpha, na_colour, include_alpha, colour_name,
       //   legend_digits
       //   );
-      // Rcpp::Rcout << "default" << std::endl;
+      // Rcpp::Rcout << "spw default" << std::endl;
+      //Rcpp::Rcout << "alpha: " << alpha << std::endl;
 
       Rcpp::List legend = spatialwidget::palette::colour_with_palette(
         pal, palette_type, repeats, total_colours, alpha, na_colour, include_alpha,
         colour_name, legend_digits, colour_format
       );
       //Rcpp::stop("stopping");
+
+      // Rcpp::Rcout << "sw made colour_with_palette" << std::endl;
 
       std::string legend_type = Rf_isFactor( palette_type )  ? "category" : "gradient";
 
@@ -154,12 +159,12 @@ namespace colour {
 
     Rcpp::StringVector hex_strings( data.nrows() );
 
-    Rcpp::NumericVector alpha( 1, 255.0 ); // can be overwritten by user
+    Rcpp::NumericVector alpha( 1, 255.0 );
 
     SEXP this_colour;
 
-    int colour_location = spatialwidget::utils::where::where_is( colour_name, param_names );
-    int opacity_location = spatialwidget::utils::where::where_is( opacity_name, param_names );
+    int colour_location = geometries::utils::where_is( colour_name, param_names );
+    int opacity_location = geometries::utils::where_is( opacity_name, param_names );
 
     // if 'colour_name' doesn't exist in the list of default, we need to make one
 
@@ -192,7 +197,7 @@ namespace colour {
       alpha = data[ alphaColIndex ];
     } else {
 
-      int find_opacity = spatialwidget::utils::where::where_is( opacity_name, param_names );
+      int find_opacity = geometries::utils::where_is( opacity_name, param_names );
       if (find_opacity >= 0 ) {
         int a = params[ find_opacity ]; // will throw an error if not correct type
         alpha.fill( a );
@@ -248,10 +253,13 @@ namespace colour {
     // on the map is determined by `make_legend` check
     // since colourvalues controls the summary values, we need 'legend_digits'
     // known here before it goes into 'make_colours' and then into colourvalues
+    // Rcpp::Rcout << "spw - going to make colours" << std::endl;
     Rcpp::List legend = make_colours(
       lst_params, params, data, lst_defaults, colourColIndex, //data_column_index, //hex_strings,
       this_colour, alpha, colour_name, include_legend, repeats, total_colours, legend_digits, colour_format
     );
+
+    // Rcpp::Rcout << "sw - done make_colours" << std::endl;
 
     if (lst_legend.containsElementNamed( colour_name.c_str() ) ) {
 

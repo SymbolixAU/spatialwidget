@@ -9,8 +9,8 @@ namespace spatialwidget {
 namespace utils {
 namespace factors {
 
-  inline void factors_to_string( Rcpp::DataFrame& data ) {
-    int n_cols = data.ncol();
+  inline void factors_to_string( Rcpp::List& data ) {
+    int n_cols = data.length();
     int i;
     Rcpp::StringVector col_names = data.names();
     for( i = 0; i < n_cols; i++ ) {

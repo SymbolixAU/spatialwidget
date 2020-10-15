@@ -440,6 +440,7 @@ namespace api {
       Rcpp::List& interleaved,
       Rcpp::List& params,
       Rcpp::List& lst_defaults,
+      Rcpp::StringVector& binary_columns,
       std::unordered_map< std::string, std::string >& layer_colours,
       Rcpp::StringVector& layer_legend,
       R_xlen_t& data_rows,
@@ -449,12 +450,16 @@ namespace api {
       std::string colour_format = "interleaved"  // can't be hex for columnar data
   ) {
 
-    Rcpp::List res(2);
+    R_xlen_t i, j;
+    Rcpp::List res(5);
 
     Rcpp::DataFrame data = Rcpp::as< Rcpp::DataFrame >( interleaved["data"] );
-    Rcpp::IntegerVector repeats = Rcpp::as< Rcpp::IntegerVector >( interleaved["n_coordinates"] );
+    Rcpp::IntegerVector repeats = Rcpp::as< Rcpp::IntegerVector >( interleaved["geometry_coordinates"] );
     R_xlen_t total_colours = interleaved["total_coordinates"];
-
+    Rcpp::IntegerVector geometry_coordinates = interleaved[ "geometry_coordinates" ];
+    Rcpp::IntegerVector start_indices = interleaved["start_indices"];
+    Rcpp::NumericVector coordinates = interleaved["coordinates"];
+    int stride = interleaved["stride"];
 
     // Rcpp::Rcout << "repeats: " << repeats << std::endl;
     // Rcpp::Rcout << "total_colours " << total_colours << std::endl;
@@ -476,14 +481,44 @@ namespace api {
       colour_format
     );
 
+    //return lst;
     Rcpp::List df = lst["data"];
 
     // issue 46
     spatialwidget::utils::dates::dates_to_string( df );
-    lst["data"] = df;
+
+
+    Rcpp::NumericVector expanded_index( data_rows );
+    R_xlen_t counter = 0;
+
+    R_xlen_t n_geometries = geometry_coordinates.length();
+
+    for( i = 0; i < n_geometries; ++i ) {
+      R_xlen_t expand_by = geometry_coordinates[ i ];
+
+      for( j = 0; j < expand_by; ++j ) {
+        expanded_index[ counter + j ] = i;
+      }
+      counter = counter + expand_by;
+    }
+
+    Rcpp::StringVector binary_names = df.names();
+
+    for( i = 0; i < binary_columns.length(); ++i ) {
+
+      Rcpp::String to_find = binary_columns[ i ];
+      R_xlen_t name_position = geometries::utils::where_is( to_find, binary_names );
+      SEXP v = df[ name_position ];
+      geometries::utils::expand_vector( df, v, expanded_index, name_position );
+    }
+
+
+    //lst["data"] = df;
+
+    //return lst;
 
     Rcpp::StringVector js_data = jsonify::api::to_json(
-      lst, false, -1, true, true, "col"
+      df, false, -1, true, true, "col"
     );
 
     res[0] = js_data;
@@ -502,8 +537,11 @@ namespace api {
     }
 
     // Rcpp::Rcout << "4" << std::endl;
+    res[2] = jsonify::api::to_json( coordinates );
+    res[3] = jsonify::api::to_json( start_indices );
+    res[4] = stride;
 
-    res.names() = Rcpp::CharacterVector::create("data", "legend");
+    res.names() = Rcpp::CharacterVector::create("data", "legend", "coordinates", "start_indices", "stride");
     return res;
   }
 

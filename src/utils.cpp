@@ -1,5 +1,6 @@
 #include <Rcpp.h>
 
+#include "geometries/utils/vectors/vectors.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
 /*
@@ -29,7 +30,7 @@ Rcpp::List rcpp_fill_vector(
  */
 // [[Rcpp::export]]
 Rcpp::IntegerVector rcpp_where_is( Rcpp::StringVector to_find, Rcpp::StringVector sv ) {
-  return spatialwidget::utils::where::where_is( to_find, sv );
+  return geometries::utils::where_is( to_find, sv );
 }
 
 /*
