@@ -12,7 +12,7 @@ Rcpp::List rcpp_widget_line(
     int digits
   ) {
 
-  R_xlen_t data_rows = data.nrows();
+  int data_rows = data.nrows();
   Rcpp::List defaults = line_defaults( data_rows );
 
   std::unordered_map< std::string, std::string > line_colours = spatialwidget::widgetline::line_colours;

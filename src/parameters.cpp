@@ -31,7 +31,7 @@ Rcpp::List rcpp_params_to_data(
     Rcpp::List& params,                   // list of parameters from calling function
     Rcpp::List& lst_defaults,
     Rcpp::StringVector layer_legend,     // vector of colours to use in the legend
-    R_xlen_t data_rows,
+    int data_rows,
     Rcpp::StringVector parameter_exclusions,
     bool factors_as_string
   ) {

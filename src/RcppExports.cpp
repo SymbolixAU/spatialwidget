@@ -50,7 +50,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_construct_data
-Rcpp::DataFrame rcpp_construct_data(Rcpp::StringVector param_names, Rcpp::List params, Rcpp::StringVector data_names, Rcpp::List lst_defaults, Rcpp::DataFrame data, R_xlen_t data_rows);
+Rcpp::DataFrame rcpp_construct_data(Rcpp::StringVector param_names, Rcpp::List params, Rcpp::StringVector data_names, Rcpp::List lst_defaults, Rcpp::DataFrame data, int data_rows);
 RcppExport SEXP _spatialwidget_rcpp_construct_data(SEXP param_namesSEXP, SEXP paramsSEXP, SEXP data_namesSEXP, SEXP lst_defaultsSEXP, SEXP dataSEXP, SEXP data_rowsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -60,7 +60,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type data_names(data_namesSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type lst_defaults(lst_defaultsSEXP);
     Rcpp::traits::input_parameter< Rcpp::DataFrame >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< R_xlen_t >::type data_rows(data_rowsSEXP);
+    Rcpp::traits::input_parameter< int >::type data_rows(data_rowsSEXP);
     rcpp_result_gen = Rcpp::wrap(rcpp_construct_data(param_names, params, data_names, lst_defaults, data, data_rows));
     return rcpp_result_gen;
 END_RCPP
@@ -211,7 +211,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_params_to_data
-Rcpp::List rcpp_params_to_data(Rcpp::DataFrame& data, Rcpp::List& params, Rcpp::List& lst_defaults, Rcpp::StringVector layer_legend, R_xlen_t data_rows, Rcpp::StringVector parameter_exclusions, bool factors_as_string);
+Rcpp::List rcpp_params_to_data(Rcpp::DataFrame& data, Rcpp::List& params, Rcpp::List& lst_defaults, Rcpp::StringVector layer_legend, int data_rows, Rcpp::StringVector parameter_exclusions, bool factors_as_string);
 RcppExport SEXP _spatialwidget_rcpp_params_to_data(SEXP dataSEXP, SEXP paramsSEXP, SEXP lst_defaultsSEXP, SEXP layer_legendSEXP, SEXP data_rowsSEXP, SEXP parameter_exclusionsSEXP, SEXP factors_as_stringSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -220,7 +220,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::List& >::type params(paramsSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type lst_defaults(lst_defaultsSEXP);
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type layer_legend(layer_legendSEXP);
-    Rcpp::traits::input_parameter< R_xlen_t >::type data_rows(data_rowsSEXP);
+    Rcpp::traits::input_parameter< int >::type data_rows(data_rowsSEXP);
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type parameter_exclusions(parameter_exclusionsSEXP);
     Rcpp::traits::input_parameter< bool >::type factors_as_string(factors_as_stringSEXP);
     rcpp_result_gen = Rcpp::wrap(rcpp_params_to_data(data, params, lst_defaults, layer_legend, data_rows, parameter_exclusions, factors_as_string));
