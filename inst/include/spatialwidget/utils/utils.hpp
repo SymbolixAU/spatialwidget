@@ -3,7 +3,6 @@
 
 #include "spatialwidget/utils/fill/fill.hpp"
 #include "spatialwidget/utils/factors/factors.hpp"
-#include "spatialwidget/utils/where/where.hpp"
 #include "spatialwidget/utils/remove/remove.hpp"
 #include "spatialwidget/utils/map/map.hpp"
 #include "spatialwidget/utils/colour/colour.hpp"

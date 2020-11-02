@@ -2,6 +2,9 @@
 #define R_SPATIALWIDGET_PARAMETERS_TO_DATA_H
 
 #include <Rcpp.h>
+
+#include "geometries/utils/vectors/vectors.hpp"
+
 #include "spatialwidget/spatialwidget.hpp"
 #include "spatialwidget/legend/legend.hpp"
 #include "spatialwidget/colour/colour.hpp"
@@ -48,7 +51,7 @@ namespace parameters {
 
       if ( parameter_type == STRSXP ) { // STRSXP (string vector)
         Rcpp::String param_value = params[i];
-        data_column_index[i] = spatialwidget::utils::where::where_is( param_value, data_names );
+        data_column_index[i] = geometries::utils::where_is( param_value, data_names );
       }
     }
     return Rcpp::List::create(
@@ -69,6 +72,8 @@ namespace parameters {
   		Rcpp::StringVector& layer_legend,     // vector of colours to use in the legend
   		int& data_rows,
   		Rcpp::StringVector& parameter_exclusions,
+  		Rcpp::IntegerVector& repeats,
+  		R_xlen_t& total_colours,
   		bool factors_as_string = true,
   		std::string colour_format = "hex"
   ) {
@@ -86,12 +91,10 @@ namespace parameters {
   	Rcpp::StringVector param_names = params.names();
   	Rcpp::StringVector data_names = data.names();
 
-  	//Rcpp::Rcout << "param_names " << param_names << std::endl;
-  	//Rcpp::Rcout << "data_names " << data_names << std::endl;
+  	// Rcpp::Rcout << "param_names " << param_names << std::endl;
+  	// Rcpp::Rcout << "data_names " << data_names << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
-
-  	//return lst_params;
 
   	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list(
   	  lst_params,
@@ -99,6 +102,7 @@ namespace parameters {
   	  param_names,
   	  layer_legend
   	);
+
 
   	Rcpp::StringVector legend_names = lst_legend.names();
 
@@ -114,7 +118,10 @@ namespace parameters {
 		  colour_column = it->first;
 		  opacity_column = it->second;
 
-		  include_legend = spatialwidget::utils::where::where_is( colour_column, legend_names ) >= 0 ? true : false;
+		  // Rcpp::Rcout << "colour_column: " << colour_column << std::endl;
+		  // Rcpp::Rcout << "opacity_column: " << opacity_column << std::endl;
+
+		  include_legend = geometries::utils::where_is( colour_column, legend_names ) >= 0 ? true : false;
 
 	    spatialwidget::colour::resolve_colour(
 	      lst_params,
@@ -125,9 +132,17 @@ namespace parameters {
 	      opacity_column,
 	      lst_legend,
 	      include_legend,
+	      repeats,
+	      total_colours,
 	      colour_format
 	      );
+
+	    // Rcpp::Rcout << "sw resolved colour" << std::endl;
 		}
+
+		//return lst_defaults;
+
+  	//Rcpp::stop("stopping");
 
   	// list(
   	//  colourType ("fill_colour", "stroke_colour", "stroke_from", "stroke_to")
@@ -147,8 +162,11 @@ namespace parameters {
 
   	//lst_params = construct_params( data, params );
   	//return lst_params;
+  	//return lst_defaults;
 
-  	SEXP df = spatialwidget::construction::construct_data(
+  	// Rcpp::Rcout << "sw - construcint data" << std::endl;
+
+  	Rcpp::List df = spatialwidget::construction::construct_data(
   		param_names,
   		params,
   		data_names,
@@ -157,12 +175,16 @@ namespace parameters {
   		data_rows
   	);
 
+    // if 'interleaving', we don't want a final df, because columns lenghts are / can be different
+    if( colour_format != "interleaved" ) {
+      // Rcpp::Rcout << "constructing data" << std::endl;
+      spatialwidget::construction::construct_df( df, data_rows );
+    }
+
   	Rcpp::List result = Rcpp::List::create(
   		Rcpp::_["data"] = df,
   		Rcpp::_["legend"] = lst_legend
   	);
-
-  	//Rcpp::Rcout << "parameters.hpp done" << std::endl;
 
   	return result;
   }

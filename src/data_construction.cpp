@@ -16,7 +16,8 @@ Rcpp::DataFrame rcpp_construct_data(
   Rcpp::StringVector data_names,
   Rcpp::List lst_defaults,
   Rcpp::DataFrame data,
-  int data_rows) {
+  int data_rows
+  ) {
 
   return spatialwidget::construction::construct_data(
     param_names, params, data_names, lst_defaults, data, data_rows

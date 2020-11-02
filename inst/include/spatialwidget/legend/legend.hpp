@@ -2,6 +2,7 @@
 #define R_SPATIALWIDGET_LEGEND_H
 
 #include <Rcpp.h>
+#include "geometries/utils/vectors/vectors.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
 namespace spatialwidget {
@@ -76,7 +77,7 @@ namespace legend {
     legend.names() = legend_types;
 
     // find the 'legend' argument
-    int legend_location = spatialwidget::utils::where::where_is( "legend", param_names );
+    int legend_location = geometries::utils::where_is( "legend", param_names );
 
     if ( legend_location > -1 ) {
 

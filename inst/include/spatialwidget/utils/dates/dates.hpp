@@ -50,12 +50,12 @@ namespace dates {
   }
 
   inline void dates_to_string(
-    Rcpp::DataFrame& data
+    Rcpp::List& data
   ) {
     int tp;
     int df_col;
     Rcpp::StringVector column_names = data.names();
-    int n_cols = data.ncol();
+    int n_cols = data.length();
 
     for( df_col = 0; df_col < n_cols; ++df_col ) {
       const char * col_name = column_names[ df_col ];

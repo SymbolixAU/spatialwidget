@@ -7,7 +7,8 @@ test_that("colours returned as hex or rgb",{
   df <- data.frame(col1 = 1:n)
   lst_params <- spatialwidget:::rcpp_construct_params(df, params)
   data <- df
-  data_rows <- nrow( df )
+  total_colours <- nrow( df )
+  repeats <- 1L
   lst_defaults <- list(fill_colour = rep(1,5))
 
   colour_name <- "fill_colour"
@@ -26,6 +27,8 @@ test_that("colours returned as hex or rgb",{
     opacity_name,
     lst_legend,
     include_legend,
+    repeats,
+    total_colours,
     colour_format
   )
 
@@ -39,7 +42,8 @@ test_that("colours returned as hex or rgb",{
   df <- data.frame(col1 = 1:n)
   lst_params <- spatialwidget:::rcpp_construct_params(df, params)
   data <- df
-  data_rows <- nrow( df )
+  total_colours <- nrow( df )
+  repeats <- 1L
   lst_defaults <- list(fill_colour = rep(1,5))
 
   colour_name <- "fill_colour"
@@ -58,6 +62,8 @@ test_that("colours returned as hex or rgb",{
     opacity_name,
     lst_legend,
     include_legend,
+    repeats,
+    total_colours,
     colour_format
   )
 
@@ -71,7 +77,8 @@ test_that("colours returned as hex or rgb",{
   df <- data.frame(col1 = 1:n)
   lst_params <- spatialwidget:::rcpp_construct_params(df, params)
   data <- df
-  data_rows <- nrow( df )
+  total_colours <- nrow( df )
+  repeats <- 1L
   lst_defaults <- list(fill_colour = rep(1,5))
 
   colour_name <- "fill_colour"
@@ -90,6 +97,8 @@ test_that("colours returned as hex or rgb",{
     opacity_name,
     lst_legend,
     include_legend,
+    repeats,
+    total_colours,
     colour_format
   )
 

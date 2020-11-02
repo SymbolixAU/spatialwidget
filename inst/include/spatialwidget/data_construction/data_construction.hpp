@@ -2,10 +2,12 @@
 #define R_SPATIALWIDGET_DATA_CONSTRUCTION_H
 
 #include <Rcpp.h>
+#include "geometries/utils/vectors/vectors.hpp"
 #include "spatialwidget/utils/utils.hpp"
 
 namespace spatialwidget {
 namespace construction {
+
 
   inline void construct_df( Rcpp::List& df, int& nrows ) {
 
@@ -37,6 +39,7 @@ namespace construction {
   		int& data_rows
   ) {
 
+    //R_xlen_t data_rows = data.nrow();
   	int n = params.size();
   	int colIndex = -1;
 
@@ -47,12 +50,13 @@ namespace construction {
   	}
 
   	// iterate each of the parameters
-  	for (int i = 0; i < n; i ++ ) {
+  	int i;
+  	for (i = 0; i < n; i ++ ) {
   		// if the param element is length 1; check if it's a column name
 
   		Rcpp::String this_param = param_names[i];
-  	  //Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
-  	  //Rcpp::Rcout << "TYPEOF(param) " << TYPEOF( params[i] ) << std::endl;
+  	  // Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
+  	  // Rcpp::Rcout << "TYPEOF(param) " << TYPEOF( params[i] ) << std::endl;
 
 			if( TYPEOF( params[i] ) == STRSXP ) {
 				// it's a string
@@ -62,7 +66,7 @@ namespace construction {
 			  //Rcpp::Rcout << "param_value: " << param_value.get_cstring() << std::endl;
 
 				// returns -1 if length != 1
-				colIndex = spatialwidget::utils::where::where_is( param_value, data_names );
+				colIndex = geometries::utils::where_is( param_value, data_names );
 
 				if ( colIndex == -1 ) {
 				  continue;
@@ -70,9 +74,11 @@ namespace construction {
 
 				if ( colIndex >= 0 ) {
 					// The param_value IS a column name
+					// Rcpp::Rcout << "colIndex " << colIndex << " this_param: " << this_param.get_cstring() << std::endl;
 					lst_defaults[ this_param ] = data[ colIndex ];
 
 				} else {
+				  // Rcpp::Rcout << "it's not a column name" << std::endl;
 					// IT's not a column name, but it is still a string
 					// and needs to be applied to all rows
 					//SEXP value = param_value;
@@ -86,12 +92,12 @@ namespace construction {
 			}
 		} // TODO( is there an 'else' condition? )
 
-  	Rcpp::StringVector list_names = lst_defaults.names();
+  	//Rcpp::StringVector list_names = lst_defaults.names();
   	//Rcpp::Rcout << "list_names: " << list_names << std::endl;
 
   	//return lst_defaults;
 
-  	construct_df( lst_defaults, data_rows );
+  	//construct_df( lst_defaults, data_rows );
   	return lst_defaults;
   }
 

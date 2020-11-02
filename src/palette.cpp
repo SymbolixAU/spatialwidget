@@ -32,9 +32,14 @@ Rcpp::List rcpp_colour_str_with_palette(
     Rcpp::NumericVector alpha,
     std::string na_colour,
     bool include_alpha,
-    std::string colour_name) {
+    std::string colour_name
+  ) {
+
+  Rcpp::IntegerVector repeats(1); // not used
+  R_xlen_t total_colours = 0; // not used
+
   return spatialwidget::palette::colour_with_palette(
-    palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name
+    palette, fill_colour_vec, repeats, total_colours, alpha, na_colour, include_alpha, colour_name
   );
 }
 
@@ -50,9 +55,13 @@ Rcpp::List rcpp_colour_num_with_palette(
     std::string na_colour,
     bool include_alpha,
     std::string colour_name,
-    int legend_digits = 2) {
+    int legend_digits = 2
+) {
+
+  Rcpp::IntegerVector repeats(1); // not used
+  R_xlen_t total_colours = 0; // not used
 
   return spatialwidget::palette::colour_with_palette(
-    palette, fill_colour_vec, alpha, na_colour, include_alpha, colour_name, legend_digits
+    palette, fill_colour_vec, repeats, total_colours, alpha, na_colour, include_alpha, colour_name, legend_digits
   );
 }
