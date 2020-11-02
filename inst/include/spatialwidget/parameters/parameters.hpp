@@ -96,10 +96,6 @@ namespace parameters {
 
   	Rcpp::List lst_params = construct_params( data, params );
 
-  	//return lst_params;
-  	//return lst_defaults;
-
-
   	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list(
   	  lst_params,
   	  params,
@@ -189,8 +185,6 @@ namespace parameters {
   		Rcpp::_["data"] = df,
   		Rcpp::_["legend"] = lst_legend
   	);
-
-  	// Rcpp::Rcout << "parameters.hpp done" << std::endl;
 
   	return result;
   }

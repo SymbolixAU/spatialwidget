@@ -15,6 +15,9 @@
 // [[Rcpp::depends(sfheaders)]]
 #include "sfheaders/sfheaders.hpp"
 
+// [[Rcpp::depends(interleave)]]
+#include "interleave/interleave.hpp"
+
 #include "spatialwidget/colour/colour.hpp"
 #include "spatialwidget/data_construction/data_construction.hpp"
 #include "spatialwidget/geojson/geojson.hpp"
@@ -397,7 +400,6 @@ namespace api {
       Rcpp::StringVector& layer_legend,
       int& data_rows,
       Rcpp::StringVector& parameter_exclusions,
-      int digits = -1,
       std::string colour_format = "rgb"  // can't be hex for columnar data
   ) {
 
@@ -451,7 +453,7 @@ namespace api {
   ) {
 
     R_xlen_t i, j;
-    Rcpp::List res(5);
+    Rcpp::List res(2);
 
     Rcpp::DataFrame data = Rcpp::as< Rcpp::DataFrame >( interleaved["data"] );
     Rcpp::IntegerVector repeats = Rcpp::as< Rcpp::IntegerVector >( interleaved["geometry_coordinates"] );
@@ -461,11 +463,7 @@ namespace api {
     Rcpp::NumericVector coordinates = interleaved["coordinates"];
     int stride = interleaved["stride"];
 
-    // Rcpp::Rcout << "repeats: " << repeats << std::endl;
-    // Rcpp::Rcout << "total_colours " << total_colours << std::endl;
-
     Rcpp::StringVector data_names = data.names();
-    // Rcpp::Rcout << "data_name: " << data_names << std::endl;
 
     Rcpp::List lst = spatialwidget::parameters::parameters_to_data(
       data,
@@ -486,7 +484,6 @@ namespace api {
 
     // issue 46
     spatialwidget::utils::dates::dates_to_string( df );
-
 
     Rcpp::NumericVector expanded_index( data_rows );
     R_xlen_t counter = 0;
@@ -509,23 +506,62 @@ namespace api {
       Rcpp::String to_find = binary_columns[ i ];
       R_xlen_t name_position = geometries::utils::where_is( to_find, binary_names );
       SEXP v = df[ name_position ];
-      geometries::utils::expand_vector( df, v, expanded_index, name_position );
+      if( TYPEOF( v ) != VECSXP ) {
+        geometries::utils::expand_vector( df, v, expanded_index, name_position );
+      } else {
+        // Lists just need to be un-list
+        // I'm working on the assumption the list will have the same number of elements
+        // as coordinates
+        Rcpp::List lst = Rcpp::as< Rcpp::List >( v );
+        df[ name_position ] = geometries::utils::unlist_list( lst );
+
+      }
+    }
+
+    // Also expand the colours if they are HEX values
+    // because they haven't gone through colour_values,
+    // so there is only one colour per geometry
+    // but we need the colour per coordinate.
+    // and then convert to RGBA, and then interleave
+    std::unordered_map< std::string, std::string>::iterator it;
+    std::string colour_column;
+    std::string opacity_column;
+
+    for ( it = layer_colours.begin(); it != layer_colours.end(); ++it ) {
+      colour_column = it->first;
+
+      SEXP col = df[ colour_column ];
+      if( spatialwidget::utils::colour::is_hex( col ) ) {
+        // 1. Fill
+        R_xlen_t name_position = geometries::utils::where_is( colour_column, binary_names );
+        geometries::utils::expand_vector( df, col, expanded_index, name_position );
+        // 2. Convert
+        // It's a hex, which means it's a STRSXP
+        SEXP expanded_col = df[ colour_column ];
+        Rcpp::StringVector sv = Rcpp::as< Rcpp::StringVector >( expanded_col );
+        Rcpp::IntegerMatrix colour_mat = colourvalues::convert::convert_hex_to_rgb( sv );
+        Rcpp::NumericMatrix nm = Rcpp::as< Rcpp::NumericMatrix >( colour_mat );
+        nm = nm / 255;
+        // 3. Interleave
+        df[ name_position ] = interleave::interleave( nm );
+
+      }
+
     }
 
 
-    //lst["data"] = df;
-
-    //return lst;
-
-    Rcpp::StringVector js_data = jsonify::api::to_json(
-      df, false, -1, true, true, "col"
+    Rcpp::List res_list = Rcpp::List::create(
+      Rcpp::_["coordinates"] = coordinates,
+      Rcpp::_["start_indices"] = start_indices,
+      Rcpp::_["data"] = df,
+      Rcpp::_["stride"] = stride
     );
 
-    res[0] = js_data;
+    res[0] = jsonify::api::to_json(
+      res_list, false, digits, true, true, "col"
+    );
 
     SEXP legend = lst[ "legend" ];
-
-    // Rcpp::Rcout << "3" << std::endl;
 
     if ( jsonify_legend ) {
       legend = jsonify::api::to_json( legend );
@@ -536,12 +572,7 @@ namespace api {
       res[1] = legend;
     }
 
-    // Rcpp::Rcout << "4" << std::endl;
-    res[2] = jsonify::api::to_json( coordinates );
-    res[3] = jsonify::api::to_json( start_indices );
-    res[4] = stride;
-
-    res.names() = Rcpp::CharacterVector::create("data", "legend", "coordinates", "start_indices", "stride");
+    res.names() = Rcpp::CharacterVector::create("data", "legend");
     return res;
   }
 

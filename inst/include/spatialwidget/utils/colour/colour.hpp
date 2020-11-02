@@ -14,6 +14,16 @@ namespace colour {
     return res;
   }
 
+  inline bool is_hex( SEXP x ) {
+    if( TYPEOF( x ) != STRSXP ) {
+      return false;
+    }
+
+    Rcpp::StringVector sv = Rcpp::as< Rcpp::StringVector >( x );
+    Rcpp::String first_colour = sv[0];
+    return is_hex( first_colour.get_cstring() );
+  }
+
 } // namespace colour
 } // namespace utils
 } // namespace spatialwidget

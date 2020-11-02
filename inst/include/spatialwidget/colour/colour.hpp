@@ -57,8 +57,7 @@ namespace colour {
       // Rcpp::Rcout << "LGLSXP || STRSXP " << std::endl;
       Rcpp::StringVector colour_vec = Rcpp::as< Rcpp::StringVector >( palette_type );
       Rcpp::String first_colour = colour_vec[0];
-      std::string first_colour_str = first_colour;
-      if ( spatialwidget::utils::colour::is_hex( first_colour_str ) ) {
+      if ( spatialwidget::utils::colour::is_hex( first_colour.get_cstring() ) ) {
 
         Rcpp::StringVector lvls = Rcpp::unique( colour_vec );
 

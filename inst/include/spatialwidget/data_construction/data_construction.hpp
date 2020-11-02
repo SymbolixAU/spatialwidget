@@ -8,6 +8,7 @@
 namespace spatialwidget {
 namespace construction {
 
+
   inline void construct_df( Rcpp::List& df, int& nrows ) {
 
     if ( nrows < 1 ) {
@@ -54,8 +55,8 @@ namespace construction {
   		// if the param element is length 1; check if it's a column name
 
   		Rcpp::String this_param = param_names[i];
-  	  //Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
-  	  //Rcpp::Rcout << "TYPEOF(param) " << TYPEOF( params[i] ) << std::endl;
+  	  // Rcpp::Rcout << "this_param: " << this_param.get_cstring() << std::endl;
+  	  // Rcpp::Rcout << "TYPEOF(param) " << TYPEOF( params[i] ) << std::endl;
 
 			if( TYPEOF( params[i] ) == STRSXP ) {
 				// it's a string
@@ -73,9 +74,11 @@ namespace construction {
 
 				if ( colIndex >= 0 ) {
 					// The param_value IS a column name
+					// Rcpp::Rcout << "colIndex " << colIndex << " this_param: " << this_param.get_cstring() << std::endl;
 					lst_defaults[ this_param ] = data[ colIndex ];
 
 				} else {
+				  // Rcpp::Rcout << "it's not a column name" << std::endl;
 					// IT's not a column name, but it is still a string
 					// and needs to be applied to all rows
 					//SEXP value = param_value;
@@ -89,7 +92,7 @@ namespace construction {
 			}
 		} // TODO( is there an 'else' condition? )
 
-  	Rcpp::StringVector list_names = lst_defaults.names();
+  	//Rcpp::StringVector list_names = lst_defaults.names();
   	//Rcpp::Rcout << "list_names: " << list_names << std::endl;
 
   	//return lst_defaults;

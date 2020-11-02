@@ -46,6 +46,8 @@ namespace palette {
       std::string colour_format = "hex"
   ) {
 
+    // Rcpp::Rcout << "colour_format: " << colour_format << std::endl;
+
     // Rcpp::Rcout << "spw colour_name: " << colour_name.c_str() << std::endl;
     //Rcpp::Rcout << "alpha: " << alpha << std::endl;
 
