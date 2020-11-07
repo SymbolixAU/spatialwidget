@@ -158,7 +158,9 @@ namespace colour {
 
     Rcpp::StringVector hex_strings( data.nrows() );
 
-    Rcpp::NumericVector alpha( 1, 255.0 );
+    double default_alpha = colour_format == "interleaved" ? 1.0 : 255.0;
+    Rcpp::NumericVector alpha( 1, default_alpha );
+    // Rcpp::Rcout << "alpha: " << alpha << std::endl;
 
     SEXP this_colour;
 
