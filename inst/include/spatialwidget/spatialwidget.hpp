@@ -572,6 +572,7 @@ namespace api {
       res[1] = legend;
     }
 
+
     res.names() = Rcpp::CharacterVector::create("data", "legend");
     return res;
   }
