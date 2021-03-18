@@ -1,3 +1,7 @@
+# v0.2.4
+
+* create_interleaved() C++ function for formatting interleaved objects
+
 # v0.2.3
 
 * Links to geometries

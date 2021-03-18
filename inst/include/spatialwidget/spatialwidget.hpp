@@ -29,6 +29,7 @@
 namespace spatialwidget {
 namespace api {
 
+
   inline Rcpp::StringVector create_geojson_mesh(
     Rcpp::List& mesh, Rcpp::StringVector vertices
   ) {

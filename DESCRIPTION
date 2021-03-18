@@ -2,7 +2,7 @@ Package: spatialwidget
 Type: Package
 Title: Formats Spatial Data for Use in Htmlwidgets
 Version: 0.2.4
-Date: 2020-11-02
+Date: 2021-03-18
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
@@ -22,12 +22,12 @@ LinkingTo:
     BH,
     colourvalues (>= 0.3.6),
     geojsonsf (>= 1.3.3),
-    geometries,
-    interleave,
+    geometries (>= 0.2.0),
+    interleave (>= 0.1.1),
     jsonify (>= 1.1.1),
     rapidjsonr,
     Rcpp,
-    sfheaders (>= 0.2.2)
+    sfheaders (>= 0.4.0)
 RoxygenNote: 7.1.1
 Suggests:
     colourvalues,
