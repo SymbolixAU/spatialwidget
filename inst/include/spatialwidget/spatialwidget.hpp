@@ -486,7 +486,7 @@ namespace api {
     // issue 46
     spatialwidget::utils::dates::dates_to_string( df );
 
-    Rcpp::NumericVector expanded_index( data_rows );
+    Rcpp::IntegerVector expanded_index( data_rows );
     R_xlen_t counter = 0;
 
     R_xlen_t n_geometries = geometry_coordinates.length();
@@ -547,9 +547,7 @@ namespace api {
         df[ name_position ] = interleave::interleave( nm );
 
       }
-
     }
-
 
     Rcpp::List res_list = Rcpp::List::create(
       Rcpp::_["coordinates"] = coordinates,
