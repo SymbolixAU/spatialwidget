@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // rcpp_make_colours
 Rcpp::List rcpp_make_colours(Rcpp::List& lst_params, Rcpp::List& params, Rcpp::DataFrame& data, Rcpp::List& lst_defaults, int col_index, SEXP& palette_type, Rcpp::NumericVector& alpha, std::string& colour_name, bool& include_legend, Rcpp::IntegerVector& repeats, R_xlen_t& total_colours, int legend_digits, std::string colour_format);
 RcppExport SEXP _spatialwidget_rcpp_make_colours(SEXP lst_paramsSEXP, SEXP paramsSEXP, SEXP dataSEXP, SEXP lst_defaultsSEXP, SEXP col_indexSEXP, SEXP palette_typeSEXP, SEXP alphaSEXP, SEXP colour_nameSEXP, SEXP include_legendSEXP, SEXP repeatsSEXP, SEXP total_coloursSEXP, SEXP legend_digitsSEXP, SEXP colour_formatSEXP) {
