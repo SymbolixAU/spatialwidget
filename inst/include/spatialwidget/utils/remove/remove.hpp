@@ -24,7 +24,7 @@ namespace remove {
     remove_list_elements( list, elements, to_remove );
   }
 
-} // namespace where
+} // namespace remove
 } // namespace utils
 } // namespace spatialwidget
 

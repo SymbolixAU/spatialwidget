@@ -84,6 +84,8 @@ namespace parameters {
       spatialwidget::utils::factors::factors_to_string( data );
     }
 
+    Rcpp::stop("1");
+
     // convert dates to characters
     // issue 46 - moved this outside
     //spatialwidget::utils::dates::dates_to_string( data );
@@ -95,6 +97,7 @@ namespace parameters {
   	// Rcpp::Rcout << "data_names " << data_names << std::endl;
 
   	Rcpp::List lst_params = construct_params( data, params );
+  	Rcpp::stop("2");
 
   	Rcpp::List lst_legend = spatialwidget::legend::construct_legend_list(
   	  lst_params,
@@ -102,7 +105,7 @@ namespace parameters {
   	  param_names,
   	  layer_legend
   	);
-
+  	Rcpp::stop("3");
 
   	Rcpp::StringVector legend_names = lst_legend.names();
 
@@ -114,6 +117,7 @@ namespace parameters {
 		std::string opacity_column;
 
 		for ( it = colour_columns.begin(); it != colour_columns.end(); ++it ) {
+		  Rcpp::stop("4");
 
 		  colour_column = it->first;
 		  opacity_column = it->second;
@@ -137,9 +141,11 @@ namespace parameters {
 	      colour_format
 	      );
 
+	    Rcpp::stop("5");
 	    // Rcpp::Rcout << "sw resolved colour" << std::endl;
 		}
 
+		Rcpp::stop("6");
 		//return lst_defaults;
 
   	//Rcpp::stop("stopping");
@@ -160,6 +166,8 @@ namespace parameters {
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, colours_remove );
   	spatialwidget::utils::remove::remove_list_elements( params, param_names, layer_legend );
 
+  	Rcpp::stop("7");
+
   	//lst_params = construct_params( data, params );
   	//return lst_params;
   	//return lst_defaults;
@@ -175,11 +183,14 @@ namespace parameters {
   		data_rows
   	);
 
+  	Rcpp::stop("8");
+
     // if 'interleaving', we don't want a final df, because columns lenghts are / can be different
     if( colour_format != "interleaved" ) {
       // Rcpp::Rcout << "constructing data" << std::endl;
       spatialwidget::construction::construct_df( df, data_rows );
     }
+
 
   	Rcpp::List result = Rcpp::List::create(
   		Rcpp::_["data"] = df,
