@@ -54,6 +54,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_is_hex
+Rcpp::LogicalVector rcpp_is_hex(Rcpp::StringVector colours);
+RcppExport SEXP _spatialwidget_rcpp_is_hex(SEXP coloursSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type colours(coloursSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_is_hex(colours));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_construct_data
 Rcpp::DataFrame rcpp_construct_data(Rcpp::StringVector param_names, Rcpp::List params, Rcpp::StringVector data_names, Rcpp::List lst_defaults, Rcpp::DataFrame data, int data_rows);
 RcppExport SEXP _spatialwidget_rcpp_construct_data(SEXP param_namesSEXP, SEXP paramsSEXP, SEXP data_namesSEXP, SEXP lst_defaultsSEXP, SEXP dataSEXP, SEXP data_rowsSEXP) {
@@ -360,6 +371,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_spatialwidget_rcpp_make_colours", (DL_FUNC) &_spatialwidget_rcpp_make_colours, 13},
     {"_spatialwidget_rcpp_resolve_colour", (DL_FUNC) &_spatialwidget_rcpp_resolve_colour, 11},
+    {"_spatialwidget_rcpp_is_hex", (DL_FUNC) &_spatialwidget_rcpp_is_hex, 1},
     {"_spatialwidget_rcpp_construct_data", (DL_FUNC) &_spatialwidget_rcpp_construct_data, 6},
     {"_spatialwidget_rcpp_geojson", (DL_FUNC) &_spatialwidget_rcpp_geojson, 2},
     {"_spatialwidget_rcpp_geojson_sf", (DL_FUNC) &_spatialwidget_rcpp_geojson_sf, 2},

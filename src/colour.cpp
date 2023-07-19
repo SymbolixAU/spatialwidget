@@ -51,3 +51,21 @@ Rcpp::List rcpp_resolve_colour(
   return lst;
 
 }
+
+// [[Rcpp::export]]
+Rcpp::LogicalVector rcpp_is_hex(Rcpp::StringVector colours) {
+
+  R_xlen_t n = colours.length();
+  R_xlen_t i;
+  Rcpp::LogicalVector result(n);
+  for(i = 0; i < n; ++i) {
+    const char* colour = colours[i];
+    bool isHex = spatialwidget::utils::colour::is_hex(colour);
+    result[i] = isHex;
+  }
+  return result;
+}
+
+
+
+

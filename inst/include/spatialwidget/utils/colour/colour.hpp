@@ -1,17 +1,33 @@
 #ifndef SPATIALWIDGET_UTILS_COLOUR_H
 #define SPATIALWIDGET_UTILS_COLOUR_H
 
-#include <regex>
 #include <Rcpp.h>
 
 namespace spatialwidget {
 namespace utils {
 namespace colour {
 
+  inline bool isHexDigit(char c) {
+    return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+  }
+
   inline bool is_hex( std::string str ) {
-    std::regex hex_regex("^#[0-9a-fA-F]{8}$|#[0-9a-fA-F]{6}$|#[0-9a-fA-F]{4}$|#[0-9a-fA-F]{3}$");
-    bool res = std::regex_match( str, hex_regex );
-    return res;
+    int len = str.length();
+    if (len != 7 && len != 9 && len != 4 && len != 5) {
+      return false; // Invalid length for a hex color
+    }
+
+    if (str[0] != '#') {
+      return false; // Missing "#" at the beginning
+    }
+
+    for (int i = 1; i < len; i++) {
+      if (!isHexDigit(str[i])) {
+        return false; // Non-hexadecimal character found
+      }
+    }
+
+    return true; // Passed all checks, valid hex color
   }
 
   inline bool is_hex( SEXP x ) {

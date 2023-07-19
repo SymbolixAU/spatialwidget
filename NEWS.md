@@ -1,3 +1,7 @@
+# v0.2.5
+
+* Replaced `std::regex_match` in `is_hex()` due to crashes on Windows [issue 359](https://github.com/SymbolixAU/mapdeck/issues/359)
+
 # v0.2.4
 
 * create_interleaved() C++ function for formatting interleaved objects

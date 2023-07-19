@@ -9,6 +9,10 @@ rcpp_resolve_colour <- function(lst_params, params, data, lst_defaults, colour_n
     .Call(`_spatialwidget_rcpp_resolve_colour`, lst_params, params, data, lst_defaults, colour_name, opacity_name, lst_legend, include_legend, repeats, total_colours, colour_format)
 }
 
+rcpp_is_hex <- function(colours) {
+    .Call(`_spatialwidget_rcpp_is_hex`, colours)
+}
+
 rcpp_construct_data <- function(param_names, params, data_names, lst_defaults, data, data_rows) {
     .Call(`_spatialwidget_rcpp_construct_data`, param_names, params, data_names, lst_defaults, data, data_rows)
 }

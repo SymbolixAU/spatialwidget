@@ -1,5 +1,15 @@
 context("colours")
 
+test_that("is_hex works - issue 359", {
+
+  colours <- c("#","0","#0","#00","#000","#0000", "#00000", "#000000", "#0000000", "#00000000", "#000000000")
+  expected <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
+
+  result <- spatialwidget:::rcpp_is_hex(colours)
+  expect_equal(expected, result)
+
+})
+
 test_that("colours returned as hex or rgb",{
 
   n <- 5
