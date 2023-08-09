@@ -13,8 +13,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Travis build status](https://travis-ci.org/SymbolixAU/spatialwidget.svg?branch=master)](https://travis-ci.org/SymbolixAU/spatialwidget)
-
 # spatialwidget
 
 ### What's a 'spatialwidget'
@@ -27,7 +25,7 @@ Well, what do these packages have in common?
 - mapview
 - tmap
 
-1. They are all [htmlwidgets](http://www.htmlwidgets.org/)
+1. They are all [htmlwidgets](https://www.htmlwidgets.org/)
 2. They all plot interactive maps
 3. They all take data from R and display it on the maps.
 

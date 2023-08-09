@@ -77,7 +77,7 @@ There are 4 R functions you can call for creating POINTs, LINEs, POLYGONs or ori
 
 ## Pseudo-GeoJSON
 
-The `data` is returned as **pseudo-GeoJSON**. Some plotting libraries can use more than one geometry, such as [`mapdeck::add_arc()`](https://github.com/SymbolixAU/mapdeck/blob/master/R/map_layer_arc.R), which uses an origin and destination. So spatialwidget needs to handle multiple geometries.
+The `data` is returned as **pseudo-GeoJSON**. Some plotting libraries can use more than one geometry, such as `mapdeck::add_arc()`, which uses an origin and destination. So spatialwidget needs to handle multiple geometries.
 
 Typical GeoJSON will take the form
 

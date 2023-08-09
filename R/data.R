@@ -47,7 +47,7 @@
 #' Edition 2016 data released by the Australian Bureau of Statistics
 #' \url{ https://www.abs.gov.au/ }
 #'
-#' The data is realsed under a Creative Commons Attribution 2.5 Australia licence
+#' The data is realeased under a Creative Commons Attribution 2.5 Australia licence
 #' \url{https://creativecommons.org/licenses/by/2.5/au/}
 #'
 #' The data has been down-cast from MULTIPOLYGONS to POLYGONS.

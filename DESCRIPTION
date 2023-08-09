@@ -2,11 +2,11 @@ Package: spatialwidget
 Type: Package
 Title: Formats Spatial Data for Use in Htmlwidgets
 Version: 0.2.5
-Date: 2023-07-20
+Date: 2023-08-10
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
-Description: Many packages use 'htmlwidgets' <https://CRAN.R-project.org/package=htmlwidgets>
+Description: Many packages use 'htmlwidgets' <https://cran.r-project.org/web/packages/htmlwidgets/index.html>
     for interactive plotting of spatial data.
     This package provides functions for converting R objects, such as simple features, 
     into structures suitable for use in 'htmlwidgets' mapping libraries. 

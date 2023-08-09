@@ -1,26 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Travis build
-status](https://travis-ci.org/SymbolixAU/spatialwidget.svg?branch=master)](https://travis-ci.org/SymbolixAU/spatialwidget)
-[![Coverage
-status](https://codecov.io/gh/SymbolixAU/spatialwidget/branch/master/graph/badge.svg)](https://codecov.io/github/SymbolixAU/spatialwidget?branch=master)
-
 # spatialwidget
 
 ### What’s a ‘spatialwidget’
 
 Well, what do these packages have in common?
 
-  - leaflet
-  - googleway
-  - mapdeck
-  - mapview
-  - tmap
+- leaflet
+- googleway
+- mapdeck
+- mapview
+- tmap
 
-<!-- end list -->
-
-1.  They are all [htmlwidgets](http://www.htmlwidgets.org/)
+1.  They are all [htmlwidgets](https://www.htmlwidgets.org/)
 2.  They all plot interactive maps
 3.  They all take data from R and display it on the maps.
 
@@ -54,16 +47,18 @@ object of all the capital cities.
 ``` r
 library(spatialwidget)
 library(sf)
-#  Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
+#  Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE
 sf <- spatialwidget::widget_capitals
 sf
 #  Simple feature collection with 200 features and 2 fields
-#  geometry type:  POINT
-#  dimension:      XY
-#  bbox:           xmin: -174 ymin: -53 xmax: 179.13 ymax: 64.1
-#  epsg (SRID):    NA
-#  proj4string:    NA
+#  Geometry type: POINT
+#  Dimension:     XY
+#  Bounding box:  xmin: -174 ymin: -53 xmax: 179.13 ymax: 64.1
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
+#  CRS:           NA
 #  First 10 features:
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
 #                 country          capital               geometry
 #  1          Afghanistan            Kabul    POINT (69.11 34.28)
 #  2              Albania           Tirane    POINT (19.49 41.18)
@@ -82,6 +77,8 @@ JSON.
 
 ``` r
 l <- widget_point( data = sf[1:2, ], fill_colour = "country" , legend = F)
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
 ```
 
 Each row of `capitals` has been converted into a JSON object. And all
@@ -91,12 +88,13 @@ Look, here are the first two rows of `capitals` as JSON
 
 ``` r
 sf[1:2, ]
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
 #  Simple feature collection with 2 features and 2 fields
-#  geometry type:  POINT
-#  dimension:      XY
-#  bbox:           xmin: 19.49 ymin: 34.28 xmax: 69.11 ymax: 41.18
-#  epsg (SRID):    NA
-#  proj4string:    NA
+#  Geometry type: POINT
+#  Dimension:     XY
+#  Bounding box:  xmin: 19.49 ymin: 34.28 xmax: 69.11 ymax: 41.18
+#  CRS:           NA
 #        country capital            geometry
 #  1 Afghanistan   Kabul POINT (69.11 34.28)
 #  2     Albania  Tirane POINT (19.49 41.18)
@@ -143,28 +141,25 @@ user-defined `fill_colour` is within the `properties` object.
 Well spotted. But it’s not quite GeoJSON for a very good reason.
 
 Some plotting libraries can use more than one geometry, such as
-[mapdeck::add\_arc()](https://github.com/SymbolixAU/mapdeck#basic-use),
+[mapdeck::add_arc()](https://github.com/SymbolixAU/mapdeck#basic-use),
 which uses an origin and destination. So spatialwidget needs to handle
 multiple geometries.
 
-Typical GeoJSON will take the
-form
+Typical GeoJSON will take the form
 
 ``` js
 [{"type":"Feature", "properties":{"stroke_colour":"#440154FF"},"geometry":{"type":"Point","coordinates":[0,0]}}]
 ```
 
 Whereas I’ve nested the geometries one-level deeper, so the
-pseudo-GeoJSON i’m using takes the
-form
+pseudo-GeoJSON i’m using takes the form
 
 ``` js
 [{"type":"Feature", "properties":{"stroke_colour":"#440154FF"},"geometry":{"myGeometry":{"type":"Point","coordinates":[0,0]}}}]
 ```
 
 Where the `myGeometry` object is defined on a per-application bases. You
-are free to call this whatever you want inside your
-library.
+are free to call this whatever you want inside your library.
 
 ### That sort of makes sense, but can you show me an example with multiple geometries?
 
@@ -178,6 +173,9 @@ and destination columns.
 ``` r
 
 l <- widget_od( widget_arcs[1:2, ], origin = "origin", destination = "destination")
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
+#  old-style crs object detected; please recreate object with a recent sf::st_crs()
 
 jsonify::pretty_json( l$data )
 #  [
