@@ -27,7 +27,7 @@ LinkingTo:
     rapidjsonr,
     Rcpp,
     sfheaders (>= 0.4.4)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Suggests:
     colourvalues,
     covr,
