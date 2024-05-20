@@ -1,8 +1,8 @@
 Package: spatialwidget
 Type: Package
 Title: Formats Spatial Data for Use in Htmlwidgets
-Version: 0.2.5
-Date: 2024-01-22
+Version: 0.2.6
+Date: 2024-05-21
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
@@ -12,7 +12,7 @@ Description: Many packages use 'htmlwidgets' <https://CRAN.R-project.org/package
     into structures suitable for use in 'htmlwidgets' mapping libraries. 
 URL: https://symbolixau.github.io/spatialwidget/articles/spatialwidget.html
 License: MIT + file LICENSE
-Depends: R (>= 3.3.0)
+Depends: R (>= 4.0.0)
 Encoding: UTF-8
 LazyData: true
 Imports:
@@ -20,14 +20,14 @@ Imports:
 LinkingTo: 
     BH (>= 1.84.0),
     colourvalues (>= 0.3.9),
-    geojsonsf (>= 2.0.3),
+    geojsonsf (>= 2.0.4),
     geometries (>= 0.2.4),
     interleave (>= 0.1.2),
-    jsonify (>= 1.2.2),
+    jsonify (>= 1.2.3),
     rapidjsonr,
-    Rcpp (>= 0.12.18),
+    Rcpp (>= 1.0.10),
     sfheaders (>= 0.4.4)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests:
     colourvalues,
     covr,
