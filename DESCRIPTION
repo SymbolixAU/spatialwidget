@@ -38,3 +38,11 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+remotes:
+  https://github.com/SymbolixAU/rapidjsonr,
+  https://github.com/SymbolixAU/jsonify,
+  https://github.com/SymbolixAU/geojsonsf,
+  https://github.com/dcooley/geometries,
+  https://github.com/dcooley/interleave,
+  https://github.com/dcooley/sfheaders
+  
