@@ -1,8 +1,8 @@
 Package: spatialwidget
 Type: Package
 Title: Formats Spatial Data for Use in Htmlwidgets
-Version: 0.2.5
-Date: 2024-01-22
+Version: 0.2.6
+Date: 2025-11-29
 Authors@R: c(
     person("David", "Cooley", ,"dcooley@symbolix.com.au", role = c("aut", "cre"))
     )
@@ -18,16 +18,16 @@ LazyData: true
 Imports:
     Rcpp
 LinkingTo: 
-    BH (>= 1.84.0),
+    BH (>= 1.87.0-1),
     colourvalues (>= 0.3.9),
-    geojsonsf (>= 2.0.3),
-    geometries (>= 0.2.4),
+    geojsonsf (>= 2.0.5),
+    geometries (>= 0.2.5),
     interleave (>= 0.1.2),
-    jsonify (>= 1.2.2),
-    rapidjsonr,
-    Rcpp (>= 0.12.18),
-    sfheaders (>= 0.4.4)
-RoxygenNote: 7.2.3
+    jsonify (>= 1.2.3),
+    rapidjsonr (>= 1.2.1),
+    Rcpp (>= 1.1.0),
+    sfheaders (>= 0.4.5)
+RoxygenNote: 7.3.3
 Suggests:
     colourvalues,
     covr,
